@@ -41,7 +41,7 @@
         v-if="contractStatues == 2 && formData.substitute"
       />
       
-      <van-cell title="承若最晚支付时间" value-class="cellValue" :value="formData.latestPaymentDate" />
+      <van-cell title="承若最晚支付时间" value-class="cellValue" :value="formData.latestPaymentDate" v-if="formData.latestPaymentDate" />
 
       <van-cell title="变更历史" is-link v-if="contractStatues != 1" @click="goHistory"></van-cell>
       <div class="divider"></div>
@@ -115,7 +115,9 @@ export default {
   },
   filters: {
     filterUnitB(value) {
-      return `￥${value}`;
+		console.log(Number(value))
+		let num = isNaN(Number(value)) ? 0:value;
+      return `￥${num}`;
     },
     filterPayMethod(state) {
       let result = null;
