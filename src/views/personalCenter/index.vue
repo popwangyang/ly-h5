@@ -85,7 +85,12 @@
           </template>
         </van-cell>
 
-        <van-cell v-if="showPersonalInfo === 2" class="b45 info-mid icon-wrapper" is-link>
+        <van-cell
+          v-if="showPersonalInfo === 2"
+          class="b45 info-mid icon-wrapper"
+          is-link
+          to="withdrawalMain"
+        >
           <template slot="title">
             <img :src="infoWidIcon" alt width="15" height="12" />
             <span class="custom-title">账户提现</span>
