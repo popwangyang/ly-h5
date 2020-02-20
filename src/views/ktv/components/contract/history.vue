@@ -39,10 +39,10 @@
 					old_billing_method,
 				    old_latest_payment_date
 				} = contractDetail;
-				
+				let price = contractDetail.old_billing_price || contractDetail.old_scan_code_payment;
 				let old_billing_price = old_billing_method == 1 ? 
-				`${contractDetail.old_billing_price}元/次/终端`:
-				`${contractDetail.old_billing_price}元`;
+				`${price}元/次/终端`:
+				`${price}元`;
 			    return 	{
 					change_time,
 					refund_total,

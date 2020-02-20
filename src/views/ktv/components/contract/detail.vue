@@ -26,7 +26,7 @@
 	   title="扫码费用(综合技术服务费)"
 	   value-class="cellValue"
 	   :value="formData.scan_code_payment | filterUnitB"
-	   v-if="contractStatues == 2"
+	   v-if="contractStatues == 2 && formData.scan_code_payment"
 	 />
       <van-cell
         title="支付方式"
@@ -43,7 +43,7 @@
       
       <van-cell title="承若最晚支付时间" value-class="cellValue" :value="formData.latestPaymentDate" v-if="formData.latestPaymentDate" />
 
-      <van-cell title="变更历史" is-link v-if="contractStatues != 1" @click="goHistory"></van-cell>
+      <van-cell title="变更历史" is-link v-if="hasChangeHistory"  @click="goHistory"></van-cell>
       <div class="divider"></div>
       <div v-if="!showPersonContract">
         <van-cell
@@ -112,6 +112,22 @@ export default {
     expensesDetails,
     approvalSteps,
 	timeNote
+  },
+  computed:{
+	hasChangeHistory (){ // 依据合同详情里的变更计费和最晚支付时间来判断是否合同发生了变更；
+		let contractDetail = this.$store.state.ktv.contractDetail;
+		let {
+			change_time,
+			refund_total,
+			old_billing_method,
+		    old_latest_payment_date
+		} = contractDetail;
+		if(old_billing_method != null && old_latest_payment_date != null){
+			return true;
+		}else{
+			return false;
+		}
+	} 
   },
   filters: {
     filterUnitB(value) {
