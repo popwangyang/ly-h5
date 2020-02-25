@@ -26,6 +26,11 @@ var strategies = {
 	     return errorMsg;
 	   }
 	},
+	isMac: function(value, errorMsg) {
+		if (!/^[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}$/.test(value)) {
+		   return errorMsg;
+		 }
+	}
 }
 
 var Validator = function(){
