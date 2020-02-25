@@ -96,6 +96,9 @@
 					gateway:[
 						{ required: false, type: 'isGateway', message: '网关格式不正确'}
 					],
+					ad_mac:[
+						{ required: false, type: 'isMac', message: 'Mac地址格式不正确'}
+					],
 					communication_mode:[
 						{ required: true, message: '通讯模式不能为空'}
 					]
