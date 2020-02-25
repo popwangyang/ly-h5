@@ -26,6 +26,11 @@ var strategies = {
 	     return errorMsg;
 	   }
 	},
+	isMac: function(value, errorMsg) {  // Mac地址格式验证
+		if (!/^[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}:[A-Fa-f\d]{2}$/.test(value)) {
+		   return errorMsg;
+		 }
+	}
 }
 
 var Validator = function(){
