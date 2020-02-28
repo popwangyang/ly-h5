@@ -17,7 +17,7 @@
 		 title="终止时间" 
 		 value-class="cellValue" 
 		 :value="formData.termination_time" 
-		 v-if="contractType != 0 && formData.termination_time"/>
+		 v-if="formData.termination_time"/>
 		<van-cell 
 		title-class="titleClass" 
 		title="开始计费时间" 
@@ -29,7 +29,7 @@
 		title="暂停计费时间" 
 		value-class="cellValue" 
 		:value="formData.billing_state_time_end" 
-		v-if="contractType != 0 && formData.billing_state_time_end"/>
+		v-if="formData.billing_state_time_end"/>
 	</div>
 </template>
 
