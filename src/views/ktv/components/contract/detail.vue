@@ -198,7 +198,8 @@ export default {
   mounted() {
     this.showPersonContract =
       String(this.$route.query.showPersonContract) === "true" ? true : false;
-  },
+    console.log(this.showPersonContract);
+	},
   data() {
     return {
       showPersonContract: false, // 是否展示审批流
