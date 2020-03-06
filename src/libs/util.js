@@ -164,7 +164,7 @@ export const getDay = (date) => {
 	return results
 }
 
-export const getDayTime = (date) => {
+export const getDayTime = (date, isTomorrow) => {
 	var results = ''
 	var date = date || new Date()
 	var year = date.getFullYear()
@@ -173,6 +173,9 @@ export const getDayTime = (date) => {
 	mount = mount > 9 ? mount : '0' + mount
 	day = day > 9 ? day : '0' + day
 	results = year + '-' + mount + '-' + day + ' 00:00:00'
+	if(isTomorrow){
+	results = year + '-' + mount + '-' + day + ' 23:59:59'
+	}
 	return results
 }
 
