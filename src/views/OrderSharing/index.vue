@@ -94,7 +94,9 @@ export default {
       screen: false,
       ktv_name: "",
       params: {
-        date: getDayTime(new Date())
+        pay_time_start: getDayTime(new Date()),
+        pay_time_end: getDayTime(new Date(), 1),
+        user_id: this.$store.state.user.user_id
       },
       popupValue: {
         deal_status: 0,
@@ -202,7 +204,9 @@ export default {
     initialValue() {
       this.ktv_name = "";
       this.params = {
-        date: getDayTime(new Date())
+        pay_time_start: getDayTime(new Date()),
+        pay_time_end: getDayTime(new Date(), 1),
+        user_id: this.$store.state.user.user_id
       };
       this.searchValue = {
         deal_status: 0,
@@ -228,18 +232,21 @@ export default {
         this.dateValue[0] === this.dateValue[1]
       ) {
         this.params = {
-          date: getDayTime(new Date()),
+          pay_time_start: getDayTime(new Date()),
+          pay_time_end: getDayTime(new Date(), 1),
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
-          payment_platform: this.searchValue.pay_way
+          payment_platform: this.searchValue.pay_way,
+          user_id: this.$store.state.user.user_id
         };
       } else {
         this.params = {
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
           payment_platform: this.searchValue.pay_way,
-          pay_time_start: this.dateValue[0],
-          pay_time_end: this.dateValue[1]
+          pay_time_start: this.dateValue[0] + " 00:00:00",
+          pay_time_end: this.dateValue[1] + " 23:59:59",
+          user_id: this.$store.state.user.user_id
         };
       }
       this.handleObj(this.params);
