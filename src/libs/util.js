@@ -365,3 +365,25 @@ export const validPlatform = (type, isValidCode = false) => {
 	return data;
 
 }
+
+/* 
+ 数据扁平化；
+ */
+export const Delayering = (data) => {
+	let result = {};
+	
+	function goo(data){
+		Object.keys(data).forEach(item => {
+			if(typeof data[item] == 'object' && data[item] != null){
+				goo(data[item])
+			}else{
+				result[item] = data[item];
+			}
+		})
+	}
+	
+	goo(data);
+	
+	return result;
+	
+}

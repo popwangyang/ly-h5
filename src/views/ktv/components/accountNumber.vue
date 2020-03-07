@@ -2,7 +2,7 @@
 	<div class="accountNumberBox">
 		<ContentLoad
 		:getInfo="getData"
-		emptyText="暂无账号信息"
+		emptyText="尚未创建账号，请至PC端处理"
 		>
 			<div class="divider"></div>
 			<van-cell title="账号ID" :value="formData.id"/>

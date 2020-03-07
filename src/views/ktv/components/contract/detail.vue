@@ -12,7 +12,7 @@
       <van-cell
       	title="合同终止日期" 
       	value-class="cellValue"
-      	v-if="formData.end_date"
+      	v-if="formData.end_date && formData.state == 4"
       	:value="formData.end_date" />
       <van-cell 
       	title="合同编号" 
@@ -47,7 +47,7 @@
       <van-cell
           title="支付方式"
           value-class="cellValue"
-      	v-if="formData.pay_method"
+      	  v-if="formData.pay_method"
           :value="formData.pay_method | filterPayMethod"/>
       <van-cell
           title="代垫方"
@@ -105,6 +105,7 @@ import ContentLoad from "@/components/contentLoad";
 import cellImage from "@/components/cellForm/cellImage";
 import { cacheMixins } from "@/libs/mixins";
 import { getContractDetail } from "@/api/ktv";
+import { Delayering } from '@/libs/util';
 export default {
   name: "contractDetail",
   mixins: [cacheMixins],
@@ -147,10 +148,10 @@ export default {
       let result = null;
       switch (state) {
         case 1:
-          result = "甲方一次性支付";
+          result = "乙方先行垫付";
           break;
         default:
-          result = "乙方先行垫付";
+          result = "甲方一次性支付";
           break;
       }
       return result;
@@ -230,7 +231,7 @@ export default {
 			  this.$store.commit('setContractDetail', res.data);
 			  let data = res.data;
 			  this.data = data;
-			  this.formData = data.contract;
+			  this.formData = Delayering(data);
 			  this.formData.billingMethod = data.billing_method;
 			  this.formData.latest_payment_date = data.latest_payment_date;
 			  this.formData.replies = JSON.parse(data.replies); //确认函

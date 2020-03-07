@@ -117,8 +117,8 @@ export default {
       this.show = false;
       this.params = {
         ktv: this.$store.state.ktv.ktvID,
-        type: this.searchValue.contract_type,
-        state: this.searchValue.contract_statue
+        type: this.searchValue.contract_type == 0 ? "":this.searchValue.contract_type,
+        state: this.searchValue.contract_statue == 0 ? "":this.searchValue.contract_statue
       };
       this.$nextTick(() => {
         this.$refs.pageList.onReload();

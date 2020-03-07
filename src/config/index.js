@@ -44,12 +44,12 @@ export default {
 				},
 				{
 					id: 1,
-					text: '已生效',
+					text: '合同创建中',
 					isSelected: false
 				},
 				{
 					id: 2,
-					text: '创建中',
+					text: '合同中',
 					isSelected: false
 				},
 				{
