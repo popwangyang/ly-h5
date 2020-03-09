@@ -1,5 +1,14 @@
 import axios from '@/libs/api.request'
 
+// 实时获取消息
+export const socket = (params) => {
+  return axios.request({
+    url: '/copyright/rbac/ws-token',
+    method: 'get',
+    params
+  })
+}
+
 // 未读数量
 export const unRead = () => {
   return axios.request({

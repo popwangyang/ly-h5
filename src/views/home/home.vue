@@ -35,6 +35,7 @@ export default {
   },
   watch: {
     $route(newVal) {
+      if (newVal.name === "personalCenter") this.getUnRead();
       document.title = newVal.meta.title;
     }
   },
@@ -47,10 +48,6 @@ export default {
     }
   },
   created() {
-    this.getUnRead();
-    this.timer = setInterval(() => {
-      this.getUnRead();
-    }, 20000);
     this.$store.commit("SET_THEME", this.$store.state.user.usertype);
   },
   mounted() {
