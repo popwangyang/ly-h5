@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="contentBox" ref="scroll">
-      <PageList :params="params" :getData="getContractList" noListText="暂无创建合同信息" ref="pageList">
+      <PageList :params="params" :getData="getContractList" noListText="暂无合同信息" ref="pageList">
         <template v-slot:default="slotProps">
           <ContractListItem v-for="(item, index) in slotProps.dataList" :data="item" :key="index" />
         </template>
@@ -118,7 +118,8 @@ export default {
       this.params = {
         ktv: this.$store.state.ktv.ktvID,
         type: this.searchValue.contract_type == 0 ? "":this.searchValue.contract_type,
-        state: this.searchValue.contract_statue == 0 ? "":this.searchValue.contract_statue
+        state: this.searchValue.contract_statue == 0 ? "":this.searchValue.contract_statue,
+				approve_state: this.searchValue.approval_statue == 0 ? "":this.searchValue.approval_statue
       };
       this.$nextTick(() => {
         this.$refs.pageList.onReload();

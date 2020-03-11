@@ -74,11 +74,18 @@ export const getContractList = (params) => {
 		  params,
 		  method: 'get'
 		}).then(res => {
+			let priorityArr = [2, 1, 3, 4]; // 根据合同状态排序，合同已生效排在第一位
+			res.data.results.sort((a, b) => {
+				if(priorityArr.indexOf(a.state) > priorityArr.indexOf(b.state)){
+					return 1;
+				}else{
+					return -1;
+				}
+			})
 			let results = {
 				total: res.data.count,
 				data: res.data.results
 			}
-			console.log(results)
 			resolve(results)
 		}).catch(err => {
 			reject(err)
