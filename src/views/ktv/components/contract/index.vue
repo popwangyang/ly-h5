@@ -69,7 +69,7 @@ export default {
       return this.$store.state.ktv.billingState == 1 ? true : false;
     },
     billingText() {
-      return this.$store.state.ktv.billingState == 1 ? "停止计费" : "开始计费";
+      return this.$store.state.ktv.billingState == 1 ? "开始计费" : "停止计费";
     }
   },
   data() {
