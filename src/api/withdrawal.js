@@ -1,86 +1,49 @@
 import axios from '@/libs/api.request'
 
-// 获取提现记录列表;
+// 提现记录
 export const getlist = (params) => {
-	// return axios.request({
-	//   url: `/copyright/rbac/company-brands`,
-	//   params,
-	//   method: 'get'
-	// })
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve({
-				results: [{
-						time: '12月11日 11:00',
-						stat: 0,
-						money: 100,
-						nowMoney: 96,
-						payRate: 0.68,
-						poundage: 5
-					},
-					{
-						time: '12月12日 12:00',
-						stat: 1,
-						money: 130,
-						nowMoney: 96,
-						payRate: 0.58,
-						poundage: 5
-					},
-					{
-						time: '12月11日 11:00',
-						stat: 0,
-						money: 20,
-						nowMoney: 96,
-						payRate: 0.48,
-						poundage: 5
-					},
-					{
-						time: '12月13日 11:00',
-						stat: 1,
-						money: 100,
-						nowMoney: 96,
-						payRate: 0.68,
-						poundage: 5
-					},
-					{
-						time: '12月14日 11:00',
-						stat: 1,
-						money: 100,
-						nowMoney: 96,
-						payRate: 0.78,
-						poundage: 5
-					},
-					{
-						time: '12月15日 11:00',
-						stat: 0,
-						money: 150,
-						nowMoney: 644,
-						payRate: 0.48,
-						poundage: 5
-					},
-				],
-				total: 40
-			})
-		}, 1000)
-	})
+  return axios.request({
+    url: `/order/withdrawal-record`,
+    params,
+    method: 'get'
+  }).then(res => {
+    return new Promise((resolve) => {
+      resolve({
+        data: res.data.results,
+        total: res.data.count
+      })
+    })
+  })
 }
-// 获取提现反馈;
-export const getDetail = (params) => {
-	// return axios.request({
-	//   url: `/copyright/rbac/company-brands`,
-	//   params,
-	//   method: 'get'
-	// })
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve({
-				results: {
-					bank: '工商银行(9386)',
-					inputnum: 8000,
-					poundange: 2,
-					toAccount: 7998
-				}
-			})
-		}, 1000)
-	})
+
+// 【提现】提现确认/取消
+export const withdrawalRecord = (id, status) => {
+  return axios.request({
+    url: `/order/withdrawal-record/${id}`,
+    params: {
+      status
+    },
+    method: 'get'
+  })
+}
+
+// 第三方平台设置查询
+export const getPayment_channel_rate = () => {
+  return axios.request({
+    url: '/ktv/place/third-party-platform',
+    params: {},
+    method: 'get'
+  })
+}
+
+// 提现确认接口
+export const withdrawalApi = (amount, user_id) => {
+  return axios.request({
+    url: `/order/withdrawal-record`,
+    data: {
+      amount,
+      user_id
+    },
+    method: 'post'
+  })
 }

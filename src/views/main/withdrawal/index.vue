@@ -7,8 +7,9 @@
         label-width="25px"
         input-align="left"
         clearable
-        type="number"
+        type="digit"
         v-model="inputnum"
+        @input="inputchange"
         label="￥"
         placeholder="请输入提现金额"
       />
@@ -16,7 +17,7 @@
         <template slot="title">
           <div class="canWithdrawal">
             <span>可提现</span>
-            <span>￥{{num|toFixed2}}，</span>
+            <span>￥{{withdrawalMoney|toFixed2}}，</span>
             <span class="popupBoxConfirm" @click="withdrawal(num)">全部提现</span>
           </div>
         </template>
@@ -28,17 +29,19 @@
         <template slot="title">
           <div class="bankinfo">
             <span class="title">到账银行卡</span>
-            <span class="bankName">{{bank}}</span>
+            <span
+              class="bankName"
+            >{{financialObj.bank}}({{String(financialObj.cardNumber).slice(-4)}})</span>
             <span class="content">具体到账时间以银行为主</span>
           </div>
         </template>
         <template>
-          <span class="bankUserName">{{name|desensitization}}</span>
+          <span class="bankUserName">{{financialObj.name|desensitization}}</span>
         </template>
       </van-cell>
     </div>
     <van-cell class="item-common" title="提现手续费" :value="poundange|toFixed2|changeMoney" />
-    <van-cell class="item-common highLightFont" :value="toAccount|changeMoney" size>
+    <van-cell class="item-common highLightFont" :value="withdrawalMoney|changeMoney" size>
       <template slot="title">
         <span class="inMoney">实际到账金额</span>
         <van-icon @click="showHelp" class="actualAccountNum" name="question-o" />
@@ -49,21 +52,49 @@
 </template>
 
 <script>
+import { withdrawalApi } from "@/api/withdrawal";
 export default {
   data() {
     return {
       inputnum: null, //提现金额
       num: 0, // 可提现金额
-      name: "王泽泽", // 操作姓名
-      poundange: 6, // 手续费
-      toAccount: 6995, // 实际到账
-      bank: "工商银行(9398)" // 银行
+      poundange: 0 // 手续费
     };
   },
+  computed: {
+    // 用户Id
+    user_id() {
+      return this.$store.state.user.user_id;
+    },
+    // 可提现
+    withdrawalMoney() {
+      return this.$store.state.user.withdrawalValue;
+    },
+    financialObj() {
+      return this.$store.state.user.financialObj;
+    }
+  },
+  mounted() {
+    console.log(this.financialObj);
+  },
   methods: {
+    // 输入变化
+    inputchange(val) {
+      if (val > this.withdrawalMoney) {
+        this.$toast.fail({
+          duration: 2500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "提现金额超限"
+        });
+        return true;
+      }
+    },
     // 全部提现
-    withdrawal(val) {},
-
+    withdrawal() {
+      this.inputnum = this.withdrawalMoney;
+    },
     showHelp() {
       this.$dialog.alert({
         message:
@@ -73,7 +104,34 @@ export default {
     },
 
     submit() {
-      this.$router.push({ path: "/withdrawalResult" });
+      if (!this.inputnum) {
+        this.$toast.fail({
+          duration: 2500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "提现金额不能为0"
+        });
+        return;
+      }
+      if (this.inputnum > this.withdrawalMoney) {
+        this.$toast.fail({
+          duration: 2500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "提现金额超限"
+        });
+        return;
+      }
+      withdrawalApi(Number(this.inputnum) * 100, this.user_id).then(res => {
+        console.log("创建结果");
+        console.log(res);
+        // this.createModal = true;
+        // console.log(res);
+        // this.id = res.id;
+      });
+      // this.$router.push({ path: "/withdrawalResult" });
     }
   }
 };

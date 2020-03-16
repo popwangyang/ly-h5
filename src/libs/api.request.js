@@ -20,7 +20,7 @@ if (url.indexOf('info.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.test
   socketUrl = 'wkceshi.bjywkd.com'
 } else {
-  baseUrl = config.baseUrl.test
+  baseUrl = config.baseUrl.dev
   socketUrl = 'wkceshi.bjywkd.com'
 }
 

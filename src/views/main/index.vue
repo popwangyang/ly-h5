@@ -148,7 +148,6 @@ export default {
       balance: 0, // 账户余额
       totalMoney: 0, // 累计分成
       lastMonthMoney: "0.00", // 上月分成
-      withdrawalMoney: 0, // 可提现
       chartone: "chartone", // 图表id
       chartData: null, // 图表数据
       dateValue: [LDate, getDay(new Date())],
@@ -171,6 +170,18 @@ export default {
     };
   },
   computed: {
+    // 账户状态
+    financialState() {
+      return this.$store.state.user.financialState;
+    },
+    // 允许提现
+    allow_withdraw() {
+      return this.$store.state.user.allow_withdraw;
+    },
+    // 可提现
+    withdrawalMoney() {
+      return this.$store.state.user.withdrawalValue;
+    },
     // 用户类型
     userType() {
       if (
@@ -407,6 +418,27 @@ export default {
 
     // 提现确认
     enterWithdrawal() {
+      if (!this.allow_withdraw) {
+        this.$toast.fail({
+          duration: 2500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "您的账户已冻结，请尽快联系商务人员处理。"
+        });
+        return;
+      }
+      if (!this.financialState) {
+        this.$toast.fail({
+          duration: 2500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "暂未绑定银行账户信息，请尽快联系商务人员完成绑定。"
+        });
+        return;
+      }
+
       this.routerGo("withdrawal");
     },
 

@@ -19,6 +19,7 @@
 </template>
  
  <script>
+import { getDay, getDayTime } from "@/libs/util";
 import PageList from "@/components/pageList";
 import withdrawalDetailItem from "@/components/listItems/withdrawalDetailItem";
 import datePick from "@/components/datePick";
@@ -27,9 +28,11 @@ export default {
   data() {
     return {
       getlist: getlist,
-      dateValue: ["2019-09-09", "2019-09-09"],
+      dateValue: [],
       params: {
-        date: []
+        time_start: getDayTime(new Date()),
+        time_end: getDayTime(new Date(), 1),
+        user_id: this.user_id
       }
     };
   },
@@ -39,11 +42,20 @@ export default {
     withdrawalDetailItem,
     datePick
   },
+  computed: {
+    // 用户Id
+    user_id() {
+      return this.$store.state.user.user_id;
+    }
+  },
   mounted() {},
   methods: {
+    // 获取时间
     returnBack(val) {
       this.params = {
-        date: this.dateValue
+        time_start: this.dateValue[0] + " 00:00:00",
+        time_end: this.dateValue[1] + " 23:59:59",
+        user_id: this.user_id
       };
       this.$nextTick(() => {
         this.$refs.pagelist.pageStatues = 0;
@@ -51,6 +63,8 @@ export default {
         this.$refs.pagelist.handlerData();
       });
     },
+
+    // 说明
     showHelp() {
       this.$dialog.alert({
         message:

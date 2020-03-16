@@ -3,22 +3,29 @@
     <van-collapse-item v-for="(item, index) in dataList" :key="index">
       <span class="flx" slot="title">
         <div class="flex-wrapper">
-          <span>{{item.time}}</span>
-          <span>{{item.stat| status}}</span>
+          <span v-if="item.status_display === '已申请'" style="color: #353535;">{{item.status_display}}</span>
+          <span v-if="item.status_display === '处理中'" style="color: #FFB04E;">{{item.status_display}}</span>
+          <span v-if="item.status_display === '完成'" style="color: #01CCA3;">{{item.status_display}}</span>
+          <span v-if="item.status_display === '失效'" style="color: #EE2B30;">{{item.status_display}}</span>
+          <span v-if="item.status_display === '取消'" style="color: #888888;">{{item.status_display}}</span>
+          <span class="create-time">{{item.create_time}}</span>
         </div>
         <div class="flex-wrapper flex-add or">
-          <span>￥{{item.money|toFixed2}}</span>
-          <span>实际到账：￥{{item.nowMoney|toFixed2}}</span>
+          <span>￥{{item.real_amount_display|toFixed2}}</span>
+          <span>
+            <span class="real_amount">实际到账：</span>
+            <span style="color: #E97557;">￥{{item.real_amount_display|toFixed2}}</span>
+          </span>
         </div>
       </span>
-      <span class="flx">
+      <span class="flx bggrey">
         <div class="flex-wrapper">
           <span>支付通道费率</span>
           <span>提现手续费</span>
         </div>
         <div class="flex-wrapper flex-add tr">
-          <span>{{item.payRate || 0}}%</span>
-          <span>￥{{item.poundage || 0}}</span>
+          <span class="color444">{{payrate || 0}}%</span>
+          <span class="color444">￥{{item.user_fee_display || 0}}</span>
         </div>
       </span>
     </van-collapse-item>
@@ -26,10 +33,12 @@
 </template>
 
 <script>
+import { getPayment_channel_rate } from "@/api/withdrawal.js";
 export default {
   props: ["dataList"],
   data() {
     return {
+      payrate: "",
       activeNames: []
     };
   },
@@ -51,12 +60,45 @@ export default {
     }
   },
   created() {},
-  methods: {},
+  methods: {
+    // 通道费率
+    getPayment_channel_rateApi() {
+      getPayment_channel_rate().then(res => {
+        if (Array.isArray(res.data.results) && res.data.results.length) {
+          this.payrate = res.data.results[0].payment_channel_rate;
+        }
+      });
+    }
+  },
   computed: {},
-  mounted() {}
+  mounted() {
+    this.getPayment_channel_rateApi();
+  }
 };
 </script>
-<style lang='scss' scoped>
+<style scoped>
+.create-time {
+  font-size: 10px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  line-height: 23px;
+}
+.color444 {
+  color: #444444;
+}
+.real_amount {
+  height: 20px;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  line-height: 20px;
+}
+.bggrey {
+  background-color: #f7f6f9;
+  padding: 18px 9px;
+}
 .flx {
   display: flex;
 }

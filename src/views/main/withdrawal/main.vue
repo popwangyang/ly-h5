@@ -86,11 +86,29 @@ export default {
       showData: true, // 展示数据
       balance: 0, // 账户余额
       totalMoney: 0, // 累计分成
-      lastMonthMoney: "0.00", // 上月分成
-      withdrawalMoney: 0 // 可提现
+      lastMonthMoney: "0.00" // 上月分成
     };
   },
   computed: {
+    // 可提现
+    withdrawalMoney() {
+      return this.$store.state.user.withdrawalValue;
+    },
+    financialObj() {
+      return this.$store.state.user.financialObj;
+    },
+    // 账户状态
+    financialState() {
+      return this.$store.state.user.financialState;
+    },
+    // 允许提现
+    allow_withdraw() {
+      return this.$store.state.user.allow_withdraw;
+    },
+    // 可提现金额
+    withdrawalValue() {
+      return this.$store.state.user.withdrawalValue;
+    },
     // 用户类型
     userType() {
       if (
@@ -116,6 +134,7 @@ export default {
     // 初始化
     initial() {
       this.getOrderShareTotalAmount();
+      this.getUserAmount();
       this.getMonthRoyalty();
     },
 
