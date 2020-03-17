@@ -92,9 +92,6 @@ export default {
   computed: {
     // 可提现
     withdrawalMoney() {
-      console.log(1);
-      console.log(this.$store.state.user);
-
       return this.$store.state.user.withdrawalValue;
     },
     financialObj() {
