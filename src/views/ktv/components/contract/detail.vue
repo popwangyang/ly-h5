@@ -5,7 +5,7 @@
 			<van-cell title="合同状态" value-class="cellValue" :value="formData.state | filterState" />
 			<van-cell title="合同终止日期" value-class="cellValue" v-if="formData.end_date && formData.state == 4" :value="formData.end_date" />
 			<van-cell title="合同编号" value-class="cellValue" :value="formData.number" />
-			<van-cell title="合同起始日期" value-class="cellValue" :value="formData.begin_date" />
+			<van-cell title="合同起始日期" value-class="cellValue" v-if="formData.state != 4" :value="formData.begin_date" />
 			<van-cell title="是否分配给VOD设备商" value-class="cellValue" :value="formData.vod_participation | filterVodParticipation" />
 			<expensesDetails v-if="data.set_top_box_purchase_upgrade_cost" :isPerson="showPersonContract" :data="data"></expensesDetails>
 			<div class="divider"></div>

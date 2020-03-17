@@ -5,7 +5,8 @@ export default [
 		path: '/searchPage',
 		name: 'searchPage',
 		meta:{
-			title: '搜索'
+			title: '搜索',
+			cacheTos:['KTVDetail']
 		},
 		component: searchPage
 	},

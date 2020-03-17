@@ -5,8 +5,8 @@ import axios from '@/libs/api.request'
 // 获取ktv列表;
 export const getKTVList = (sendData) => {
 	var params = {
-		page: sendData.page_index,
-		page_size: sendData.page_size,
+		p_index: sendData.page_index,
+		p_size: sendData.page_size,
 		name: sendData.name ? sendData.name:''
 	}
 	return new Promise((resolve, reject) => {
@@ -29,13 +29,18 @@ export const getKTVList = (sendData) => {
 
 // 获取ktv详情
 export const getKtvDetail = (id) => {
-	return new Promise((resolve, reject) => {
-		ktvDatail(id).then(ktvRes => {
-			agentName(ktvRes.data.agent_id).then(agentRes => {
-				ktvRes.data.agent_name = agentRes.data.name;
-				resolve(ktvRes);
-			})
-		})
+	// return new Promise((resolve, reject) => {
+	// 	ktvDatail(id).then(ktvRes => {
+	// 		// agentName(ktvRes.data.agent_id).then(agentRes => {
+	// 		// 	ktvRes.data.agent_name = agentRes.data.name;
+	// 		// 	resolve(ktvRes);
+	// 		// })
+	// 		resolve(ktvRes);
+	// 	})
+	// })
+	return axios.request({
+	  url: `/ktv/place/ktv-upgrade/${id}`,
+	  method: 'get'
 	})
 }
 
