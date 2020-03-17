@@ -33,10 +33,10 @@
 				<span class="detailTitle">
 					营业信息
 				</span>
-				<van-cell>
+				<van-cell v-if="detailData.opening_hours">
 					<span slot="title" class="YYTitle">开业时间</span>
 					<span slot='label' class="YYLabel">
-						2018年12月24日
+						{{detailData.opening_hours}}
 					</span>
 				</van-cell>
 				<van-cell>
@@ -45,10 +45,10 @@
 						{{businessTime}}
 					</span>
 				</van-cell>
-				<van-cell>
+				<van-cell v-if="detailData.vod_ktv_id">
 					<span slot="title" class="YYTitle">设备信息</span>
 					<span slot='label' class="YYLabel">
-						{{detailData.vod_brand}}
+						{{detailData.vod_ktv_id}}, {{detailData.vod_brand}}
 					</span>
 				</van-cell>
 				<van-cell>
@@ -99,12 +99,8 @@
 				}else{
 					time = getTime(this.detailData.business_periods);
 				}
-				if(this.detailData.business_workdays.length != 7){
-					let arr = this.detailData.business_workdays.split('');
-					day = getWeeks(arr);
-				}else{
-					day = '周一~周日'
-				}
+				let arr = this.detailData.business_workdays.split('');
+				day = getWeeks(arr);
 				return day+" "+time;
 			}
 		},

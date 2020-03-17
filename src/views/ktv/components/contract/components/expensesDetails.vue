@@ -2,7 +2,7 @@
   <div class="expensesDetailsBox">
     <div class="header">费用明细</div>
     <div class="content">
-      <van-grid :column-num="2">
+      <van-grid :column-num="2" style="border-left: 0.5px solid #ebedf0;">
         <van-grid-item class="title">项目</van-grid-item>
         <van-grid-item class="title">费用（元/年）</van-grid-item>
 
@@ -66,7 +66,6 @@ export default {
     .title {
       color: #000000;
       font-weight: bold;
-      background: yellow;
     }
     .tableItem {
       text-align: center;

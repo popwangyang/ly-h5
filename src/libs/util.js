@@ -374,10 +374,23 @@ export const validPlatform = (type, isValidCode = false) => {
  */
 export const Delayering = (data) => {
 	let result = {};
+	let getDataType = (o) => {
+		if(o === null){
+			return null;
+		}else if(typeof o === 'object'){
+			if(typeof o.length === 'number'){
+				return 'array';
+			}else{
+				return 'object';
+			}
+		}else{
+			return 'other type'
+		}
+	}
 	
 	function goo(data){
 		Object.keys(data).forEach(item => {
-			if(typeof data[item] == 'object' && data[item] != null){
+			if(getDataType(data[item]) === 'object'){
 				goo(data[item])
 			}else{
 				result[item] = data[item];

@@ -10,7 +10,7 @@
     >
 	 <div slot="action" @click="onCancel">取消</div>
 	</van-search>
-    <div class="content" v-if="pageStatues == 1">
+    <div class="content" v-if="pageStatues == 1"  ref='scroll'>
       <van-list v-model="loading" :finished="finished" :finished-text="finishedText" @load="onLoad">
         <ItemWidget v-for="(item, index) in results" :key="index" :data="item" />
       </van-list>
@@ -25,10 +25,11 @@
 import searchConfig from "@/config/searchConfig";
 import Loading from "@/components/loading/loading";
 import { debounce } from "@/libs/util";
-
+import { cacheMixins } from '@/libs/mixins'
 import Vue from "vue";
 export default {
   name: 'searchPage',
+	mixins: [ cacheMixins ],
   components: {
     Loading
   },
