@@ -141,8 +141,7 @@ export default {
 
                   if (
                     _datas &&
-                    _datas.settlement &&
-                    _datas.settlement.withdrawable_balance
+                    _datas.settlement
                   ) {
                     commit(
                       "set_withdrawalValue",

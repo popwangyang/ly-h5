@@ -7,7 +7,7 @@
         label-width="25px"
         input-align="left"
         clearable
-        type="digit"
+        type="number"
         v-model="inputnum"
         @input="inputchange"
         label="￥"
@@ -23,7 +23,38 @@
         </template>
       </van-cell>
     </div>
-
+    <van-overlay :show="showLoading">
+      <div class="popwrappers">
+        <van-loading size="24px" vertical>加载中...</van-loading>
+      </div>
+    </van-overlay>
+    <van-dialog
+      v-model="createModal"
+      @confirm="confirm"
+      @cancel="cancel"
+      title="确定提交提现申请"
+      show-cancel-button
+    >
+      <div class="popcreate">
+        <van-cell-group>
+          <van-field
+            class="popcreatefield"
+            input-align="right"
+            label="提现金额"
+            :value="inputnum? Number(inputnum).toFixed(2) + '元': 0"
+            readonly
+          />
+          <van-field class="popcreatefield" input-align="right" label="手续费" value="0元" readonly />
+          <van-field
+            class="popcreatefield"
+            input-align="right"
+            label="实际到账金额"
+            :value="inputnum? Number(inputnum).toFixed(2) + '元': 0"
+            readonly
+          />
+        </van-cell-group>
+      </div>
+    </van-dialog>
     <div class="bankInfo-wrapper">
       <van-cell>
         <template slot="title">
@@ -52,10 +83,17 @@
 </template>
 
 <script>
-import { withdrawalApi } from "@/api/withdrawal";
+import { withdrawalApi, withdrawalRecord } from "@/api/withdrawal";
+
+import { getPersonMidInfo } from "@/api/user";
 export default {
   data() {
     return {
+      showLoading: false, // 加载中
+      waited: false, // 等待
+      resultStatus: false, // 结果状态
+      createModal: false, // 确认取消弹窗
+      id: null, // 提现id
       inputnum: null, //提现金额
       num: 0, // 可提现金额
       poundange: 0 // 手续费
@@ -75,7 +113,19 @@ export default {
     }
   },
   mounted() {
-    console.log(this.financialObj);
+    getPersonMidInfo().then(resa => {
+      if (resa.status >= 200 && resa.status < 400 && resa.data) {
+        if (resa.data.belong_participant) {
+          let _datas = resa.data.belong_participant;
+          if (_datas && _datas.settlement) {
+            this.$store.commit(
+              "set_withdrawalValue",
+              _datas.settlement.withdrawable_balance
+            );
+          }
+        }
+      }
+    });
   },
   methods: {
     // 输入变化
@@ -95,6 +145,45 @@ export default {
     withdrawal() {
       this.inputnum = this.withdrawalMoney;
     },
+    // 确认
+    confirm() {
+      withdrawalRecord(this.id, "pending").then(res => {
+        this.waited = true;
+        this.createModal = false;
+        if (res.status === "pending") {
+          this.$router.push({
+            path: "/withdrawalResult",
+            query: {
+              f: true,
+              bank: `${this.financialObj.bank}(${String(
+                this.financialObj.cardNumber
+              ).slice(-4)})`,
+              withdrawalMoney: this.withdrawalMoney
+            }
+          });
+          return;
+        }
+
+        this.$router.push({
+          path: "/withdrawalResult",
+          params: {
+            f: false
+          }
+        });
+      });
+    },
+    // 取消
+    cancel() {
+      withdrawalRecord(this.id, "canceled").then(res => {
+        this.waited = true;
+        this.createModal = false;
+        if (res.status === "canceled") {
+          this.$toast("已取消");
+          return;
+        }
+      });
+    },
+    //说明
     showHelp() {
       this.$dialog.alert({
         message:
@@ -102,7 +191,7 @@ export default {
         confirmButtonText: "知道了"
       });
     },
-
+    // 提交
     submit() {
       if (!this.inputnum) {
         this.$toast.fail({
@@ -124,14 +213,19 @@ export default {
         });
         return;
       }
-      withdrawalApi(Number(this.inputnum) * 100, this.user_id).then(res => {
-        console.log("创建结果");
-        console.log(res);
-        // this.createModal = true;
-        // console.log(res);
-        // this.id = res.id;
-      });
-      // this.$router.push({ path: "/withdrawalResult" });
+      this.showLoading = true;
+      withdrawalApi(Number(this.inputnum) * 100, this.user_id)
+        .then(res => {
+          this.id = res.data.id;
+          this.showLoading = false;
+          this.createModal = true;
+        })
+        .catch(e => {
+          if (e.status === 400) {
+            this.$toast(e.data.ping);
+            this.showLoading = false;
+          }
+        });
     }
   }
 };
@@ -262,5 +356,24 @@ export default {
 .withdrawalConfirm .confirm {
   height: 48px;
   border-radius: 4px;
+}
+.popcreate {
+  padding: 10px 30px;
+}
+.popcreate [class*="van-hairline"]::after {
+  border: none !important;
+}
+.popcreate .van-cell:not(:last-child)::after {
+  border: none !important;
+}
+.popcreate .popcreatefield .van-field__body input {
+  color: #d7717b !important;
+}
+.popwrappers {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 }
 </style>

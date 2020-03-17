@@ -86,7 +86,7 @@
         </van-cell>
 
         <van-cell
-          v-if="showPersonalInfo === 2"
+          v-if="showPersonalInfo === 2 && isHasWithdrawal"
           class="b45 info-mid icon-wrapper"
           is-link
           to="withdrawalMain"
@@ -275,6 +275,9 @@ export default {
     }
   },
   computed: {
+    isHasWithdrawal() {
+      return this.$store.state.user.isHasWithdrawal;
+    },
     count() {
       return this.$store.state.app.unreadNum;
     },
