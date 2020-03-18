@@ -69,7 +69,8 @@ export default {
           name: "orderSharingDetail",
           query: {
             pk: this.data.id,
-            share_amount: this.data.share_amount
+            share_amount: this.data.share_amount,
+            isPlatform: this.userType === "employee" ? 1 : 0
           }
         });
         return;
