@@ -10,7 +10,7 @@
 			<expensesDetails v-if="data.set_top_box_purchase_upgrade_cost" :isPerson="showPersonContract" :data="data"></expensesDetails>
 			<div class="divider"></div>
 			<van-cell title="计费方式" value-class="cellValue" :value="formData.billingMethod | filterBillingMethod" />
-			<sweepCodeBillDetail :charging_duration="formData.charging_duration" v-if="formData.charging_duration && formData.charging_duration.length != 0"></sweepCodeBillDetail>
+			<sweepCodeBillDetail :charging_duration="formData.charging_duration" v-if="formData.charging_duration != null && formData.charging_duration.length != 0"></sweepCodeBillDetail>
 			<van-cell title="计费价格" value-class="cellValue" :value="formData.billingPrice" v-if="formData.billing_price" />
 			<van-cell title="扫码费用(综合技术服务费)" value-class="cellValue" v-if="formData.scan_code_payment != null" :value="formData.scan_code_payment | filterUnitB" />
 			<van-cell title="支付方式" value-class="cellValue" v-if="formData.pay_method" :value="formData.pay_method | filterPayMethod" />
@@ -188,7 +188,6 @@
 						this.formData.billingPrice = data.billing_method == 2 ?
 							`${data.billing_price}元/次/终端` :
 							`${data.billing_price}元`;
-							console.log(this.formData.charging_duration.length);
 						resolve(res);
 					}).catch(err => {
 						reject(err);
