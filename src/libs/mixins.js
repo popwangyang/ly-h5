@@ -13,7 +13,6 @@ export const cacheMixins = {
   },
   methods: {
     recordScrollPosition(e) {
-			console.log(e);
       this.$store.commit("SET_SCROLLTOP", {
         name: this.$route.name,
         scrollTop: e.target.scrollTop
