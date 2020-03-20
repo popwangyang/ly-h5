@@ -6,7 +6,7 @@
 			<van-cell title="合同终止日期" value-class="cellValue" v-if="formData.end_date && formData.state == 4" :value="formData.end_date" />
 			<van-cell title="合同编号" value-class="cellValue" :value="formData.number" />
 			<van-cell title="合同起始日期" value-class="cellValue" v-if="formData.state != 4" :value="formData.begin_date" />
-			<van-cell title="是否分配给VOD设备商" value-class="cellValue" :value="formData.vod_participation | filterVodParticipation" />
+			<van-cell title="是否分配给VOD设备商" value-class="cellValue" v-if="formData.vod_participation != null" :value="formData.vod_participation | filterVodParticipation" />
 			<expensesDetails v-if="data.set_top_box_purchase_upgrade_cost" :isPerson="showPersonContract" :data="data"></expensesDetails>
 			<div class="divider"></div>
 			<van-cell title="计费方式" value-class="cellValue" :value="formData.billingMethod | filterBillingMethod" />
@@ -19,8 +19,8 @@
 			<van-cell title="变更历史" is-link v-if="hasChangeHistory" @click="goHistory"></van-cell>
 			<div class="divider"></div>
 			<van-cell title="机构" value-class="cellValue" v-if="formData.mechanism_name" :value="formData.mechanism_name" />
-			<van-cell title="机构分成比例" value-class="cellValue" v-if="formData.proportion_of_mechanism != null" :value="formData.proportion_of_mechanism | filterUnitA" />
-			<van-cell title="场所分成比例" value-class="cellValue" v-if="formData.proportion_of_places != null" :value="formData.proportion_of_places | filterUnitA" />
+			<van-cell title="机构分成比例" value-class="cellValue" v-if="formData.proportion_of_mechanism != null || formData.proportion_of_mechanism!='0.00'" :value="formData.proportion_of_mechanism | filterUnitA" />
+			<van-cell title="场所分成比例" value-class="cellValue" v-if="formData.proportion_of_places != null || formData.proportion_of_places!='0.00'" :value="formData.proportion_of_places | filterUnitA" />
 			<div class="divider"></div>
 			<cell-image title="确认函" :dataList="formData.replies" v-if="formData.replies"></cell-image>
 			<cell-image title="合同附件" :dataList="formData.annex" v-if="formData.annex"></cell-image>

@@ -5,9 +5,9 @@
 		emptyText="尚未创建账号，请至PC端处理"
 		>
 			<div class="divider"></div>
-			<van-cell title="账号ID" :value="formData.id"/>
+			<van-cell title="账号ID" :value="formData.username"/>
 			<van-cell title="手机号" :value="formData.phone"/>
-			<van-cell title="邮箱地址" :value="formData.email"/>
+			<van-cell title="邮箱地址" v-if="formData.email && formData.email != null" :value="formData.email"/>
 			<van-cell title="创建日期" :value="formData.create_date"/>
 			<div class="divider"></div>
 			<van-cell title="状态">
@@ -49,7 +49,6 @@
 								this.formData[item] = res.data[item]
 							})
 						}
-						console.log(res, "pppppp")
 						resolve(res.data);
 					})
 				})
