@@ -18,11 +18,11 @@ export const login = ({
 
 // 获取用户类型(非登录状态)
 export const getUserType = (params) => {
-	return axios.request({
-	  url: `/cperm/users/user_type`,
-	  params,
-	  method: 'get',
-	})
+  return axios.request({
+    url: `/cperm/users/user_type`,
+    params,
+    method: 'get',
+  })
 }
 
 // 根据手机号或邮箱获取验证码
@@ -62,6 +62,14 @@ export const getPersonMidInfo = () => {
   })
 }
 
+// 获取平台user_id
+export const getEmployee_user_id = () => {
+  return axios.request({
+    url: '/cperm/platform',
+    method: 'get',
+  })
+}
+
 // 根据原始密码修改新密码；
 export const changePasswordapi = (username,
   password, old_password = null) => {
@@ -91,4 +99,3 @@ export const getVodPersonMidInfo = (id) => {
     method: 'get',
   })
 }
-

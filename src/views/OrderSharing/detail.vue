@@ -27,29 +27,36 @@ import ContentLoad from "@/components/contentLoad";
 export default {
   data() {
     return {
-      res: {},
-      date: ""
+      res: {} // 详情数据
     };
   },
   components: {
     ContentLoad
   },
   computed: {
+    // ID
     id() {
       return this.$route.query.pk;
     },
+
+    // 分成金额
     share_amount() {
       return this.$route.query.share_amount;
     },
+
+    // 是否为平台用户
     isPlatform() {
       return this.$route.query.isPlatform;
     }
   },
   methods: {
+    // 金额处理
     toFixed2(val) {
       if (val) return Number(val).toFixed(2);
       return 0;
     },
+
+    //获取数据
     getData() {
       return new Promise((resolve, reject) => {
         orderItem(this.id)

@@ -1,6 +1,7 @@
 import {
   login,
-  getPersonMidInfo
+  getPersonMidInfo,
+  getEmployee_user_id
 }
 from '@/api/user'
 
@@ -111,8 +112,13 @@ export default {
               if (res.data.data[0].belong_participant.participant_type === 'ktv') {
                 commit('setKTVId', res.data.data[0].belong_participant.ktv_id);
               }
+            } else {
+              getEmployee_user_id().then(resid => {
+                if (resid.data.participant_type === "platform") {
+                  commit('setUser_id', resid.data.unique_key);
+                }
+              })
             }
-
             getPersonMidInfo().then(resa => {
               if (resa.status >= 200 && resa.status < 400 && resa.data) {
                 // if (this.usertype === "employee") {
