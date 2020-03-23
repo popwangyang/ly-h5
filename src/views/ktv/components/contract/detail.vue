@@ -19,8 +19,8 @@
 			<van-cell title="变更历史" is-link v-if="hasChangeHistory" @click="goHistory"></van-cell>
 			<div class="divider"></div>
 			<van-cell title="机构" value-class="cellValue" v-if="formData.mechanism_name" :value="formData.mechanism_name" />
-			<van-cell title="机构分成比例" value-class="cellValue" v-if="formData.proportion_of_mechanism != null || formData.proportion_of_mechanism!='0.00'" :value="formData.proportion_of_mechanism | filterUnitA" />
-			<van-cell title="场所分成比例" value-class="cellValue" v-if="formData.proportion_of_places != null || formData.proportion_of_places!='0.00'" :value="formData.proportion_of_places | filterUnitA" />
+			<van-cell title="机构分成比例" value-class="cellValue" v-if="formData.proportion_of_mechanism != null && formData.proportion_of_mechanism!='0.00'" :value="formData.proportion_of_mechanism | filterUnitA" />
+			<van-cell title="场所分成比例" value-class="cellValue" v-if="formData.proportion_of_places != null && formData.proportion_of_places!='0.00'" :value="formData.proportion_of_places | filterUnitA" />
 			<div class="divider"></div>
 			<cell-image title="确认函" :dataList="formData.replies" v-if="formData.replies"></cell-image>
 			<cell-image title="合同附件" :dataList="formData.annex" v-if="formData.annex"></cell-image>
