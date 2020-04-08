@@ -7,7 +7,7 @@
     <div class="icon">
       <van-icon name="arrow-down" />
     </div>
-    <van-popup get-container="body" v-model="show" position="bottom" :style="{ height: '300px' }">
+    <van-popup get-container="body" v-model="show" position="bottom" :style="{ height: '300px', overflow: 'hidden' }">
       <div class="popupBox">
         <div class="van-hairline--top-bottom van-picker__toolbar" style="align-items: center;">
           <button class="van-picker__cancel" style="color: #999999;" @click="cancelBtn">取消</button>
@@ -119,12 +119,13 @@ export default {
 <style scoped="scoped" lang="less">
 .datePicker {
   display: flex;
+  height: 100%;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   background: rgba(255, 255, 255, 1);
-  border-radius: 15px;
-  border: 1px solid rgba(198, 203, 212, 1);
+  border-radius: 2px;
+  border: 1px solid #F3F5F7;
   padding: 2px 10px;
   .popupBox {
     display: flex;

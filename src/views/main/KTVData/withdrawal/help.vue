@@ -29,7 +29,7 @@ export default {
 </script>
  
  <style lang="scss" scoped>
-@import "../../../static/style/mixin.scss";
+@import "../../../../static/style/mixin.scss";
 .withdrawalhelp {
   background-color: #fff;
   min-height: 100%;

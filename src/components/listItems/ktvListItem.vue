@@ -1,9 +1,9 @@
 <template>
 	<van-cell value="营业中" is-link class="ktvListItem" @click="goDetail">
-		 <span slot="title" class="title">
+		 <div slot="title" class="title">
 			 <span class="name">{{data.ktv_name}}</span>
 			 <ktvTag :value="data.cate"></ktvTag>
-		 </span>
+		 </div>
 		 <span slot="label">
 			 <span>创建人: {{data.user_name}}</span>
 			 <span> {{data.create_date}}</span>
@@ -51,15 +51,18 @@
 <style scoped="scoped" lang="less">
 	.ktvListItem{
 		.title{
-			display: flex;
-			align-items: center;
+			vertical-align: middle !important;
 			.name{
-				display: block;
+				display: inline-block;
 				max-width: 160px;
 				overflow: hidden;
 				text-overflow:ellipsis;
 				white-space: nowrap;
 				margin-right: 10px;
+				color: #444444;
+				font-size: 14px;
+				font-weight:900;
+				font-family: Microsoft Yahei;
 			}
 		}
 		.value1{

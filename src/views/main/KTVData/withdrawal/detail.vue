@@ -95,7 +95,7 @@ export default {
         margin-top: -1px;
         width: 12px;
         height: 12px;
-        background: url("../../../static/img/help.png") no-repeat;
+        background: url("../../../../static/img/help.png") no-repeat;
         background-size: 100% 100%;
       }
     }

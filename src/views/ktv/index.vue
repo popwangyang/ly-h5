@@ -1,6 +1,7 @@
 <template>
 	<div class="ktvBox">
         <Search placeholder="请输入门店名称"></Search>
+		<FilterMenu/>
 	    <div class="content" ref='scroll'>
 			<PageList
 			:getData="getKTVList"
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+	import FilterMenu from './components/filter'
 	import PageList from '@/components/pageList'
     import Search from '@/components/search'
 	import ktvListItem from '@/components/listItems/ktvListItem'
@@ -30,7 +32,8 @@
 		components:{
 			PageList,
 			Search,
-			ktvListItem
+			ktvListItem,
+			FilterMenu
 		},
 		data(){
 			return{

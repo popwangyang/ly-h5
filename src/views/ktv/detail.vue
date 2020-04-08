@@ -221,6 +221,7 @@
 				font-family: PingFangSC-Semibold,PingFang SC;
 				font-weight: 600;
 				color: rgba(255,255,255,1);
+				margin-bottom: 8px;
 			}
 		}
 		.remark{
