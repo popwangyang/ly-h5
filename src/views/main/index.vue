@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<KTVData/>
-		<!-- <ManagementData/> -->
+		<!-- <KTVData/> -->
+		<ManagementData/>
 	</div>
 </template>
 

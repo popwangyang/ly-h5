@@ -74,6 +74,19 @@
 			}
 		},
 		methods: {
+			deletedItem(key, value){
+				let index = this.dataList.findIndex(item => {
+						console.log(item[key] , value);
+					if(item[key] == value){
+						return true;
+					}
+				});
+			    this.dataList.splice(index, 1);
+				this.total--;
+				if(this.total <= 0){
+					this.pageStatues = 2;
+				}
+			},
 			onReload(){
 				this.pageStatues = 0;
 				this.pIndex = 1;
@@ -88,8 +101,8 @@
 			onLoadMore() {
 				this.pIndex++;
 				let sendData = {
-					page_index: this.pIndex,
-					page_size: this.pSize,
+					p_index: this.pIndex,
+					p_size: this.pSize,
 				}
 				Object.assign(sendData, this.otherParams);
 				this.getData(sendData).then(res => {
@@ -103,8 +116,8 @@
 			},
 			handlerData() {
 				let sendData = {
-					page_index: this.pIndex,
-					page_size: this.pSize,
+					p_index: this.pIndex,
+					p_size: this.pSize,
 				}
 				if(this.otherParams){
 					Object.assign(sendData, this.otherParams);

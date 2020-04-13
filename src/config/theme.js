@@ -1,5 +1,5 @@
 export default {
-	themea: {
+	theme_platform: {
 		color: '#0082FF',
 		tabBottoms: [
 			{
@@ -28,7 +28,7 @@ export default {
 			}
 		]
 	},
-	themec: {
+	theme_ktv: {
 		color: '#0082FF',
 		tabBottoms: [
 			{
@@ -38,10 +38,16 @@ export default {
 				inactive: require('@/assets/bottomTabs/mainB.png')
 			},
 			{
-				text: '订单分成',
+				text: '分成明细',
 				path: '/OrderSharing',
 				active: require('@/assets/bottomTabs/OrderA.png'),
 				inactive: require('@/assets/bottomTabs/OrderB.png')
+			},
+			{
+				text: '开房套餐',
+				path: '/roomPackage',
+				active: require('@/assets/bottomTabs/roomA.png'),
+				inactive: require('@/assets/bottomTabs/roomB.png')
 			},
 			{
 				text: '卡券核销',
@@ -57,25 +63,31 @@ export default {
 			}
 		]
 	},
-	themeb: {
-		color: '#2ACCDD',
+	theme_ktv_clerk: {
+		color: '#0082FF',
 		tabBottoms: [
 			{
-				text: '账户数据',
-				path: '/main',
-				active: require('@/assets/bottomTabs/mainC.png'),
+				text: '订单管理',
+				path: '/OrderManagement',
+				active: require('@/assets/bottomTabs/mainA.png'),
 				inactive: require('@/assets/bottomTabs/mainB.png')
 			},
 			{
-				text: '订单分成',
-				path: '/OrderSharing',
-				active: require('@/assets/bottomTabs/OrderC.png'),
-				inactive: require('@/assets/bottomTabs/OrderB.png')
+				text: '开房套餐',
+				path: '/roomPackage',
+				active: require('@/assets/bottomTabs/roomA.png'),
+				inactive: require('@/assets/bottomTabs/roomB.png')
+			},
+			{
+				text: '卡券核销',
+				path: '/cardTicket',
+				active: require('@/assets/bottomTabs/cardTicketA.png'),
+				inactive: require('@/assets/bottomTabs/cardTicketB.png')
 			},
 			{
 				text: '个人中心',
 				path: '/personalCenter',
-				active: require('@/assets/bottomTabs/personC.png'),
+				active: require('@/assets/bottomTabs/personA.png'),
 				inactive: require('@/assets/bottomTabs/personB.png')
 			}
 		]

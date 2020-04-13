@@ -1,12 +1,34 @@
 <template>
 	<div class="selectedBox">
-		<span class="fileMenu">
-			<span>所在地</span>
+		<span class="fileMenu" @click="btnClick">
+			<span v-if="text">{{text}}</span>
+			<span style="color: gainsboro;" v-else>{{placeholder}}</span>
 		</span>
 	</div>
 </template>
 
 <script>
+	export default{
+		props:{
+		    text:{
+				type:String
+			},
+			placeholder:{
+				type:String,
+				required: true
+			}
+		},
+		data(){
+			return{
+				
+			}
+		},
+		methods:{
+			btnClick(){
+				this.$emit('btnClick');
+			}
+		}
+	}
 </script>
 
 <style scoped="scoped" lang="less">

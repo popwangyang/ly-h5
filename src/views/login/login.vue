@@ -117,8 +117,9 @@
 						className: 'loadClass',
 						message: '登录成功',
 						onClose: () => {
+							let path = this.$store.state.app.theme.tabBottoms[0].path;
 							this.$router.push({
-								name: 'mainPage'
+								path: path
 							})
 						}
 					})

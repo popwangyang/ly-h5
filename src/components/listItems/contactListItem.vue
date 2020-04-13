@@ -1,24 +1,28 @@
 <template>
   <div class="contractListItem">
     <span class="title">
-      <span>{{data.type == 1 ? '曲库服务合同':'技术综合服务协议'}}</span>
+      <span>{{data.type == 1 ? '曲库服务合同':'商户星盟'}}</span>
       <span style="color: #999999;">{{stateText}}</span>
     </span>
-    <van-cell is-link @click="goDetail(data, data.type)">
+    <van-cell  @click="goDetail(data, data.type)">
       <span slot="title">
         <span>合同编号：</span>
         <span>{{data.number}}</span>
       </span>
-      <span slot="label">
-        <span>{{data.begin_date}}</span>
-        <span>{{' '}}至{{' '}}</span>
-        <span>{{data.end_date}}</span>
+      <span slot="label" class="van_cell_label">
+			<div>
+				CDN开通状态：{{CDN}}
+			</div>
+			<div>
+				创建时间：{{data.create_date}}
+			</div>
+			<div v-if="showStatus">
+				审批状态：
+				<span class="statues1" v-if="data.approve_state == 1">审批中</span>
+				<span class="statues2" v-if="data.approve_state == 2">审批通过</span>
+				<span class="statues3" v-if="data.approve_state == 3">审批退回</span>
+			</div>
       </span>
-      <div v-if="showStatus">
-        <span class="statues1" v-if="data.approve_state == 1">审批中</span>
-        <span class="statues2" v-if="data.approve_state == 2">审批通过</span>
-        <span class="statues3" v-if="data.approve_state == 3">审批退回</span>
-      </div>
     </van-cell>
   </div>
 </template>
@@ -40,6 +44,9 @@ export default {
     }
   },
   computed: {
+	CDN(){
+		return this.data.cdn_state == 1 ? "已开通":"未开通";
+	},
     stateText() {
       let result = null;
       switch (this.data.state) {
@@ -96,6 +103,12 @@ export default {
     padding: 10px 16px;
     border-bottom: 1px solid #f6f6f6;
     font-size: 12px;
+  }
+  .van_cell_label{
+	  &>div{
+		  height: 24px;
+		  line-height: 24px;
+	  }
   }
   .statues1 {
     color: #ffb04e;

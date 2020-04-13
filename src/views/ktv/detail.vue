@@ -10,60 +10,90 @@
                     <ktvTag :value="detailData.cate"/>
 				</div>
 				<van-cell>
-					<span slot="title">联系人</span>
+					<span slot="title">VOD场所ID</span>
+					<span>
+						{{detailData.vod_ktv_id}}
+					</span>
+				</van-cell>
+				<van-cell>
+					<span slot="title">VOD品牌</span>
+					<span>
+						{{detailData.vod_brand}}
+					</span>
+				</van-cell>
+				<van-cell>
+					<span slot="title">所属代理商</span>
+					<span>
+						{{detailData.agent_name}}
+					</span>
+				</van-cell>
+				<van-cell>
+					<span slot="title">负责人</span>
 					<span>
 						{{detailData.contact_username}}
 					</span>
 				</van-cell>
 				<van-cell>
-					<span slot="title">手机号</span>
+					<span slot="title">联系电话</span>
 					<span>
 						{{detailData.contact_phone}}
 					</span>
 				</van-cell>
+				<div class="divider"></div>
 				<van-cell>
-					<span slot="title">经营地址</span>
+					<span slot="title">开业时间</span>
 					<span>
-						{{detailData.province}}
-						{{detailData.city}}
-						{{detailData.county}}
-						{{detailData.address}}
-					</span>
-				</van-cell>
-				<span class="detailTitle">
-					营业信息
-				</span>
-				<van-cell v-if="detailData.opening_hours">
-					<span slot="title" class="YYTitle">开业时间</span>
-					<span slot='label' class="YYLabel">
 						{{detailData.opening_hours}}
 					</span>
 				</van-cell>
 				<van-cell>
-					<span slot="title" class="YYTitle">营业时间</span>
-					<span slot='label' class="YYLabel">
-						{{businessTime}}
-					</span>
-				</van-cell>
-				<van-cell v-if="detailData.vod_ktv_id">
-					<span slot="title" class="YYTitle">设备信息</span>
-					<span slot='label' class="YYLabel">
-						{{detailData.vod_ktv_id}}, {{detailData.vod_brand}}
+					<span slot="title">营业状态</span>
+					<span>
+						{{detailData.business_state}}
 					</span>
 				</van-cell>
 				<van-cell>
-					<span slot="title" class="YYTitle">所属代理商</span>
-					<span slot='label' class="YYLabel">
-						{{detailData.agent_name}}
+					<span slot="title">允许退单时间</span>
+					<span>
+						20分钟
+					</span>
+				</van-cell>
+				<van-cell>
+					<span slot="title">实际包厢数</span>
+					<span>
+						{{detailData.room_num}}
+					</span>
+				</van-cell>
+				<van-cell value-class="YYLabel">
+					<span slot="title">营业时间</span>
+					<span>
+						{{businessTime}}
 					</span>
 				</van-cell>
 				<div class="divider"></div>
-				<van-cell is-link @click="remarkBtn" v-if="detailData.remark != null">
+				<van-cell value-class="YYLabel"  v-if="detailData.remark != null">
 					<span slot="title">备注</span>
 					<span class="remark">
-						{{detailData.remark}}
+						<TextOverflow
+						:maxLength="20"
+						:text="remark"
+						/>
 					</span>
 				</van-cell>
+				<div class="divider"></div>
+				<van-cell>
+					<span slot="title">创建人</span>
+					<span>
+						{{detailData.user_name}}
+					</span>
+				</van-cell>
+				<van-cell>
+					<span slot="title">创建时间</span>
+					<span>
+						{{detailData.create_date}}
+					</span>
+				</van-cell>
+				<div class="divider"></div>
 				<div class="cardList">
 					<span class="cardListBox" v-for="item in cardList" :key="item.id" @click="cardBtn(item.id)">
 						<span>
@@ -84,12 +114,14 @@
 	import { cacheMixins } from '@/libs/mixins'
 	import { getWeeks, getTime } from '@/libs/util'
 	import ktvTag from '@/components/tags/ktvTags'
+	import TextOverflow from '@/components/textOverflow'
 	export default{
 		name: 'KTVDetail',
 		mixins: [ cacheMixins ],
 		components:{
 			ContentLoad,
-			ktvTag
+			ktvTag,
+			TextOverflow
 		},
 		computed:{
 			businessTime(){
@@ -102,7 +134,7 @@
 				let arr = this.detailData.business_workdays.split('');
 				day = getWeeks(arr);
 				return day+" "+time;
-			}
+			},
 		},
 		data(){
 			return{
@@ -110,6 +142,7 @@
 				   business_periods: '',
 				   business_workdays: '',
 			   },
+			   remark:"",
 			   cardList:[
 				   {
 					   id: 0,
@@ -143,18 +176,6 @@
 			...mapActions([
 				'KtvDetail'
 			]),
-			remarkBtn(){
-				let remark = '暂无备注'
-				if(this.detailData.remark){
-				  remark = this.detailData.remark;
-				}
-				this.$dialog.alert({
-				  title: '备注',
-				  message: remark
-				}).then(() => {
-				  // on close
-				});
-			},
 			cardBtn(id){
 				switch (id){
 					case 0:
@@ -188,7 +209,7 @@
 				return new Promise((resolve, reject) => {
 					this.KtvDetail(this.$store.state.ktv.ktvID).then(res => {
 						this.detailData = res;
-						console.log(res)
+						this.remark = this.detailData.remark;
 						resolve(res)
 					})
 				})
@@ -225,12 +246,8 @@
 			}
 		}
 		.remark{
-			overflow: hidden;
-			text-overflow:ellipsis;
-			white-space: nowrap;
-			display: inline-block;
-			width: 100px;
-			height: 18px;
+			width: 100%;
+			line-height: 26px;
 		}
 		.YYTitle{
 			transform: scale(5/6);
@@ -240,8 +257,8 @@
 			transform-origin: left center;
 		}
 		.YYLabel{
-			font-size: 14px;
-			color: #444444;
+			flex: 2;
+			text-align: left;
 		}
 		.cardList{
 			display: flex;

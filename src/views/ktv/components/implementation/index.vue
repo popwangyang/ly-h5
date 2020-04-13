@@ -1,23 +1,43 @@
 <template>
-	<div>
+	<div class="implementationInputBox">
 		<ContentLoad
 		:getInfo='getData'
 		>
+		    <cell-selected title="实施方式" :dataList="methodList" v-model="formData.mode"/>
 			<cell-selected title="VOD品牌" :dataList="vodBandsList" v-model="formData.vod"/>
 			<cell-input title="实际包厢数" v-model="formData.box"/>
 			<cell-input title="软件系统版本号" :maxlength="50" v-model="formData.version"/>
 			<cell-input title="VOD场所ID" v-model="formData.vod_ktv_id"/>
+			<van-cell title="是否使用版权盒">
+				<span class="bqBox">
+					<span :class="{bqText: formData.is_use}">{{banQuanBoxText}}</span>
+					<span>
+						<van-switch size="24px" v-model="formData.is_use" />
+					</span>
+				</span>
+			</van-cell>
 			<cell-input title="网关" :required="false" :maxlength="50" v-model="formData.gateway"/>
 			<cell-input title="服务器" :required="false" :maxlength="50" v-model="formData.server"/>
-			<div class="divider"></div>
-			<cell-selected title="是否使用版权盒" :dataList="dataList1" v-model="formData.is_use"/>
+			<div class="divider"></div> 
 			<cell-selected title="通讯模式" :dataList="dataList2" v-model="formData.communication_mode"/>
+			
 			<span v-show="formData.communication_mode == 2">
-				<cell-input title="VOD Sever地址" :required="false" :maxlength="100" v-model="formData.vod_server"/>
+				<cell-input title="VOD Sever地址" :required="false" :maxlength="100" placeholder="请输入" v-model="formData.vod_server"/>
 				<cell-input title="AD MAC地址" :required="false" :maxlength="50" v-model="formData.ad_mac"/>
 			</span>
+			<cell-input 
+			    :rows="3"
+				title="备注" 
+				placeholder="备注文子" 
+				type="textarea" 
+				inputAlign="left" 
+				:clearable="false" 
+				:showWordLimit="true" 
+				:maxlength="500" 
+				:required="false"  
+				v-model="formData.remarks"/>
 			<div class="button">
-				<van-button class="buttonDefault" size="large" @click="btnClick">保存</van-button>
+				<van-button class="buttonDefault" size="large" @click="btnClick">{{btnText}}</van-button>
 			</div>
 		</ContentLoad>
 	</div>
@@ -45,21 +65,34 @@
 				}
 			}
 			return{
+				checked:false,
 				formData:{
 					ktv: this.$store.state.ktv.ktvID,
+					mode: '',
 					vod: '',
 					box: '',
 					version: '',
 					vod_ktv_id: '',
 					gateway: '',
 					server: '',
-					is_use: 2,
+					is_use: false,
 					communication_mode: this.$route.query.isEdited ? 2: '',
-					vod_server: '',
+					vod_server: 'http://',
 					ad_mac: '',
+					remarks:'',
 					id: ''
 				},
-				implementationID: '',  
+				implementationID: '',
+				methodList:[
+					{
+					   label: '软件升级',
+					   value: '1'
+					},
+					{
+					   label: '硬件更换',
+					   value: '2'
+					},
+				],
 				dataList1:[
 					{
 						label: '是',
@@ -81,6 +114,9 @@
 					},
 				],
 				rules:{
+					mode: [
+					    { required: true, message: '实施方式不能为空'},	
+					],
 					vod: [
 						{ required: true, message: 'VOD品牌不能为空'},
 					],
@@ -110,7 +146,7 @@
 				handler(newValue, oldValue){
 					console.log(newValue, oldValue);
 					if(newValue == 2){
-						this.formData.vod_server = '';
+						this.formData.vod_server = 'http://';
 						this.formData.ad_mac = '';
 					}
 				},
@@ -118,6 +154,13 @@
 			}
 		},
 		computed:{
+			banQuanBoxText(){
+			  if(this.formData.is_use){
+				  return "使用";
+			  }else{
+				  return "不使用";
+			  }
+			},
 			isEdited(){
 				return this.$route.query.isEdited ? true:false;
 			},
@@ -131,26 +174,34 @@
 				   cur.push(obj);
 				   return cur;
 			   }, [])
+			},
+			btnText(){
+				if(!this.isEdited){
+					return "确认实施";
+				}else{
+					return '编辑';
+				}
 			}
 		},
 		methods:{
 			btnClick(){
 				formValidate(this.formData, this.rules).then((val) => {
 					if(val){
-						this.$toast.loading({
-						  duration: 0, // 持续展示 toast
-						  forbidClick: true,
-						  message: this.isEdited ? '创建中...':'修改中...'
-						});
 						let send_data = {};
 						    Object.keys(this.formData).map(item => {
 								send_data[item] = this.formData[item]
 							})
+							send_data.is_use = send_data.is_use ? 1:2;
 							if(send_data.communication_mode == 1){
-								send_data.vod_server = '';
+								send_data.vod_server = 'http://';
 								send_data.ad_mac = '';
 							}
 						if(this.isEdited){
+							this.$toast.loading({
+							  duration: 0, // 持续展示 toast
+							  forbidClick: true,
+							  message: '修改中...'
+							});
 							editedImplementation(send_data, this.formData.id).then(res => {
 							   this.$toast.success('修改成功');
 							   setTimeout(() => {
@@ -164,21 +215,30 @@
 								this.$toast(errText);
 							})
 						}else{
-							addImplementation(send_data).then(res => {
-							   this.$toast.success('创建成功');
-							   setTimeout(() => {
-							   	   this.$router.go(-1);
-							   }, 1000)
-							}).catch(err => {
-								console.log(err)
-								let errText = '创建失败，请稍后重试';
-								if(err.status == 400){
-									errText = err.data.non_field_errors[0]
-								}
-								this.$toast(errText);
-							})
+							this.$dialog.confirm({
+							  title: '提示',
+							  message: '是否已确认实施，请确认信息无误在提交'
+							}).then(() => {
+								this.$toast.loading({
+								  duration: 0, // 持续展示 toast
+								  forbidClick: true,
+								  message: '创建中...'
+								});
+								addImplementation(send_data).then(res => {
+									 this.$toast.success('创建成功');
+									 setTimeout(() => {
+										   this.$router.go(-1);
+									 }, 1000)
+								}).catch(err => {
+									console.log(err)
+									let errText = '创建失败，请稍后重试';
+									if(err.status == 400){
+										errText = err.data.non_field_errors[0]
+									}
+									this.$toast(errText);
+								})
+							}).catch(() => {});
 						}
-						
 					}
 				})
 			},
@@ -196,6 +256,7 @@
 									this.formData[item] = data[item];
 								}
 							})
+							this.formData.is_use = this.formData.is_use == 1 ? true:false;
 						}
 						resolve({})
 					}).catch(err => {
@@ -210,9 +271,22 @@
 	}
 </script>
 <style scoped="scoped" lang="less">
-	.button{
-		margin-top: 50px;
-		padding: 0 10px;
+	.implementationInputBox{
+		height: 100%;
+		.bqBox{
+			display: flex;
+			justify-content: flex-end;
+			color: gainsboro;
+			&>span:nth-child(1){
+				margin-right: 10px;
+			}
+			.bqText{
+				color: black;
+			}
+		}
+		.button{
+			margin-top: 50px;
+			padding: 0 10px;
+		}
 	}
-	
 </style>

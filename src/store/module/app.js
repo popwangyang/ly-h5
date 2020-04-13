@@ -30,21 +30,17 @@ export default {
 		SET_THEME(state, themeType) {
 			switch (themeType) {
 				case 'ktv':
-					state.theme = theme.themec;
+					state.theme = theme.theme_ktv;
 					state.className = 'themea';
 					break;
 				case 'platform':
 				case 'agentibus':
 				case 'employee':
-					state.theme = theme.themea;
+					state.theme = theme.theme_ktv_clerk;
 					state.className = 'themea';
 					break;
-				case 'vod':
-				case 'industry_association':
-				case 'advance_party':
-				case 'music_copyright_society':
-				case 'copyright_party':
-					state.theme = theme.themeb;
+				case 'ktv_clerk':
+					state.theme = theme.theme_ktv_clerk;
 					state.className = 'themeb';
 					break;
 				default:
