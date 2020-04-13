@@ -30,7 +30,7 @@ export default {
         },
         {
           id: 2,
-          text: '技术服务协议',
+          text: '商户星盟',
           isSelected: false
         }
       ]
@@ -50,7 +50,7 @@ export default {
         },
         {
           id: 2,
-          text: '合同中',
+          text: '合同生效中',
           isSelected: false
         },
         {
@@ -60,7 +60,7 @@ export default {
         },
         {
           id: 4,
-          text: '已终止',
+          text: '合同终止',
           isSelected: false
         }
       ]
@@ -80,12 +80,12 @@ export default {
         },
         {
           id: 2,
-          text: '审批通过',
+          text: '已通过',
           isSelected: false
         },
         {
           id: 3,
-          text: '审批退回',
+          text: '未通过审批',
           isSelected: false
         }
       ]

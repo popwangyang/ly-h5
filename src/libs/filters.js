@@ -5,8 +5,8 @@ const changeMoney = val => {
 
 // 保留两位小数
 const toFixed2 = val => {
-  // return val.toFixed(2);
-  return val
+  if (val) return Number(val).toFixed(2);
+  return 0;
 }
 
 // 姓名脱敏

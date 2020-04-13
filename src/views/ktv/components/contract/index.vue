@@ -8,8 +8,10 @@
         </span>
       </span>
       <span>
-        <van-icon name="label-o" v-if="!screen" size="20px" @click="popupBtn" />
-        <van-icon name="label" v-else size="20px" @click="popupBtn" />
+        <span class="billingRecords" @click="billingRecord">计费记录</span>
+        <span class="billingRecords serch" @click="popupBtn">筛选</span>
+        <!-- <van-icon name="label-o" v-if="!screen" size="20px" @click="popupBtn" />
+        <van-icon name="label" v-else size="20px" @click="popupBtn" />-->
       </span>
     </div>
     <div class="contentBox" ref="scroll">
@@ -111,15 +113,29 @@ export default {
     popupCloseEvent() {
       Object.assign(this.popupValue, this.searchValue);
     },
+    billingRecord() {
+      this.$router.push({
+        name: "billingRecord"
+      });
+    },
     searchBtn() {
       Object.assign(this.searchValue, this.popupValue);
       console.log(this.searchValue);
       this.show = false;
       this.params = {
         ktv: this.$store.state.ktv.ktvID,
-        type: this.searchValue.contract_type == 0 ? "":this.searchValue.contract_type,
-        state: this.searchValue.contract_statue == 0 ? "":this.searchValue.contract_statue,
-				approve_state: this.searchValue.approval_statue == 0 ? "":this.searchValue.approval_statue
+        type:
+          this.searchValue.contract_type == 0
+            ? ""
+            : this.searchValue.contract_type,
+        state:
+          this.searchValue.contract_statue == 0
+            ? ""
+            : this.searchValue.contract_statue,
+        approve_state:
+          this.searchValue.approval_statue == 0
+            ? ""
+            : this.searchValue.approval_statue
       };
       this.$nextTick(() => {
         this.$refs.pageList.onReload();
@@ -267,5 +283,17 @@ export default {
       }
     }
   }
+}
+.billingRecords {
+  height: 17px;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(153, 153, 153, 1);
+  line-height: 17px;
+}
+.serch {
+  margin-right: 0 !important;
+  color: rgba(0, 130, 255, 1);
 }
 </style>
