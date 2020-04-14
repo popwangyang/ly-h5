@@ -115,6 +115,7 @@
 			}
 		},
 		mounted() {
+			console.log('ppp');
 			this.$store.commit('setUndelivered', 4);
 		}
 	}

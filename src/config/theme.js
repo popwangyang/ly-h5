@@ -69,7 +69,7 @@ export default {
 			{
 				text: '订单管理',
 				info: '0',
-				path: '/OrderManagement',
+				path: '/orderManagement',
 				active: require('@/assets/bottomTabs/mainA.png'),
 				inactive: require('@/assets/bottomTabs/mainB.png')
 			},

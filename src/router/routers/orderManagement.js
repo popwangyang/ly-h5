@@ -18,6 +18,7 @@ export default [{
 				name: 'toBeDelivered',
 				meta:{
 					title: '订单管理',
+					cacheTos:['managementDetail'],
 					showBottomTab: true,
 				},
 				component: toBeDelivered

@@ -44,38 +44,6 @@
 			getData(){
 				return new Promise((resolve, reject) => {
 					let data = [{
-						id: 1,
-						countNumber: '888',
-						statues: 2,
-						mealName: '娱乐大酬宾',
-						meals:[
-							{
-								name: '百威',
-								number: 1,
-							},
-							{
-								name: '可口可乐',
-								number: 1,
-							}
-						],
-						create_date:'2020-01-09 12:09:01'
-					},{
-						id: 2,
-						countNumber: '888',
-						statues: 2,
-						mealName: '娱乐大酬宾',
-						meals:[
-							{
-								name: '百威',
-								number: 1,
-							},
-							{
-								name: '可口可乐',
-								number: 1,
-							}
-						],
-						create_date:'2020-01-09 12:09:01'
-					},{
 						id: 3,
 						countNumber: '888',
 						statues: 2,
@@ -109,7 +77,7 @@
 						create_date:'2020-01-09 12:09:01'
 					}];
 					setTimeout(() => {
-						resolve({total: 4, data: data})
+						resolve({total: 2, data: data})
 					}, 1000)
 				})
 			}

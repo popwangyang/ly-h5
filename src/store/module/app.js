@@ -18,7 +18,7 @@ export default {
 		setUndelivered(state, num){
 			state.undeliveredNum = num;
 			state.theme.tabBottoms.forEach(item => {
-				if(item.path == '/OrderManagement'){
+				if(item.path == '/orderManagement'){
 					item.info = num;
 				}
 			})

@@ -1,52 +1,48 @@
 <template>
-	<div class="orderManagementBox">
-		<van-tabs line-height="6" line-width="50" @click="onClick">
+	<div class="orderManagementBox" ref="scrollTop">
+		<van-tabs line-height="6" v-model="currentTabComponent" line-width="50">
 		  <van-tab name="toBeDelivered">
 			  <span slot="title">
 				 <TabTitle title="待配送" :info="undeliveredNum"/> 
+			  </span>
+			  <span>
+				  <toBeDelivered/>
 			  </span>
 		  </van-tab>
 		  <van-tab  name="haveBeenDelivered">
 			  <span slot="title">
 			  	<TabTitle title="已配送"/> 
 			  </span>
+			  <span>
+				  <haveBeenDelivered/>
+			  </span>
 		  </van-tab>
 		</van-tabs>
-		<div class="content">
-			<keep-alive>
-			  <router-view></router-view>
-			</keep-alive>
-		</div>
 	</div>
 </template>
 
 <script>
 	import TabTitle from '@/components/tags/tabTitle'
+	import toBeDelivered from './components/toBeDelivered.vue'
+	import haveBeenDelivered from './components/haveBeenDelivered.vue'
+	import { cacheMixins } from "@/libs/mixins";
 	export default{
+		name: 'orderManagement',
+		mixins: [cacheMixins],
 		components:{
-			TabTitle
+			TabTitle,
+			toBeDelivered,
+			haveBeenDelivered
 		},
 		data(){
 			return{
-				
+				currentTabComponent:"toBeDelivered"
 			}
 		},
 		computed:{
 		   undeliveredNum(){
 			   return this.$store.state.app.undeliveredNum;
 		   }	
-		},
-		methods:{
-			onClick(name, title){
-				this.$router.push({
-					path:`/orderManagement/${name}`
-				})
-			}
-		},
-		mounted() {
-			this.$router.push({
-				path:`/orderManagement/toBeDelivered`
-			})
 		}
 	}
 </script>
@@ -55,6 +51,7 @@
 		.van-tabs{
 			display: flex;
 			flex-direction: column;
+			height: 100%;
 		}
 		.van-ellipsis{
 			overflow: visible;
@@ -66,6 +63,13 @@
 			font-weight:600;
 			color:rgba(183,183,183,1);
 			margin-right: 50px;
+		}
+		.van-tab__pane{
+			height: 100%;
+		}
+		.van-tabs__content{
+			overflow: auto;
+			flex: 1;
 		}
 		.van-tabs__nav--line{
 			padding-left: 20px;
