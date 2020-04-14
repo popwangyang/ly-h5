@@ -4,26 +4,20 @@
       <span>{{data.type == 1 ? '曲库服务合同':'技术综合服务协议'}}</span>
       <span style="color: #999999;">{{stateText}}</span>
     </span>
-    <van-cell :is-link="!showStatus" @click="goDetail(data, data.type)">
+    <van-cell is-link @click="goDetail(data, data.type)">
       <span slot="title">
         <span>合同编号：</span>
         <span>{{data.number}}</span>
       </span>
-      <div slot="label">
-        <span>有效年限：</span>
-        <span>{{''||'1年'}}</span>
-        <div class="mtp5">
-          <span>接入/结束日期：</span>
-          <span>{{data.begin_date}}</span>
-          <span>{{' '}}至{{' '}}</span>
-          <span>{{data.end_date}}</span>
-        </div>
-        <div class="mtp5" v-if="showStatus">
-          <span>审批状态：</span>
-          <span class="statues1" v-if="data.approve_state == 1">审批中</span>
-          <span class="statues2" v-if="data.approve_state == 2">已通过</span>
-          <span class="statues3" v-if="data.approve_state == 3">未通过审批</span>
-        </div>
+      <span slot="label">
+        <span>{{data.begin_date}}</span>
+        <span>{{' '}}至{{' '}}</span>
+        <span>{{data.end_date}}</span>
+      </span>
+      <div v-if="showStatus">
+        <span class="statues1" v-if="data.approve_state == 1">审批中</span>
+        <span class="statues2" v-if="data.approve_state == 2">审批通过</span>
+        <span class="statues3" v-if="data.approve_state == 3">审批退回</span>
       </div>
     </van-cell>
   </div>
@@ -112,8 +106,5 @@ export default {
   .statues3 {
     color: #999999;
   }
-}
-.mtp5 {
-  margin-top: 5px;
 }
 </style>

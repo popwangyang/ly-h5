@@ -33,6 +33,8 @@ export default {
              * userID 用户 的实时系统消息
              * @message {object}: 消息内容（登录提醒、修改密码提醒等）
              */
+            console.log("监听msg中");
+            console.log("message", message);
             getUnRead();
           }
         );

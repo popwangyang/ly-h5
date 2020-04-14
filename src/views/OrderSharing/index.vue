@@ -15,7 +15,6 @@
             v-for="(item, index) in slotProps.dataList"
             :key="index"
             :isKtv="userType==='ktv'"
-            :isMana="userType==='employee'"
             :data="item"
             :hasPay="showOrder !== 3"
           />
