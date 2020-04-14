@@ -105,6 +105,7 @@
 					message: '登录中...'
 				})
 				this.getLogin(send_data).then(res => {
+					// this.$store.commit("SET_THEME", this.$store.state.user.usertype);
 					this.$toast.success({
 						duration: 1000, // 持续展示 toast
 						forbidClick: true,
