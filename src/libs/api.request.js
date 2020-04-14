@@ -20,12 +20,8 @@ if (url.indexOf('info.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.test
   socketUrl = 'wkceshi.bjywkd.com'
 } else {
-<<<<<<< HEAD
-  baseUrl = config.baseUrl.test
-  socketUrl = 'wkceshi.bjywkd.com'
-=======
   baseUrl = config.baseUrl.dev
->>>>>>> wangyan
+  socketUrl = 'wkceshi.bjywkd.com'
 }
 
 config.baseUrl.socket = 'wss://' + socketUrl + ':9112/connection/websocket'
