@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="bottom">
-      <div class="btn cancle">取消</div>
+      <div @click="cancle" class="btn cancle">取消</div>
       <div class="btn save">保存</div>
     </div>
   </div>
@@ -54,6 +54,14 @@ export default {
     return {
       cancelImg: require("@/assets/comboCancel.png")
     };
+  },
+  methods: {
+    // 取消
+    cancle() {
+      this.$router.push({
+        name: "combo"
+      });
+    }
   }
 };
 </script>
