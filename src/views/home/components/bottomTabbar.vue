@@ -2,7 +2,7 @@
   <div class="tabBarBox">
     <van-tabbar route :active-color="activeColor" inactive-color="#B7B7B7">
       <van-tabbar-item
-        :info="((index === dataList.length - 1) && $store.state.app.unreadNum !== 0)?(index === dataList.length - 1) && $store.state.app.unreadNum:'' "
+        :info="item.info ? item.info:''"
         v-for="(item, index) in dataList"
         :key="index"
         :to="item.path"
@@ -16,11 +16,6 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
-  methods: {},
-  mounted() {},
   computed: {
     dataList() {
       return this.$store.state.app.theme.tabBottoms;

@@ -13,7 +13,7 @@
 				</span>			
 				<span class="tcname">{{itemData.mealName}}</span>
 				<div class="spnameBox" ref="spnameBox" :style="{maxHeight: maxHeight}">
-					<span class="spname" v-for="(item, index) in meals">
+					<span class="spname" v-for="(item, index) in meals" :key="index">
 						<span>{{item.name}}</span>
 						<span>x{{item.number}}</span>
 					</span>
@@ -23,7 +23,7 @@
 					<span>{{itemData.create_date}}</span>
 					<span>
 						<span class="btn qx_btn" @click="detailBtn">详情</span>
-						<span class="btn confirm_btn" @click="confirmBtn">确认配送</span>
+						<span class="btn confirm_btn" @click="confirmBtn" v-if="itemData.statues == 1 ? true:false">确认配送</span>
 					</span>
 				</span>
 			</div>

@@ -26,20 +26,19 @@
 			DeliveredListItem
 		},
 		data(){
-			return{
-				
+			return {
+				total:0
 			}
 		},
 		methods:{
 			showDetail(id){
-				console.log(id);
 				this.$router.push({
 					name: 'managementDetail'
 				})
 			},
 			haveBeDeliver(id){
-				console.log(this.$refs.pageList.deletedItem);
 				this.$refs.pageList.deletedItem('id', id);
+				this.$store.commit('setUndelivered', --this.total);
 			},
 			getData(){
 				return new Promise((resolve, reject) => {
@@ -108,11 +107,15 @@
 						],
 						create_date:'2020-01-09 12:09:01'
 					}];
+					this.total = 4;
 					setTimeout(() => {
 						resolve({total: 4, data: data})
 					}, 1000)
 				})
 			}
+		},
+		mounted() {
+			this.$store.commit('setUndelivered', 4);
 		}
 	}
 </script>

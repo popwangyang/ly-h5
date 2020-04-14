@@ -9,15 +9,30 @@ export default {
 		theme: theme.themea,
 		className: 'themea',
 		unreadNum: '',
+		undeliveredNum:0,
 		unReadTimer: null,
-		scrollTops: {}
+		scrollTops: {},
 	},
 	mutations: {
+		// 设置未配送的订单的数量
+		setUndelivered(state, num){
+			state.undeliveredNum = num;
+			state.theme.tabBottoms.forEach(item => {
+				if(item.path == '/OrderManagement'){
+					item.info = num;
+				}
+			})
+		},
 		SET_KEEPALIVE(state, list) {
 			state.keepAliveList = list;
 		},
 		SET_UNREAD(state, unreadNum) {
 			state.unreadNum = unreadNum;
+			state.theme.tabBottoms.forEach(item => {
+				if(item.path == '/personalCenter'){
+					item.info = unreadNum;
+				}
+			})
 		},
 		SET_SCROLLNAME(state, name) {
 			if (!state.scrollTops[name]) {

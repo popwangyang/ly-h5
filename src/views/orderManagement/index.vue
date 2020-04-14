@@ -1,8 +1,16 @@
 <template>
 	<div class="orderManagementBox">
 		<van-tabs line-height="6" line-width="50" @click="onClick">
-		  <van-tab title="待配送" name="toBeDelivered"></van-tab>
-		  <van-tab  title="已配送" name="haveBeenDelivered"></van-tab>
+		  <van-tab name="toBeDelivered">
+			  <span slot="title">
+				 <TabTitle title="待配送" :info="undeliveredNum"/> 
+			  </span>
+		  </van-tab>
+		  <van-tab  name="haveBeenDelivered">
+			  <span slot="title">
+			  	<TabTitle title="已配送"/> 
+			  </span>
+		  </van-tab>
 		</van-tabs>
 		<div class="content">
 			<keep-alive>
@@ -13,11 +21,20 @@
 </template>
 
 <script>
+	import TabTitle from '@/components/tags/tabTitle'
 	export default{
+		components:{
+			TabTitle
+		},
 		data(){
 			return{
 				
 			}
+		},
+		computed:{
+		   undeliveredNum(){
+			   return this.$store.state.app.undeliveredNum;
+		   }	
 		},
 		methods:{
 			onClick(name, title){
@@ -39,13 +56,16 @@
 			display: flex;
 			flex-direction: column;
 		}
+		.van-ellipsis{
+			overflow: visible;
+		}
 		.van-tab{
 			flex: none;
 			font-size:14px;
 			font-family:PingFangSC-Semibold,PingFang SC;
 			font-weight:600;
 			color:rgba(183,183,183,1);
-			margin-right: 20px;
+			margin-right: 50px;
 		}
 		.van-tabs__nav--line{
 			padding-left: 20px;
