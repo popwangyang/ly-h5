@@ -98,11 +98,13 @@ export default {
             }
             let token = 'Basic ' + btoa(res.data.data[0].user + ":" + res.data.data[0].token)
             setToken(token);
+			
             if (res.data.data[0].actions && res.data.data[0].actions.indexOf('withdrawal_operation') > -1) {
               commit('set_hasWithdrawal', true);
             } else {
               commit('set_hasWithdrawal', false);
             }
+			commit("SET_THEME", res.data.data[0].user_type);
             commit('setUserType', res.data.data[0].user_type);
             commit('setUserName', res.data.data[0].username);
             commit('setUserID', res.data.data[0].user);

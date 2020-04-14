@@ -1,0 +1,235 @@
+<template>
+	<div class="orderManagementDetail">
+		<ContentLoad
+		:getInfo="getData"
+		>
+		<span class="header">
+			<span><van-icon name="checked" /></span>
+			<span>已支付</span>
+			<span class="left circle"></span>
+			<span class="right circle"></span>
+		</span>
+		<van-cell title="音乐服务费" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="开房套餐费用" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="扫码订单金额" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="实付金额" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="订单编号" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="支付方式" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="交易时间" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="支付方式" value-class="cellValue" value="音乐服务费" />
+		<span class="title">购买套餐</span>
+		<van-cell title="套餐名称" value-class="cellValue">
+			<span class="vanValue">
+				<span>套餐A</span>
+				<van-icon name="warning-o" @click.native="iconBtn"/>
+			</span>
+		</van-cell>
+		<span class="title">参与活动</span>
+		
+		
+		<van-cell v-if="!inActivity">
+			<span class="emptyBox">
+				未参与活动
+			</span>
+		</van-cell>
+		
+		
+		<van-cell title="活动名称" v-else>
+			<span slot="title" class="vanTitle">
+				<span>活动名称</span>
+				<span style="color: #969799;">#活动名称#</span>
+			</span>
+			<span slot="label" class="vanLabel" v-if="useCard">
+				<span>
+					<span>果盘券</span>
+					<span>未核销</span>
+				</span>
+				<span>
+					<span>免费</span>
+					<span>1288913837813</span>
+				</span>
+			</span>
+			<span class="emptyBox" style="margin: 0;" slot="label" v-else>
+				未使用优惠券
+			</span>
+		</van-cell>
+		</ContentLoad>
+		<van-dialog v-model="dialogFlage" title="套餐名称A">
+		  <div class="dialogContent">
+			  <span>套餐内容</span>
+			  <span>
+				  <span class="dialogListItem">
+					  <span>
+						  <span class="tradeName">商品名称</span>
+						  <span class="tradeNum">X1</span>
+					  </span>
+					  <span class="tradePrice">￥10.00</span>
+				  </span>
+				  <span class="dialogListItem">
+				  					  <span>
+				  						  <span class="tradeName">商品名称</span>
+				  						  <span class="tradeNum">X1</span>
+				  					  </span>
+				  					  <span class="tradePrice">￥10.00</span>
+				  </span>
+				  <span class="dialogListItem">
+				  					  <span>
+				  						  <span class="tradeName">商品名称</span>
+				  						  <span class="tradeNum">X1</span>
+				  					  </span>
+				  					  <span class="tradePrice">￥10.00</span>
+				  </span>
+			  </span>
+		  </div>
+		</van-dialog>
+	</div>
+</template>
+
+<script>
+	import ContentLoad from "@/components/contentLoad";
+	export default{
+		components:{
+		  ContentLoad
+		},
+		data(){
+			return{
+				dialogFlage:false,
+				inActivity:true,
+				useCard:false
+			}
+		},
+		methods:{
+			iconBtn(){
+				this.dialogFlage = true;
+			},
+			getData() {
+				return new Promise((resolve, reject) => {
+					setTimeout(() => {
+						resolve({})
+					}, 1000)
+				});
+			}
+		}
+	}
+</script>
+
+<style scoped="scoped" lang="less">
+	.orderManagementDetail{
+		height: 100%;
+		overflow: auto;
+		padding: 10px;
+		.header{
+			position: relative;
+			display: flex;
+			height: 50px;
+			background-color: #01CCA3;
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-size:16px;
+			font-weight:600;
+			color:rgba(255,255,255,1);
+			&>span:nth-child(1){
+				margin-right: 6px;
+			}
+			.circle{
+				position: absolute;
+				display: block;
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				background-color: #F6F6F6;
+				z-index: 99;
+			}
+			.left{
+				left: -8px;
+				bottom: -20px;
+			}
+			.right{
+				right: -8px;
+				bottom: -20px;
+			}
+		}
+		.title{
+			color: #999999;
+			font-size: 12px;
+			margin: 10px 0px;
+			display: block;
+		}
+		.vanValue{
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			&>span{
+				margin-right: 6px;
+			}
+		}
+		.vanLabel{
+			display: flex;
+			flex-direction: column;
+			background-color: #F6F8F9;
+			width: 100%;
+			padding: 5px 10px ;
+			&>span{
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				height: 26px;
+				
+			}
+		}
+		.vanTitle{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+		.emptyBox{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #F6F8F9;
+			height: 80px;
+			margin: 20px 0;
+			color: #666666;
+			font-size: 12px;
+		}
+		.dialogContent{
+			margin: 20px 10px 10px 10px;
+			color: #666666;
+			font-size: 12px;
+			&>span:nth-child(1){
+				display: block;
+				margin-bottom: 10px;
+			}
+			&>span:nth-child(2){
+				display: block;
+				border: 1px solid #EEEEEE;
+				height: 164px;
+				padding: 0px 10px;
+				overflow: auto;
+				.dialogListItem{
+					display: flex;
+					justify-content: space-between;
+					margin: 10px 0;
+					&>span:nth-child(1){
+						display: inline-block;
+						width: 50%;
+						display: flex;
+						justify-content: space-between;
+					}
+					.tradeName{
+						margin-right: 10px;
+						display: inline-block;
+					}
+					.tradePrice{
+						font-size:12px;
+						font-weight:bold;
+						color:rgba(51,51,51,1);
+					}
+				}
+			}
+		}
+	}
+</style>

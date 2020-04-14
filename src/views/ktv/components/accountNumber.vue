@@ -4,6 +4,22 @@
 		:getInfo="getData"
 		emptyText="尚未创建账号，请至PC端处理"
 		>
+		    <span class="title">管理员账号</span>
+			<div class="divider"></div>
+			<van-cell title="账号ID" :value="formData.username"/>
+			<van-cell title="手机号" :value="formData.phone"/>
+			<van-cell title="邮箱地址" v-if="formData.email && formData.email != null" :value="formData.email"/>
+			<van-cell title="创建日期" :value="formData.create_date"/>
+			<div class="divider"></div>
+			<van-cell title="状态">
+			  <span v-if="formData.is_active" style="color: #2BC8D6;">
+				  已启用
+			  </span>
+			  <span v-else>
+				  已禁用
+			  </span>
+			</van-cell>
+			<span class="title">服务员账号</span>
 			<div class="divider"></div>
 			<van-cell title="账号ID" :value="formData.username"/>
 			<van-cell title="手机号" :value="formData.phone"/>
@@ -60,5 +76,12 @@
 <style>
 	.accountNumberBox{
 	  height: 100%;
+	  .title{
+		  height: 30px;
+		  display: block;
+		  background-color: gainsboro;
+		  padding: 0 20px;
+		  line-height: 30px;
+	  }
 	}
 </style>

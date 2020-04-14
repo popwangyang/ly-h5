@@ -1,10 +1,13 @@
 <template>
 	<div class="ktvBox">
         <Search placeholder="请输入门店名称"></Search>
+		<FilterMenu @change="filterChange"/>
 	    <div class="content" ref='scroll'>
 			<PageList
 			:getData="getKTVList"
 			noListText="暂未创建KTV信息"
+			:params="filterMenuData"
+			ref="pageList"
 			>
 			<template v-slot:default="slotProps">
 				 <ktvListItem v-for="(item, index) in slotProps.dataList" 
@@ -18,6 +21,7 @@
 </template>
 
 <script>
+	import FilterMenu from './components/filter'
 	import PageList from '@/components/pageList'
     import Search from '@/components/search'
 	import ktvListItem from '@/components/listItems/ktvListItem'
@@ -30,18 +34,27 @@
 		components:{
 			PageList,
 			Search,
-			ktvListItem
+			ktvListItem,
+			FilterMenu
 		},
 		data(){
 			return{
 				value: '',
-				getKTVList: getKTVList
+				getKTVList: getKTVList,
+				filterMenuData: {}
 			}
 		},
 		methods:{
 			...mapActions([
 				'vodBands'
 			]),
+			filterChange(formData){
+				this.filterMenuData = formData;
+				// console.log(formData);
+				this.$nextTick(() => {
+					this.$refs.pageList.onReload();
+				});
+			}
 		},
 		mounted() {
 			this.vodBands();

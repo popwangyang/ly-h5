@@ -28,7 +28,7 @@
 
 <style scoped="scoped" lang="less">
 	.sweepCodeBillBox{
-		padding: 16px;
+        color:black;
 		background-color: white;
 		border-bottom: 0.5px solid #ebedf0;
 		.tipText{

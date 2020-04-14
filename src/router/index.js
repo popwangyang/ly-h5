@@ -44,8 +44,9 @@ router.beforeEach((to, from, next) => {
 	} else if (!token && to.name == LOGIN_PAGE_NAME) { // 未登录想要跳到登陆页面;
 		next();
 	} else if (token && to.name == LOGIN_PAGE_NAME) { // 已登录想要跳到登陆页面;
+	let path = store.state.app.theme.tabBottoms[0].path;
 		next({
-			name: 'mainPage'
+			path: path
 		})
 	} else {
 		next();

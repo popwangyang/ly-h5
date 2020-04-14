@@ -32,12 +32,10 @@
 			}
 		},
 		methods:{
-			getData(){
+			getData(send_data){
 				return new Promise((resolve, reject) => {
-					let send_data = {
-						contract: this.$route.query.contractID,
-						level: 1,
-					}
+					send_data.contract = this.$route.query.contractID;
+					send_data.level = 1;
 					getContractApprovalRecord(send_data).then(res => {
 						let results = {
 							data: res.data.results,

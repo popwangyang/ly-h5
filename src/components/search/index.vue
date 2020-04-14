@@ -1,6 +1,10 @@
 <template>
 	<div class="searchBox">
-		<van-search ref="search" :placeholder="placeholder" v-model="value" shape="round"/>
+		<van-search 
+		ref="search" 
+		:placeholder="placeholder" 
+		v-model="value" 
+		shape="round"/>
 		<div @click="Btn" class="div"></div>
 	</div>
 </template>

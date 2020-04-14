@@ -1,11 +1,15 @@
 <template>
 	<van-field 
+	ref="input"
 	v-model="value" 
-	clearable
+	:clearable="clearable"
 	:type="type"
+	:rows="rows"
 	@input="onInput"
+	@click="onClick"
 	:maxlength="maxlength"
-	input-align="right"
+	:input-align="inputAlign"
+	:show-word-limit="showWordLimit"
 	:placeholder="placeholder">
 		<span slot="label">
 			<span>{{title}}</span>
@@ -25,6 +29,14 @@
 				type: String,
 				default: '标题'
 			},
+			rows:{
+				type: Number,
+				default: 1
+			},
+			inputAlign:{
+			    type:String,
+				default: 'right'
+			},
 			type:{
 				type: String,
 				default: 'text'
@@ -39,6 +51,14 @@
 			},
 			modelValue:{
 				type: [String, Number]
+			},
+			showWordLimit:{
+			    type: Boolean,
+				default: false
+			},
+			clearable:{
+				type: Boolean,
+				default: true,
 			}
 		},
 		model:{
@@ -59,10 +79,15 @@
 		methods:{
 			onInput(val){
 				this.$emit('returnBack', val);
+			},
+			onClick(){
+				if(this.value.length > 0){
+					this.$refs.input.$refs.input.setSelectionRange(this.value.length, this.value.length);
+				}
 			}
 		},
 		mounted() {
-			this.value = this.modelValue;
+			this.value = this.modelValue == null ? '':this.modelValue;
 		}
 	}
 </script>

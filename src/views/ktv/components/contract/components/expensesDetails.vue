@@ -1,6 +1,6 @@
 <template>
   <div class="expensesDetailsBox">
-    <div class="header">费用明细</div>
+    <div class="header">音乐服务费</div>
     <div class="content">
       <van-grid :column-num="2" style="border-left: 0.5px solid #ebedf0;">
         <van-grid-item class="title">项目</van-grid-item>
