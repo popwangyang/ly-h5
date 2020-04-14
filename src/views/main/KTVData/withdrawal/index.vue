@@ -232,7 +232,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../static/style/base.scss";
+@import "../../../../static/style/base.scss";
 .withdrawalConfirm {
   min-height: 100%;
   background: rgba(246, 246, 246, 1);

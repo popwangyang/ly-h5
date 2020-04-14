@@ -95,17 +95,17 @@ export default {
   },
   data() {
     return {
-      icontotal: require("../../../assets/user.png"),
-      iconcity: require("../../../assets/city.png"),
-      iconktv: require("../../../assets/ktvnum.png"),
-      iconiterm: require("../../../assets/iterm.png")
+      icontotal: require("@/assets/user.png"),
+      iconcity: require("@/assets/city.png"),
+      iconktv: require("@/assets/ktvnum.png"),
+      iconiterm: require("@/assets/iterm.png")
     };
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../../../static/style/base.scss";
+@import "../../../../static/style/base.scss";
 .dealCondition {
   padding: 16px 15px;
   background-color: #fff;

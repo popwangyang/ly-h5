@@ -3,12 +3,7 @@ import axios from '@/libs/api.request'
 
 
 // 获取ktv列表;
-export const getKTVList = (sendData) => {
-	var params = {
-		p_index: sendData.page_index,
-		p_size: sendData.page_size,
-		name: sendData.name ? sendData.name:''
-	}
+export const getKTVList = (params) => {
 	return new Promise((resolve, reject) => {
 		axios.request({
 		  url: `/ktv/place/ktv-upgrade`,
@@ -100,7 +95,7 @@ export const getContractList = (params) => {
 
 /* 
  * 获取合同详情
- * @params{Number} type 合同类型, 1为曲库服务合同, 2为综合技术服务合同
+ * @params{Number} type 合同类型, 1为曲库服务合同, 2为商户星盟
  * @params{Number} ID 合同id
  */
 export const getContractDetail = (type, ID) => {
@@ -119,6 +114,18 @@ export const getContractDetail = (type, ID) => {
 	})
 }
 
+/* 
+ * 获取合同计费记录
+ */
+export const getAccountRecord = (params) => {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve('pppp');
+		}, 1000)
+	})
+	
+}
+
 
 /* 获取曲库服务合同详情
  * @params{Number} ID 合同id
@@ -130,7 +137,7 @@ export const getQKcontractDetail = (ID) => {
 	})
 }
 
-/* 获取综合技术服务合同详情
+/* 获取商户星盟合同详情
  * @params{Number} ID 合同id
  */
 export const getZHcontractDetail = (ID) => {

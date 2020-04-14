@@ -1,9 +1,9 @@
 const main = () => import('@/views/main/index.vue') // 首页
-const withdrawalMain = () => import('@/views/main/withdrawal/main.vue') // 提现主页
-const withdrawalDetail = () => import('@/views/main/withdrawal/detail.vue') // 提现记录
-const withdrawal = () => import('@/views/main/withdrawal/index.vue') // 提现确认
-const withdrawalHelp = () => import('@/views/main/withdrawal/help.vue') // 金额描述
-const withdrawalResult = () => import('@/views/main/withdrawal/result.vue') // 提现结果
+const withdrawalMain = () => import('@/views/main/KTVData/withdrawal/main.vue') // 提现主页
+const withdrawalDetail = () => import('@/views/main/KTVData/withdrawal/detail.vue') // 提现记录
+const withdrawal = () => import('@/views/main/KTVData/withdrawal/index.vue') // 提现确认
+const withdrawalHelp = () => import('@/views/main/KTVData/withdrawal/help.vue') // 金额描述
+const withdrawalResult = () => import('@/views/main/KTVData/withdrawal/result.vue') // 提现结果
 
 export default [{
     path: '/main',

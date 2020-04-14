@@ -1,4 +1,7 @@
 <template>
+	<div>
+		roomPackage
+	</div>
 </template>
 
 <script>

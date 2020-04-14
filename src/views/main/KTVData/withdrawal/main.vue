@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       dialogShow: false,
-      explain: require("../../../assets/explain.png"),
+      explain: require("@/assets/explain.png"),
       showData: true, // 展示数据
       balance: 0, // 账户余额
       totalMoney: 0, // 累计分成
@@ -223,8 +223,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../static/style/base.scss";
-@import "../../../static/style/mixin.scss";
+@import "../../../../static/style/base.scss";
+@import "../../../../static/style/mixin.scss";
 .withdrawalMain {
   height: 100%;
   overflow-y: auto;

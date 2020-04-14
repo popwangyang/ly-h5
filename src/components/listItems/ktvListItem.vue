@@ -1,21 +1,21 @@
 <template>
 	<van-cell value="营业中" is-link class="ktvListItem" @click="goDetail">
-		 <span slot="title" class="title">
+		 <div slot="title" class="title">
 			 <span class="name">{{data.ktv_name}}</span>
 			 <ktvTag :value="data.cate"></ktvTag>
-		 </span>
+		 </div>
 		 <span slot="label">
-			 <span>创建人: {{data.user_name}}</span>
-			 <span> {{data.create_date}}</span>
+			 <span>{{data.province}}{{data.city}}{{data.county}}</span>
+			 <span style="margin-left: 40px;">实际包厢数: {{data.room_num}}</span>
 		 </span>
-		 <span class="value1" v-if="data.business_state == 1">
-			营业中
+		 <span class="value3" v-if="data.implement_status == 1">
+			待确认到账
 		 </span>
-		 <span class="value2" v-if="data.business_state == 2">
-		 	停业
+		 <span class="value2" v-if="data.implement_status == 2">
+		    待实施
 		 </span>
-		 <span class="value3" v-if="data.business_state == 3">
-		 	暂停营业
+		 <span class="value1" v-if="data.implement_status == 3">
+		 	已实施
 		 </span>
 	</van-cell>
 </template>
@@ -51,15 +51,20 @@
 <style scoped="scoped" lang="less">
 	.ktvListItem{
 		.title{
-			display: flex;
-			align-items: center;
+			&>span{
+				vertical-align: top;
+			}
 			.name{
-				display: block;
+				display: inline-block;
 				max-width: 160px;
 				overflow: hidden;
 				text-overflow:ellipsis;
 				white-space: nowrap;
 				margin-right: 10px;
+				color: #444444;
+				font-size: 14px;
+				font-weight:900;
+				font-family: Microsoft Yahei;
 			}
 		}
 		.value1{

@@ -6,6 +6,8 @@ const contract = () => import('@/views/ktv/components/contract') // 合同信息
 const contractDetail = () => import('@/views/ktv/components/contract/detail') // 合同详情
 const contractChangeHistory = () => import('@/views/ktv/components/contract/history') // 合同变更历史
 const approvalRecord = () => import('@/views/ktv/components/contract/approvalRecord') // 合同审批记录
+const accountRecord = () => import('@/views/ktv/components/contract/accountRecord') // 合同计费记录
+
 
 /* 实施信息 */
 const implementation = () => import('@/views/ktv/components/implementation') // 实施信息
@@ -47,9 +49,17 @@ export default [{
 		name: 'contract',
 		meta: {
 			title: '合同信息',
-			cacheTos: ['contractDetail']
+			cacheTos: ['contractDetail', 'accountRecord']
 		},
 		component: contract
+	},
+	{
+		path: '/accountRecord',
+		name: 'accountRecord',
+		meta: {
+			title: '计费记录'
+		},
+		component: accountRecord
 	},
 	{
 		path: '/contractDetail',

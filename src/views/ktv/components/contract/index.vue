@@ -7,9 +7,12 @@
           <van-switch :value="checked" @input="onInput" size="20px" :active-color="color" />
         </span>
       </span>
+			
       <span>
-        <van-icon name="label-o" v-if="!screen" size="20px" @click="popupBtn" />
-        <van-icon name="label" v-else size="20px" @click="popupBtn" />
+		<span @click="goAccountRecord">计费记录</span>
+		<a style="color: #0082FF;" @click="popupBtn">筛选</a>
+        <!-- <van-icon name="label-o" v-if="!screen" size="20px" @click="popupBtn" />
+        <van-icon name="label" v-else size="20px" @click="popupBtn" /> -->
       </span>
     </div>
     <div class="contentBox" ref="scroll">
@@ -108,6 +111,11 @@ export default {
     }
   },
   methods: {
+	goAccountRecord(){
+		this.$router.push({
+			name: "accountRecord",
+		});
+	},
     popupCloseEvent() {
       Object.assign(this.popupValue, this.searchValue);
     },
@@ -119,7 +127,7 @@ export default {
         ktv: this.$store.state.ktv.ktvID,
         type: this.searchValue.contract_type == 0 ? "":this.searchValue.contract_type,
         state: this.searchValue.contract_statue == 0 ? "":this.searchValue.contract_statue,
-				approve_state: this.searchValue.approval_statue == 0 ? "":this.searchValue.approval_statue
+		approve_state: this.searchValue.approval_statue == 0 ? "":this.searchValue.approval_statue
       };
       this.$nextTick(() => {
         this.$refs.pageList.onReload();

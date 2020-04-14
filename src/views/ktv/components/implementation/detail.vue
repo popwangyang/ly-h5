@@ -6,17 +6,27 @@
 		<span slot="empty">
 			<Empty text="暂无实施信息" title="创建实施信息" @eventBtn="createBtn"/>
 		</span>
+		  <van-cell title="实施方式" value-class="cellValue" :value="formData.mode | modeFilter"/> 
 		  <van-cell title="VOD品牌" value-class="cellValue" :value="vod"/> 
 		  <van-cell title="实施包厢数" value-class="cellValue" :value="formData.box"/> 
 		  <van-cell title="软件系统版本号" value-class="cellValue" :value="formData.version"/> 
 		  <van-cell title="VOD场所ID" value-class="cellValue" :value="formData.vod_ktv_id"/> 
+		  <van-cell title="是否使用版权盒" value-class="cellValue" :value="formData.is_use | isUseFilter"/> 
 		  <van-cell title="网关" value-class="cellValue" :value="formData.gateway"/> 
 		  <van-cell title="服务器" value-class="cellValue" :value="formData.server"/> 
 		  <div class="divider"></div>
-		  <van-cell title="是否使用版权盒" value-class="cellValue" :value="formData.is_use | isUseFilter"/>
 		  <van-cell title="通讯模式" value-class="cellValue" :value="formData.communication_mode | communicationModeFilter"/>
 		  <van-cell title="VOD Sever地址" value-class="cellValue" :value="formData.vod_server"/>
 		  <van-cell title="AD  MAC 地址" value-class="cellValue" :value="formData.ad_mac"/>
+		  <van-cell value-class="YYLabel">
+		  	<span slot="title">备注</span>
+		  	<span class="remark">
+		  		<TextOverflow
+		  		:maxLength="40"
+		  		:text="formData.remarks"
+		  		/>
+		  	</span>
+		  </van-cell>
 		  <div class="divider"></div>
 		  <van-cell title="格式及分辨率" is-link  @click="goSetting('formatResolution')">
 			   <span  v-if="!hasFR">未填写</span>
@@ -42,10 +52,12 @@
 	import { mapActions } from 'vuex'
 	import Empty from '@/components/EmptyComponent'
 	import ContentLoad from '@/components/contentLoad'
+	import TextOverflow from '@/components/textOverflow'
 	export default{
 		components:{
 			ContentLoad,
-			Empty
+			Empty,
+			TextOverflow
 		},
 		data(){
 			return{
@@ -61,6 +73,9 @@
 			communicationModeFilter(state){
 				return state == 1 ? "VOD直连网云端":"VOD连接娱网AD";
 			},
+			modeFilter(type){
+				return type == 1 ? "软件升级":"硬件更换";
+			}
 		},
 		computed:{
 			hasSync(){
@@ -143,6 +158,10 @@
 	.implementationBox{
 		height: 100%;
 		overflow: auto;
+		.YYLabel{
+			flex: 2;
+			text-align: left;
+		}
 		.button{
 			margin-top: 10px;
 			padding: 0 10px;

@@ -3,34 +3,41 @@
 		<ContentLoad :getInfo="getData">
 			<van-cell title="合同类型" value-class="cellValue" :value="formData.type | filterType" />
 			<van-cell title="合同状态" value-class="cellValue" :value="formData.state | filterState" />
-			<van-cell title="合同终止日期" value-class="cellValue" v-if="formData.end_date && formData.state == 4" :value="formData.end_date" />
 			<van-cell title="合同编号" value-class="cellValue" :value="formData.number" />
-			<van-cell title="合同起始日期" value-class="cellValue" v-if="formData.state != 4" :value="formData.begin_date" />
-			<van-cell title="是否分配给VOD设备商" value-class="cellValue" v-if="formData.vod_participation != null" :value="formData.vod_participation | filterVodParticipation" />
-			<expensesDetails v-if="data.set_top_box_purchase_upgrade_cost" :isPerson="showPersonContract" :data="data"></expensesDetails>
-			<div class="divider"></div>
-			<van-cell title="计费方式" value-class="cellValue" :value="formData.billingMethod | filterBillingMethod" />
-			<sweepCodeBillDetail :charging_duration="formData.charging_duration" v-if="formData.charging_duration != null && formData.charging_duration.length != 0"></sweepCodeBillDetail>
-			<van-cell title="计费价格" value-class="cellValue" :value="formData.billingPrice" v-if="formData.billing_price" />
-			<van-cell title="扫码费用(综合技术服务费)" value-class="cellValue" v-if="formData.scan_code_payment != null" :value="formData.scan_code_payment | filterUnitB" />
-			<van-cell title="支付方式" value-class="cellValue" v-if="formData.pay_method" :value="formData.pay_method | filterPayMethod" />
-			<van-cell title="代垫方" value-class="cellValue" v-if="formData.substitute_name" :value="formData.substitute_name" />
-			<van-cell title="承若最晚支付时间" value-class="cellValue" :value="formData.latest_payment_date" v-if="formData.latest_payment_date" />
-			<van-cell title="变更历史" is-link v-if="hasChangeHistory" @click="goHistory"></van-cell>
-			<div class="divider"></div>
-			<van-cell title="机构" value-class="cellValue" v-if="formData.mechanism_name" :value="formData.mechanism_name" />
-			<van-cell title="机构分成比例" value-class="cellValue" v-if="formData.proportion_of_mechanism != null && formData.proportion_of_mechanism!='0.00'" :value="formData.proportion_of_mechanism | filterUnitA" />
-			<van-cell title="场所分成比例" value-class="cellValue" v-if="formData.proportion_of_places != null && formData.proportion_of_places!='0.00'" :value="formData.proportion_of_places | filterUnitA" />
-			<div class="divider"></div>
-			<cell-image title="确认函" :dataList="formData.replies" v-if="formData.replies"></cell-image>
-			<cell-image title="合同附件" :dataList="formData.annex" v-if="formData.annex"></cell-image>
-			<div class="divider"></div>
-			<time-note></time-note>
+			<span v-if="formData.type == 1">
+				<openService :service="formData.service_list" />
+				<cell-image title="合同附件" :dataList="formData.annex"></cell-image>
+				<van-cell title="其他约定" value-class="cellValue">
+					<span slot="label">
+						<TextOverflow :maxLength="50" :text="formData.other_conventions" />
+					</span>
+				</van-cell>
+			</span>
+			<span v-if="formData.type == 2">
+				<div class="divider"></div>
+				<van-cell title="有效年限" value-class="cellValue" :value="10000"/>
+				<van-cell title="接入日期" value-class="cellValue" :value="formData.begin_date"/>
+				<van-cell title="结束日期" value-class="cellValue" :value="formData.end_date" />
+				<div class="divider"></div>
+				<van-cell title="支付方式" value-class="cellValue" :value="formData.pay_method | filterPayMethod" />
+				<span v-if="formData.pay_method == 1">
+					<van-cell title="垫付费用" value-class="cellValue" :value="formData.substitute_payment | filterUnitB" />
+					<van-cell title="代垫方" value-class="cellValue"  :value="formData.substitute" />
+					<van-cell title="代垫方分润比例" value-class="cellValue" :value="formData.proportion_of_substitute | filterUnitA" />
+				</span>
+				<van-cell title="场所分润比例" value-class="cellValue" :value="formData.proportion_of_places | filterUnitA"/>
+				<van-cell title="音乐服务费" value-class="cellValue">
+					<span slot="label">
+						<sweepCodeBillDetail :charging_duration="formData.charging_duration"/>
+					</span>
+				</van-cell>
+			</span>
 			<div v-if="!showPersonContract">
 				<div class="divider"></div>
 				<van-cell title="审批记录" is-link @click="goApprovalRecord" v-if="formData.tag_full"></van-cell>
 				<approval-steps v-if="formData.tag_full" :tag_full="formData.tag_full"></approval-steps>
 			</div>
+			<time-note></time-note>
 		</ContentLoad>
 	</div>
 </template>
@@ -39,18 +46,14 @@
 	import approvalSteps from "./components/approvalSteps";
 	import expensesDetails from "./components/expensesDetails";
 	import sweepCodeBillDetail from './components/sweepCodeBillDetail.vue'
+	import openService from './components/openService.vue'
 	import timeNote from './components/timeNote'
 	import ContentLoad from "@/components/contentLoad";
 	import cellImage from "@/components/cellForm/cellImage";
-	import {
-		cacheMixins
-	} from "@/libs/mixins";
-	import {
-		getContractDetail
-	} from "@/api/ktv";
-	import {
-		Delayering
-	} from '@/libs/util';
+	import TextOverflow from '@/components/textOverflow';
+	import { cacheMixins } from "@/libs/mixins";
+	import { getContractDetail } from "@/api/ktv";
+	import { Delayering } from '@/libs/util';
 	export default {
 		name: "contractDetail",
 		mixins: [cacheMixins],
@@ -59,8 +62,10 @@
 			cellImage,
 			expensesDetails,
 			sweepCodeBillDetail,
+			openService,
 			approvalSteps,
-			timeNote
+			timeNote,
+			TextOverflow
 		},
 		computed: {
 			hasChangeHistory() { // 依据合同详情里的变更计费和最晚支付时间来判断是否合同发生了变更；
@@ -83,7 +88,7 @@
 				return type == 1 ? '是' : '否';
 			},
 			filterType(type) {
-				return type == 1 ? '曲库服务合同' : '综合技术服务合同';
+				return type == 1 ? '曲库服务合同' : '商户星盟';
 			},
 			filterUnitA(value) {
 				let num = isNaN(Number(value)) ? 0 : value;
@@ -97,10 +102,10 @@
 				let result = null;
 				switch (state) {
 					case 1:
-						result = "乙方先行垫付";
+						result = "代理商垫付";
 						break;
 					default:
-						result = "甲方一次性支付";
+						result = "场所支付";
 						break;
 				}
 				return result;
@@ -146,15 +151,12 @@
 			}
 		},
 		mounted() {
-			this.showPersonContract =
-				String(this.$route.query.showPersonContract) === "true" ? true : false;
-			console.log(this.showPersonContract);
+			this.showPersonContract = String(this.$route.query.showPersonContract) === "true" ? true : false;
 		},
 		data() {
 			return {
 				showPersonContract: false, // 是否展示审批流
 				formData: {},
-				data: {},
 			};
 		},
 		methods: {
@@ -178,22 +180,21 @@
 						this.$route.query.contractID
 					).then(res => {
 						this.$store.commit('setContractDetail', res.data);
-						let data = res.data;
-						this.data = data;
-						this.formData = Delayering(data);
-						this.formData.billingMethod = data.billing_method;
-						this.formData.latest_payment_date = data.latest_payment_date;
-						this.formData.replies = JSON.parse(data.replies); //确认函
-						this.formData.annex = JSON.parse(data.annex); //合同附件
-						this.formData.billingPrice = data.billing_method == 2 ?
-							`${data.billing_price}元/次/终端` :
-							`${data.billing_price}元`;
+						this.formData = Delayering(res.data);
+						this.formData.annex = JSON.parse(res.data.annex); //合同附件
+						console.log(this.formData);
 						resolve(res);
 					}).catch(err => {
 						reject(err);
 					});
 				});
 			}
+		},
+		updated() {
+			console.log('ppppp');
+		},
+		mounted() {
+
 		}
 	};
 </script>
