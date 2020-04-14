@@ -4,7 +4,10 @@ import axios from '@/libs/api.request'
 export const getPackageList = (ktv_id) => {
   return axios.request({
     url: `/ktv/pkg/ktvs/${ktv_id}/packages`,
-    params: {},
+    params: {
+      is_delete: true,
+      ordering: '-weight'
+    },
     method: 'get'
   })
 }
