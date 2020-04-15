@@ -5,6 +5,7 @@ import {
 } from 'vant'
 import config from '@/config'
 import store from '@/store'
+import mapData from '@/static/json/map.json'
 
 const {
 	title,
@@ -402,4 +403,15 @@ export const Delayering = (data) => {
 	
 	return result;
 	
+}
+
+// 根据区域code查询区域信息
+export const getMapData = (params) => {
+	if(params.province){
+		return mapData.find(item => {
+			return item.value == params.province;
+		}).children;
+	}else{
+		return mapData;
+	}
 }

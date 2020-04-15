@@ -7,51 +7,71 @@
 				<span>场所数</span>
 				<span>包厢数</span>
 			</div>
-			
-			<div class="item" v-for="(item, index) in dataList" :key="index">
+			<div class="item" v-for="(item,index) in dataList" :key="index">
 				<span>{{item.title}}</span>
 				<span>
 					<span class="number">{{item.ktv}}</span>
-					<span class="tipText">较上周+{{item.add}}</span>
+					<span class="tipText" v-if="item.add">较上周+{{item.add}}</span>
 				</span>
 				<span class="number">{{item.box}}</span>
 			</div>
-			
 		</div>
 	</div>
 </template>
 
 <script>
+	import { dataDisplay } from '@/api/managementData.js'
 	export default{
 		data(){
 			return{
+				data:{},
 				dataList:[
 					{
 						title: '场所签约情况',
-						ktv: '8,080',
-						box: '9,808,080',
-						add: '100'
+						key: 'sign',
+						ktv: '0',
+						box: '0',
+						add: '0'
 					},
 					{
 						title: '场所接入情况',
-						ktv: '8,080',
-						box: '9,808,080',
-						add: '100'
+						key: 'implement',
+						ktv: '0',
+						box: '0',
+						add: '0'
 					},
 					{
 						title: '扫码计费情况',
-						ktv: '8,080',
-						box: '9,808,080',
-						add: '100'
+						key: 'scan',
+						ktv: '0',
+						box: '0',
+						add: '0'
 					},
 					{
 						title: 'CDN开通情况',
-						ktv: '8,080',
-						box: '9,808,080',
-						add: '100'
+						key: 'cdn',
+						ktv: '0',
+						box: '0',
+						add: '0'
 					},
 				]
 			}
+		},
+		methods:{
+			getData(){
+				dataDisplay().then(res => {
+					console.log(res);
+					let data = res.data;
+					this.dataList.forEach(item => {
+						item.ktv = data[`${item.key}_statistics`].ktv_annotate_city_count;
+						item.box = data[`${item.key}_statistics`].ktv_annotate_room_count;
+						item.add = data[`${item.key}_grow`].ktv_group_city_count;
+					})
+				})
+			}
+		},
+		mounted() {
+			this.getData();
 		}
 	}
 </script>

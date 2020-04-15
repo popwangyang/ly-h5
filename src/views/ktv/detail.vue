@@ -49,7 +49,7 @@
 				<van-cell>
 					<span slot="title">营业状态</span>
 					<span>
-						{{detailData.business_state}}
+						{{detailData.business_state | businessStateFilter}}
 					</span>
 				</van-cell>
 				<van-cell>
@@ -122,6 +122,23 @@
 			ContentLoad,
 			ktvTag,
 			TextOverflow
+		},
+		filters:{
+			businessStateFilter(state){
+				let business = '正常';
+				switch(state){
+					case 1:
+					    business = '正常';
+					break;
+					case 2:
+					    business = '停业';
+					break;
+					case 3:
+					    business = '暂停营业';
+					break;
+				}
+				return business;
+			}
 		},
 		computed:{
 			businessTime(){

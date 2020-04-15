@@ -104,7 +104,7 @@ export default {
             } else {
               commit('set_hasWithdrawal', false);
             }
-			commit("SET_THEME", res.data.data[0].user_type);
+			      commit("SET_THEME", res.data.data[0].user_type);
             commit('setUserType', res.data.data[0].user_type);
             commit('setUserName', res.data.data[0].username);
             commit('setUserID', res.data.data[0].user);

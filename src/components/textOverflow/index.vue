@@ -18,14 +18,16 @@
 		},
 		computed:{
 			showText(){
-				if(this.show || this.maxLength >= this.text.length){
-					return this.text;
+				let str = this.text == null ? '':this.text;
+				if(this.show || this.maxLength >= str.length){
+					return str;
 				}else{
-					return this.text.substring(0, this.maxLength)+"...";
+					return str.substring(0, this.maxLength)+"...";
 				}
 			},
 			btnText(){
-				if(this.maxLength >= this.text.length){
+				let str = this.text == null ? '':this.text;
+				if(this.maxLength >= str.length){
 					return "";
 				}else if(this.show){
 					return '收起';

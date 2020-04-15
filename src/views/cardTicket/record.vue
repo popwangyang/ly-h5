@@ -63,7 +63,7 @@
 		methods:{
 			search(){
 				this.$router.push({
-					name: 'searchPage',
+					name: 'cardTicketRecordSearch',
 					query:{
 						type: 'cardTicket'
 					}

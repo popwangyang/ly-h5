@@ -9,17 +9,28 @@
 
 <script>
 	import MapBox from './chinaMap'
-	import {getData} from './chinaMap/components/config.js'
+	import { region } from '@/api/managementData.js'
 	export default{
 		components:{
 			MapBox
 		},
 		data(){
 			return{
-				getData:getData,
-				defaultArea:"河南"
+				getData:region,
+				defaultArea:"全国"
 			}
-		}
+		},
+		methods:{
+			// getData(params){
+			// 	return new Promise((resolve, reject) => {
+			// 		getMapData(params).then(res => {
+			// 			console.log(res);
+			// 			resolve(res);
+			// 		})
+			// 	})
+			// }
+		},
+		mounted() {}
 	}
 </script>
 

@@ -129,8 +129,6 @@ const LDate =
   (lastD < 10 ? "0" + lastD : lastD);
 
 export default {
-  name: "mainPage",
-  mixins: [cacheMixins],
   components: {
     linechart,
     datePick,
