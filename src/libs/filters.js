@@ -5,7 +5,7 @@ const changeMoney = val => {
 
 // 保留两位小数
 const toFixed2 = val => {
-  // return val.toFixed(2);
+  if (val) return parseFloat(val).toFixed(2);
   return val
 }
 

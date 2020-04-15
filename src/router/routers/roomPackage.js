@@ -5,56 +5,44 @@ const comboTime = () => import('@/views/roomPackage/time.vue') // 时间选择
 const comboDetail = () => import('@/views/roomPackage/detail.vue') // 套餐详情
 
 export default [{
-    path: '/roomPackage',
-    name: 'roomPackage',
-    meta: {
-      title: '开房套餐',
-      showBottomTab: true,
-      cacheTos: [],
-    },
-    component: combo
+  path: '/roomPackage',
+  name: 'roomPackage',
+  meta: {
+    title: '开房套餐',
+    showBottomTab: true,
+    cacheTos: [],
   },
-
-  {
-    path: '/combo',
-    name: 'combo',
-    meta: {
-      title: '套餐',
-      showBottomTab: true,
-    },
-    component: combo,
-
-  }, {
-    path: '/newcombo',
-    name: 'newcombo',
-    meta: {
-      title: '套餐新增',
-      showBottomTab: false,
-    },
-    component: newcombo,
-  }, {
-    path: '/manaCombo',
-    name: 'manaCombo',
-    meta: {
-      title: '套餐管理',
-      showBottomTab: false,
-    },
-    component: manaCombo,
-  }, {
-    path: '/comboTime',
-    name: 'comboTime',
-    meta: {
-      title: '可用时段',
-      showBottomTab: false,
-    },
-    component: comboTime,
-  }, {
-    path: '/comboDetail',
-    name: 'comboDetail',
-    meta: {
-      title: '套餐详情',
-      showBottomTab: false,
-    },
-    component: comboDetail,
+  component: combo
+}, {
+  path: '/newcombo',
+  name: 'newcombo',
+  meta: {
+    title: '套餐新增',
+    showBottomTab: false,
   },
-]
+  component: newcombo,
+}, {
+  path: '/manaCombo',
+  name: 'manaCombo',
+  meta: {
+    title: '套餐管理',
+    showBottomTab: false,
+  },
+  component: manaCombo,
+}, {
+  path: '/comboTime',
+  name: 'comboTime',
+  meta: {
+    title: '可用时段',
+    showBottomTab: false,
+  },
+  component: comboTime,
+}, {
+  path: '/comboDetail',
+  name: 'comboDetail',
+  meta: {
+    title: '套餐详情',
+    showBottomTab: false,
+  },
+  component: comboDetail,
+}, ]

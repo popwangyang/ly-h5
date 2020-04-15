@@ -34,7 +34,7 @@
 <script>
 import { getPackageList } from "@/api/combo";
 export default {
-  name: "",
+  name: "roomPackage",
   data() {
     return {
       showLoading: true,

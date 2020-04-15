@@ -5,7 +5,7 @@ export const getPackageList = (ktv_id) => {
   return axios.request({
     url: `/ktv/pkg/ktvs/${ktv_id}/packages`,
     params: {
-      is_delete: true,
+      is_delete: false,
       ordering: '-weight'
     },
     method: 'get'
@@ -47,5 +47,16 @@ export const modiCombo = (quary, data) => {
     url: `/ktv/pkg/ktvs/${quary.ktv_id}/packages/${quary.pk}`,
     method: 'put',
     data
+  })
+}
+
+// 套餐批量管理
+export const manaCombo = (quary, package_opts) => {
+  return axios.request({
+    url: `/ktv/pkg/ktvs/${quary.ktv_id}/packages/batch_manage`,
+    method: 'put',
+    data: {
+      package_opts
+    }
   })
 }
