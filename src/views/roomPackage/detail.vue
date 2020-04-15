@@ -1,50 +1,57 @@
 <template>
-  <div class="comboDetail">
+  <div class="comboDetail" v-if="combo">
     <div class="title-wrapper">
       <div class="left">
-        <span class="name">{{comboName}}</span>
-        <span class="status">{{comboEnabled?"已上架":"未上架"}}</span>
+        <span class="name">{{combo.name}}</span>
+        <span class="status">{{combo.enabled?"已上架":"未上架"}}</span>
       </div>
     </div>
 
-    <div class="combo-detail-cont" v-if="detail && Array.isArray(detail)">
+    <div class="combo-detail-cont" v-if="combo.goods && Array.isArray(combo.goods)">
       <div class="title">
         <span>商品名称</span>
         <span>数量</span>
         <span>单价</span>
       </div>
-      <div class="detailcont" v-for="(item, index) in detail" :key="index">
+      <div class="detailcont" v-for="(item, index) in combo.goods" :key="index">
         <span>{{item.name}}</span>
         <span>{{item.count || 0}}</span>
-        <span>{{item.original_price || 0}}元</span>
+        <span>{{item.original_price |toFixed2}}元</span>
       </div>
     </div>
 
     <p class="noneInfo">
-      <van-loading type="spinner" v-if="!detail"></van-loading>
-      <span v-if="detail.length === 0">暂无商品信息</span>
+      <van-loading type="spinner" v-if="!combo.goods"></van-loading>
+      <span v-if="combo.goods.length === 0">暂无商品信息</span>
     </p>
 
     <div class="detail-bottom">
       <div class="leftpart">
-        <p class="yuan">原价：￥100.00</p>
-        <p class="youhui">优惠价：￥60.00</p>
+        <p class="yuan">原价：￥{{combo.original_price|toFixed2}}</p>
+        <p class="youhui">优惠价：￥{{combo.actual_price|toFixed2}}</p>
       </div>
       <div class="rightpart">
         <span class="del bt" @click="delPop">删除</span>
-        <span class="down bt">下架</span>
+        <span v-if="combo.enabled" class="down bt" @click="opWays">下架</span>
+        <span v-else class="down bt" @click="opWays">上架</span>
         <span class="edit bt">编辑</span>
       </div>
     </div>
+    <van-overlay :show="overlay">
+      <div class="overlay">
+        <van-loading />
+      </div>
+    </van-overlay>
   </div>
 </template>
 
 <script>
-import { modiCombo, deleCombo } from "@/api/combo";
+import { getPackageDetail, modiCombo, deleCombo } from "@/api/combo";
 export default {
   name: "",
   data() {
     return {
+      overlay: false, // 加载中
       showDel: false, // 删除
       showLoading: true,
       pkname: "优选套餐", // 套餐默认名称
@@ -69,26 +76,53 @@ export default {
     };
   },
   computed: {
-    // 套餐名称
-    comboName() {
-      return this.$store.state.combo.comboItem.name || "";
-    },
-    // 套餐状态
-    comboEnabled() {
-      return this.$store.state.combo.comboItem.enabled;
-    },
-    // 商品详情
-    detail() {
-      return this.$store.state.combo.comboItem.goods;
+    // 套餐
+    combo() {
+      return this.$store.state.combo.comboItem;
     }
   },
   methods: {
+    // 上下架
+    opWays() {
+      this.overlay = true;
+      this.modiComboFunction();
+    },
     // 修改相关
     modiComboFunction() {
-      modiCombo({
-        ktv_id: this.$store.state.user.ktv_id,
-        pk: this.$store.state.combo.comboItem.id
-      }).then(res => {});
+      modiCombo(
+        {
+          ktv_id: this.$store.state.user.ktv_id,
+          pk: this.$store.state.combo.comboItem.id
+        },
+        {
+          enabled: !this.combo.enabled
+        }
+      ).then(res => {
+        if (res.status < 400) {
+          this.$toast({
+            message: this.$store.state.combo.comboItem.enabled
+              ? "套餐已下架"
+              : "套餐已上架",
+            type: "success"
+          });
+          getPackageDetail(
+            this.$store.state.user.ktv_id,
+            this.$store.state.combo.comboItem.id
+          ).then(r => {
+            if (r.status < 400) {
+              this.$store.commit("set_comboItemAttr", {
+                attr: "enabled",
+                val: !this.combo.enabled
+              });
+              this.$store.commit("set_comboItemAttr", {
+                attr: "goods",
+                val: r.data.goods
+              });
+              this.overlay = false;
+            }
+          });
+        }
+      });
     },
     // 删除确认
     delPop() {
@@ -115,7 +149,7 @@ export default {
               });
               done();
               _this.$router.push({
-                name: "combo"
+                name: "roomPackage"
               });
             }
           });
@@ -130,6 +164,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overlay {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-left: 45%;
+}
 .noneInfo {
   text-align: center;
   color: #afacac;
