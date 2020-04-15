@@ -66,7 +66,7 @@
 			padding: 0 10px;
 			align-items: center;
 			justify-content: center;
-			max-width: 100px;
+			width: 60px;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;

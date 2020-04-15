@@ -74,7 +74,7 @@
 						}
 					}).value;
 				}
-				send_data.code = code;
+				send_data.province = code;
 				this.getData(send_data).then(res => {
 					this.regionData = res;
 					this.setLengedData();

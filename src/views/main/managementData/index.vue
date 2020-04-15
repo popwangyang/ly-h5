@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="managementDataBox">
 		<DataDisplay/>
 		<CircularData/>
 		<RegionData/>
@@ -7,6 +7,7 @@
 </template>
 
 <script>
+	import ContentLoad from "@/components/contentLoad";
 	import DataDisplay from './components/dataDisplay.vue'
 	import CircularData from './components/circularData'
 	import RegionData from './components/region'
@@ -24,5 +25,8 @@
 	}
 </script>
 
-<style>
+<style scoped="scoped" lang="less">
+	.managementDataBox{
+		height: 100%;
+	}
 </style>

@@ -11,7 +11,7 @@ export default [{
     meta: {
       title: '首页',
       showBottomTab: true,
-      cacheTos: ['KTVDetail', 'cardTicket', 'OrderSharing', 'personalCenter']
+      cacheTos: ['ktvmanage','KTVDetail', 'cardTicket', 'OrderSharing', 'personalCenter']
     },
     component: main
   }, {

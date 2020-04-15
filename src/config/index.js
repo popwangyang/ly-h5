@@ -29,7 +29,7 @@ export default {
 				},
 				{
 					id: 2,
-					text: '技术服务协议',
+					text: '商户星盟',
 					isSelected: false
 				}
 			]

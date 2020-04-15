@@ -9,33 +9,12 @@ export default [{
     meta: {
       title: '订单管理',
       showBottomTab: true,
-      cacheTos: [],
+      cacheTos: ['roomPackage', 'cardTicket','personalCenter','managementDetail'],
     },
     component: orderManagement,
-	children:[
-			{
-				path:'toBeDelivered',
-				name: 'toBeDelivered',
-				meta:{
-					title: '订单管理',
-					cacheTos:['managementDetail'],
-					showBottomTab: true,
-				},
-				component: toBeDelivered
-			},
-			{
-				path:'haveBeenDelivered',
-				name: 'haveBeenDelivered',
-				meta:{
-					title: '订单管理',
-					showBottomTab: true,
-				},
-				component: haveBeenDelivered
-			},
-		]
   },
   {
-	path: '/managementDetail',
+	path: '/orderManagement/managementDetail',
 	name: 'managementDetail',
 	meta: {
 	  title: '订单详情',

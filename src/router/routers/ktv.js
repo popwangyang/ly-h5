@@ -36,7 +36,7 @@ export default [{
 		component: ktvmanage
 	},
 	{
-		path: '/KTVDetail',
+		path: '/ktvmanage/KTVDetail',
 		name: 'KTVDetail',
 		meta: {
 			title: '场所详情',
@@ -45,7 +45,7 @@ export default [{
 		component: ktvDetail
 	},
 	{
-		path: '/contract',
+		path: '/ktvmanage/KTVDetail/contract',
 		name: 'contract',
 		meta: {
 			title: '合同信息',
@@ -54,7 +54,7 @@ export default [{
 		component: contract
 	},
 	{
-		path: '/accountRecord',
+		path: '/ktvmanage/KTVDetail/contract/accountRecord',
 		name: 'accountRecord',
 		meta: {
 			title: '计费记录'
@@ -62,7 +62,7 @@ export default [{
 		component: accountRecord
 	},
 	{
-		path: '/contractDetail',
+		path: '/ktvmanage/KTVDetail/contract/contractDetail',
 		name: 'contractDetail',
 		meta: {
 			title: '合同详情',
@@ -79,7 +79,7 @@ export default [{
 		component: contractChangeHistory
 	},
 	{
-		path: '/approvalRecord',
+		path: '/ktvmanage/KTVDetail/contract/contractDetail/approvalRecord',
 		name: 'approvalRecord',
 		meta: {
 			title: '审批记录'
@@ -87,7 +87,7 @@ export default [{
 		component: approvalRecord
 	},
 	{
-		path: '/implementation',
+		path: '/ktvmanage/KTVDetail/implementation',
 		name: 'implementation',
 		meta: {
 			title: '实施信息'
@@ -95,7 +95,7 @@ export default [{
 		component: implementation
 	},
 	{
-		path: '/impletDetail',
+		path: '/ktvmanage/KTVDetail/implementation/impletDetail',
 		name: 'impletDetail',
 		meta: {
 			title: '实施信息'
@@ -103,7 +103,7 @@ export default [{
 		component: impletDetail
 	},
 	{
-		path: '/boxInformation',
+		path: '/ktvmanage/KTVDetail/implementation/impletDetail/boxInformation',
 		name: 'boxInformation',
 		meta: {
 			title: '包厢信息'
@@ -111,7 +111,7 @@ export default [{
 		component: boxInformation
 	},
 	{
-		path: '/QRCode',
+		path: '/ktvmanage/KTVDetail/implementation/impletDetail/QRCode',
 		name: 'QRCode',
 		meta: {
 			title: '二维码投射坐标'
@@ -119,7 +119,7 @@ export default [{
 		component: QRCode
 	},
 	{
-		path: '/formatResolution',
+		path: '/ktvmanage/KTVDetail/implementation/impletDetail/formatResolution',
 		name: 'formatResolution',
 		meta: {
 			title: '格式及分辨率'
@@ -127,7 +127,7 @@ export default [{
 		component: formatResolution
 	},
 	{
-		path: '/account',
+		path: '/ktvmanage/KTVDetail/account',
 		name: 'account',
 		meta: {
 			title: '账户信息'
@@ -135,7 +135,7 @@ export default [{
 		component: account
 	},
 	{
-		path: '/accountNumber',
+		path: '/ktvmanage/KTVDetail/accountNumber',
 		name: 'accountNumber',
 		meta: {
 			title: '账号信息'
@@ -143,7 +143,7 @@ export default [{
 		component: accountNumber
 	},
 	{
-		path: '/activity',
+		path: '/ktvmanage/KTVDetail/activity',
 		name: 'activity',
 		meta: {
 			title: '活动信息'

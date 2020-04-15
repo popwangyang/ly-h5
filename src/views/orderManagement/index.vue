@@ -1,5 +1,5 @@
 <template>
-	<div class="orderManagementBox" ref="scrollTop">
+	<div class="orderManagementBox" ref="scroll">
 		<van-tabs line-height="6" v-model="currentTabComponent" line-width="50">
 		  <van-tab name="toBeDelivered">
 			  <span slot="title">

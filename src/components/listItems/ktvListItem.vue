@@ -1,21 +1,25 @@
 <template>
-	<van-cell value="营业中" is-link class="ktvListItem" @click="goDetail">
+	<van-cell  class="ktvListItem" @click="goDetail">
 		 <div slot="title" class="title">
-			 <span class="name">{{data.ktv_name}}</span>
-			 <ktvTag :value="data.cate"></ktvTag>
+			 <span>
+				<span class="name">{{data.ktv_name}}</span>
+				<ktvTag :value="data.cate"></ktvTag> 
+			 </span>
+			 <span>
+				 <span class="value3" v-if="data.implement_status == 1">
+				 			待确认到账
+				 </span>
+				 <span class="value2" v-if="data.implement_status == 2">
+				    待实施
+				 </span>
+				 <span class="value1" v-if="data.implement_status == 3">
+				 	已实施
+				 </span>
+			 </span>
 		 </div>
-		 <span slot="label">
+		 <span slot="label" class="label">
 			 <span>{{data.province}}{{data.city}}{{data.county}}</span>
 			 <span style="margin-left: 40px;">实际包厢数: {{data.room_num}}</span>
-		 </span>
-		 <span class="value3" v-if="data.implement_status == 1">
-			待确认到账
-		 </span>
-		 <span class="value2" v-if="data.implement_status == 2">
-		    待实施
-		 </span>
-		 <span class="value1" v-if="data.implement_status == 3">
-		 	已实施
 		 </span>
 	</van-cell>
 </template>
@@ -51,7 +55,10 @@
 <style scoped="scoped" lang="less">
 	.ktvListItem{
 		.title{
-			&>span{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			&>span>span{
 				vertical-align: top;
 			}
 			.name{
@@ -65,6 +72,13 @@
 				font-size: 14px;
 				font-weight:900;
 				font-family: Microsoft Yahei;
+			}
+		}
+		.label{
+			display: flex;
+			&>span{
+				flex: 1;
+				
 			}
 		}
 		.value1{
