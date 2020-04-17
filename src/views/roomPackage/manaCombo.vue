@@ -3,7 +3,8 @@
     <div v-if="total !== 0">
       <div class="common">
         <p>已上架套餐</p>
-        <TranstionsList>
+		
+        <TranstionsList v-if='up.length > 0'>
           <div class="item" v-for="(item, index) in this.up" :key="item.id">
             <div class="wrapper">
               <div class="cont">
@@ -32,7 +33,9 @@
             />
           </div>
         </TranstionsList>
-        <p v-if="this.up.length === 0" class="mtp5 noneInfo">暂无套餐</p>
+		<transition v-else>
+			<p  style="background-color: yellow;" class="mtp5 noneInfo">暂无套餐</p>
+		</transition>
       </div>
       <div class="common">
         <p>已下架套餐</p>
@@ -62,7 +65,7 @@
             />
           </div>
         </TranstionsList>
-        <p v-if="this.down.length === 0" class="mtp5 noneInfo">暂无套餐</p>
+        <p v-if="this.down.length === 0"  class="mtp5 noneInfo">暂无套餐</p>
       </div>
       <div class="common">
         <p>已删除套餐</p>
@@ -242,6 +245,15 @@ export default {
   }
 };
 </script>
+<style>
+	.fade-enter-active, .fade-leave-active {
+	  transition: all .5s ease 0.5s; 
+	}
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	  opacity: 0;
+	 height: 0;
+	}
+</style>
 
 <style lang="scss" scoped>
 .overlay {
@@ -273,7 +285,7 @@ export default {
       display: flex;
       width: 100%;
       align-items: center;
-      transition: all 2s;
+      transition: all 1s;
       .wrapper {
         flex: 1;
         background-color: #fff;

@@ -24,22 +24,27 @@
 				console.log(el);
 			},
 			enter(el, done){
-				console.log(el);
+				Velocity(
+				  el,
+				  { height: 'auto', padding: 0},
+				  { duration: 200,},
+				  { complete: done }
+				)
 			},
 			beforeLeave(el){
-				let box = document.getElementsByClassName('transitionBox')[0];
-				this.boxHeight = box.style.height = box.offsetHeight;
+				// let box = document.getElementsByClassName('transitionBox')[0];
+				// this.boxHeight = box.style.height = box.offsetHeight;
 			},
 			leave(el, done){
 				   Velocity(
 				     el,
 				     { opacity: 0},
-				     { duration: 200 },
+				     { duration: 100 },
 				   )
 					Velocity(
 					  el,
-					  { height: '0px', padding:0},
-					  { duration: 500, easing: 'swing' },
+					  { height: '0px', padding:0, display:'none'},
+					  { duration: 200,},
 					  { complete: done }
 					)
 			}
