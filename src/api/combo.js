@@ -41,11 +41,20 @@ export const deleCombo = (ktv_id, pk) => {
   })
 }
 
-// 修改套餐
+// 修改套餐外信息
 export const modiCombo = (quary, data) => {
   return axios.request({
     url: `/ktv/pkg/ktvs/${quary.ktv_id}/packages/${quary.pk}`,
     method: 'put',
+    data
+  })
+}
+
+// 修改套餐内信息
+export const modiInfoCombo = (quary, data) => {
+  return axios.request({
+    url: `/ktv/pkg/ktvs/${quary.ktv_id}/packages/${quary.pk}`,
+    method: 'post',
     data
   })
 }

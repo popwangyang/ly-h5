@@ -40,6 +40,7 @@ export default {
       showLoading: true,
       results: [], // 列表
       total: 0, // 套餐数量
+      isCreate: false, // 是否可创建
       listImg: require("@/assets/alipay.png"),
       recommendImg: require("@/assets/backicon.png")
     };
@@ -59,6 +60,7 @@ export default {
     getList() {
       getPackageList(this.$store.state.user.ktv_id).then(res => {
         if (res.status === 200 || res.status < 400) {
+          this.isCreate = true;
           this.total = res.data.results.length;
           this.results = res.data.results;
           if (this.results.length) {
@@ -69,12 +71,29 @@ export default {
         }
       });
     },
+    // 管理套餐
     manaCombo() {
       this.$router.push({
         name: "manaCombo"
       });
     },
+    // 创建套餐
     newCombo() {
+      if (this.total === 0 && !this.isCreate) {
+        this.$toast({
+          message: "套餐列表加载中",
+          type: "fail"
+        });
+        return;
+      }
+      if (this.total === 10) {
+        this.$dialog.alert({
+          message: "套餐数量上限为10，请删除部分套餐后操作。",
+          confirmButtonText: "知道了"
+        });
+        return;
+      }
+      this.$store.commit("set_addNewComboItem", null);
       this.$router.push({
         name: "newcombo"
       });
