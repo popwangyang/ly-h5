@@ -1,7 +1,7 @@
 <template>
   <div class="newCombo">
     <!-- <van-cell title="套餐封面" value="请选择" is-link @click="show=true" /> -->
-    <van-field required maxlength="20" input-align="right" label="套餐名称" v-model="pkname" />
+    <van-field clearable required maxlength="20" input-align="right" label="套餐名称" v-model="pkname" />
     <div v-for="(item, index) in listArr" :key="index" class="newCombo-item">
       <!-- <img class="del" width="20" height="20" :src="listImg" alt /> -->
       <span v-if="listArr.length !== 1" @click="del(index)" class="del">删除</span>
@@ -153,9 +153,13 @@ export default {
   methods: {
     // 新增套餐
     addCombo() {
+      let arr = this.listArr.filter(function(e) {
+        e.original_price = parseFloat(e.original_price);
+        return e;
+      });
       let data = {
         name: this.pkname,
-        goods: !this.listArr[0].name ? [] : this.listArr,
+        goods: !this.listArr[0].name ? [] : arr,
         period_weekdays: this.period_weekdays,
         period_time_start: this.period_time_start,
         period_time_end: this.period_time_end,
@@ -167,6 +171,9 @@ export default {
           this.$toast({
             message: "套餐新增成功",
             type: "success"
+          });
+          this.$router.push({
+            name: "roomPackage"
           });
         }
       });

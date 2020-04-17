@@ -1,65 +1,226 @@
 <template>
   <div class="manaCombo">
-    <div class="common">
-      <p>已上架商品</p>
-      <div class="wrapper">
-        <div class="cont">
-          <div class="index">1</div>
-          <div class="cont-cont">
-            <p class="name">套餐名称A</p>
-            <p class="price">
-              <span class="s1">￥60.00</span>
-              <span class="s2">￥100.00</span>
-            </p>
+    <div v-if="total !== 0">
+      <div class="common">
+        <p>已上架套餐</p>
+        <div class="wrapper" v-for="(item, index) in this.up" :key="index">
+          <div class="cont">
+            <div class="index">{{index + 1}}</div>
+            <div class="cont-cont">
+              <p class="name">{{item.name}}</p>
+              <p class="price">
+                <span class="s1">￥{{item.actual_price}}</span>
+                <span class="s2">￥{{item.original_price}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="op">
+            <span v-if="index!==0" class="op-s op1" @click="upway(item,index)">上移</span>
+            <span v-if="index!==0" class="op-s op2" @click="firstway(item,index)">置顶</span>
+            <span class="op-s op3" @click="downway(item,index)">下架</span>
+          </div>
+          <img
+            @click="clearItem('up', item, index)"
+            class="cancelImg"
+            width="15"
+            height="15"
+            :src="cancelImg"
+            alt
+          />
+        </div>
+        <p v-if="this.up.length === 0" class="mtp5 noneInfo">暂无套餐</p>
+      </div>
+      <div class="common">
+        <p>已下架套餐</p>
+        <div class="wrapper" v-for="(item, index) in this.down" :key="index">
+          <div class="cont">
+            <div class="cont-cont">
+              <p class="name">{{item.name}}</p>
+              <p class="price">
+                <span class="s1">￥{{item.actual_price}}</span>
+                <span class="s2">￥{{item.original_price}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="op">
+            <span class="op-s op1" @click="inUp(item,index)">上架</span>
+          </div>
+          <img
+            @click="clearItem('dow', item, index)"
+            class="cancelImg"
+            width="15"
+            height="15"
+            :src="cancelImg"
+            alt
+          />
+        </div>
+        <p v-if="this.down.length === 0" class="mtp5 noneInfo">暂无套餐</p>
+      </div>
+
+      <div class="common">
+        <p>已删除套餐</p>
+        <div class="wrapper" v-for="(item, index) in this.clear" :key="index">
+          <div class="cont">
+            <div class="cont-cont">
+              <p class="name">{{item.name}}</p>
+              <p class="price">
+                <span class="s1">￥{{item.actual_price}}</span>
+                <span class="s2">￥{{item.original_price}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="op">
+            <span @click="reset(item, index)" class="op-s op1">恢复</span>
           </div>
         </div>
-        <div class="op">
-          <span class="op-s op1">上移</span>
-          <span class="op-s op2">置顶</span>
-          <span class="op-s op3">下架</span>
-        </div>
-        <img class="cancelImg" width="15" height="15" :src="cancelImg" alt />
+        <p v-if="this.clear.length === 0" class="mtp5 noneInfo">暂无删除套餐</p>
       </div>
     </div>
-    <div class="common">
-      <p>已下架商品</p>
-      <div class="wrapper">
-        <div class="cont">
-          <div class="index">2</div>
-          <div class="cont-cont">
-            <p class="name">套餐名称B</p>
-            <p class="price">
-              <span class="s1">￥60.00</span>
-              <span class="s2">￥100.00</span>
-            </p>
-          </div>
-        </div>
-        <div class="op">
-          <span class="op-s op1">上架</span>
-        </div>
-        <img class="cancelImg" width="15" height="15" :src="cancelImg" alt />
-      </div>
-    </div>
+
+    <p class="noneInfo" v-else>
+      <van-loading type="spinner" v-if="showLoading"></van-loading>
+      <span v-else>暂无套餐</span>
+    </p>
     <div class="bottom">
       <div @click="cancle" class="btn cancle">取消</div>
-      <div class="btn save">保存</div>
+      <div @click="save" class="btn save">保存</div>
     </div>
+
+    <van-overlay :show="overlay">
+      <div class="overlay">
+        <van-loading />
+      </div>
+    </van-overlay>
   </div>
 </template>
 
 <script>
+import { getPackageList, manaCombo } from "@/api/combo";
 export default {
   name: "",
   data() {
     return {
-      cancelImg: require("@/assets/comboCancel.png")
+      overlay: false, // 加载中
+      showLoading: true, // 加载中
+      total: 0, // 列表总数
+      cancelImg: require("@/assets/comboCancel.png"),
+      up: [], // 上架列表
+      down: [], // 下架列表
+      clear: [] // 已删除列表
     };
   },
+  watch: {},
+  mounted() {
+    this.getList();
+  },
   methods: {
+    // 删除套餐
+    clearItem(w, item, index) {
+      if (w === "up") {
+        this.up.splice(index, 1);
+      } else {
+        this.down.splice(index, 1);
+      }
+      this.clear.push(item);
+      this.$toast({
+        message: "套餐已删除",
+        type: "success"
+      });
+    },
+    // 恢复套餐
+    reset(item, index) {
+      if (item.enabled) {
+        this.up.push(item);
+      } else {
+        this.down.push(item);
+      }
+      this.clear.splice(index, 1);
+    },
+    // 获取套餐列表
+    getList() {
+      this.up = [];
+      this.down = [];
+      getPackageList(this.$store.state.user.ktv_id).then(res => {
+        if (res.status === 200 || res.status < 400) {
+          this.total = res.data.results.length;
+          let results = res.data.results;
+          results.forEach(e => {
+            if (e.enabled) {
+              this.up.push(e);
+              return;
+            }
+            this.down.push(e);
+          });
+          if (results.length) {
+            this.showLoading = true;
+            return;
+          }
+          this.showLoading = false;
+        }
+      });
+    },
+    // 数据处理
+    deepCopyHandle(arr, attr, val) {
+      let _a = JSON.stringify(arr);
+      let _b = JSON.parse(_a);
+      for (let item of _b) {
+        item[attr] = val;
+      }
+      return _b;
+    },
+    //上移
+    upway(item, index) {
+      let _a = JSON.stringify(this.up[index]);
+      let _b = JSON.stringify(this.up[index - 1]);
+      let a = JSON.parse(_a);
+      let b = JSON.parse(_b);
+      this.up.splice(index, 1, b);
+      this.up.splice(index - 1, 1, a);
+    },
+    //置顶
+    firstway(item, index) {
+      this.up.unshift(this.up.splice(index, 1)[0]);
+    },
+    //下架
+    downway(item, index) {
+      this.down.unshift(item);
+      this.up.splice(index, 1);
+    },
+    //上架
+    inUp(item, index) {
+      this.up.push(item);
+      this.down.splice(index, 1);
+    },
     // 取消
     cancle() {
       this.$router.push({
-        name: "combo"
+        name: "roomPackage"
+      });
+    },
+    // 保存
+    save() {
+      this.overlay = true;
+      let clear = this.deepCopyHandle(this.clear, "is_delete", true);
+      let up = this.deepCopyHandle(this.up, "enabled", true);
+      let down = this.deepCopyHandle(this.down, "enabled", false);
+      let arrTemp = [...up, ...down, ...clear];
+      let arr1 = JSON.stringify(arrTemp);
+      let arr2 = JSON.parse(arr1);
+      let len = arr2.length;
+      for (let i = 0; i < arr2.length; i++) {
+        arr2[i].weight = len--;
+      }
+      manaCombo({ ktv_id: this.$store.state.user.ktv_id }, arr2).then(r => {
+        if (r.status < 400) {
+          this.$toast({
+            message: "保存成功",
+            type: "success"
+          });
+          this.overlay = false;
+          this.$router.push({
+            name: "roomPackage"
+          });
+        }
       });
     }
   }
@@ -67,6 +228,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overlay {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-left: 45%;
+}
+.noneInfo {
+  text-align: center;
+  color: #afacac;
+  margin-top: 30%;
+}
+.mtp5 {
+  margin-top: 5% !important;
+}
 .manaCombo {
   padding-bottom: 45px;
   .common {
