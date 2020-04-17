@@ -1,6 +1,6 @@
 <template>
 	<div class="orderManagementBox" ref="scroll">
-		<van-tabs line-height="6" v-model="currentTabComponent" line-width="50">
+		<van-tabs line-height="6" v-model="currentTabComponent" line-width="50" animated>
 		  <van-tab name="toBeDelivered">
 			  <span slot="title">
 				 <TabTitle title="待配送" :info="undeliveredNum"/> 
@@ -68,7 +68,6 @@
 			height: 100%;
 		}
 		.van-tabs__content{
-			overflow: auto;
 			flex: 1;
 		}
 		.van-tabs__nav--line{
