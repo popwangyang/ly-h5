@@ -95,6 +95,7 @@ export default {
       EndTime: "", // 终止时间
       show: false,
       showEnd: false,
+      pks: null,
       currentTime: "", // 开始显示时间
       currentEndTime: "", // 结束显示时间
       comboright: require("@/assets/comboright.png"),
@@ -151,6 +152,29 @@ export default {
         });
         return;
       }
+      // 起始时间不能小于结束时间
+      let a =
+        this.currentTime.split(":")[0] ===
+        this.currentEndTime.split(":")[0].substring(3);
+      let d = this.currentEndTime.split(":")[0].substring(0, 2) === "当日";
+      let b =
+        this.currentTime.split(":")[0] !==
+        this.currentEndTime.split(":")[0].substring(3);
+      let e =
+        this.currentTime.split(":")[0] >=
+        this.currentEndTime.split(":")[0].substring(3);
+      let c =
+        this.currentTime.split(":")[1] >= this.currentEndTime.split(":")[1];
+      if ((a && c && d) || (b && e && d)) {
+        this.$toast.fail({
+          duration: 2500,
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "起始时间不能晚于结束时间"
+        });
+        return;
+      }
       this.$router.push({
         name: "newcombo",
         query: {
@@ -159,7 +183,8 @@ export default {
           period_time_end: this.EndTime,
           currentEndTime: this.currentEndTime,
           currentTime: this.currentTime,
-          currentWeek: this.currentWeek
+          currentWeek: this.currentWeek,
+          pk: this.pks
         }
       });
     }, // 起始时间
@@ -191,7 +216,17 @@ export default {
         return options.filter(option => option % 30 === 0);
       }
       return options;
+    },
+    init() {
+      this.currentTime = this.$store.state.combo.addNewComboItem.currentTime;
+      this.pks = this.$store.state.combo.addNewComboItem.pks;
+      this.currentEndTime = this.$store.state.combo.addNewComboItem.currentEndTime;
+      this.result =
+        this.$store.state.combo.addNewComboItem.period_weekdays || [];
     }
+  },
+  created() {
+    this.init();
   },
   computed: {
     currentWeek() {

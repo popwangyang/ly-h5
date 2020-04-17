@@ -34,7 +34,7 @@
         <span class="del bt" @click="delPop">删除</span>
         <span v-if="combo.enabled" class="down bt" @click="opWays">下架</span>
         <span v-else class="down bt" @click="opWays">上架</span>
-        <span class="edit bt">编辑</span>
+        <span @click="editItem" class="edit bt">编辑</span>
       </div>
     </div>
     <van-overlay :show="overlay">
@@ -121,6 +121,15 @@ export default {
               this.overlay = false;
             }
           });
+        }
+      });
+    },
+    // 修改
+    editItem() {
+      this.$router.push({
+        name: "newcombo",
+        query: {
+          pk: this.combo.id
         }
       });
     },
