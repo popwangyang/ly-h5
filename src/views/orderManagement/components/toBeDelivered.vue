@@ -6,12 +6,14 @@
 		ref="pageList"
 		>
 			<template v-slot:default="slotProps">
-				 <DeliveredListItem v-for="(item, index) in slotProps.dataList" 
-				 :itemData="item"
-				 :key="item.id"
-				 @showDetail="showDetail"
-				 @haveBeDeliver="haveBeDeliver"
-				 />
+				<TranstionsList>
+					<DeliveredListItem v-for="(item, index) in slotProps.dataList"
+					:itemData="item"
+					:key="item.id"
+					@showDetail="showDetail"
+					@haveBeDeliver="haveBeDeliver"
+					/>
+				</TranstionsList>
 			</template>
 		</PageList>
 	</div>
@@ -20,10 +22,12 @@
 <script>
 	import PageList from '@/components/pageList'
 	import DeliveredListItem from '@/components/listItems/deliveredListItem'
+	import TranstionsList from '@/components/transtionList'
 	export default{
 		components:{
 			PageList,
-			DeliveredListItem
+			DeliveredListItem,
+			TranstionsList
 		},
 		data(){
 			return {
@@ -124,5 +128,6 @@
 <style scoped="scoped" lang="less">
 	.toBeDeliveredBox{
 		height: 100%;
+		overflow: auto;
 	}
 </style>

@@ -1,34 +1,32 @@
 <template>
-	<transition name="fade">
-		<div class="deliveredListItemBox">
-			<div class="box">
-				<span class="title">
-					<span>
-						<span class="title_top">包厢</span>
-						<span class="title_top">{{itemData.countNumber}}</span>
-						<span class="title_state">{{itemData.statues | statuesFilter}}</span>
-					</span>
-					<span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
-					<span v-else></span>
-				</span>			
-				<span class="tcname">{{itemData.mealName}}</span>
-				<div class="spnameBox" ref="spnameBox" :style="{maxHeight: maxHeight}">
-					<span class="spname" v-for="(item, index) in meals" :key="index">
-						<span>{{item.name}}</span>
-						<span>x{{item.number}}</span>
-					</span>
-				</div>
-				<span class="ellipsis" v-show="itemData.meals.length > 3 && !openListStatues">...</span>
-				<span class="bottom">
-					<span>{{itemData.create_date}}</span>
-					<span>
-						<span class="btn qx_btn" @click="detailBtn">详情</span>
-						<span class="btn confirm_btn" @click="confirmBtn" v-if="itemData.statues == 1 ? true:false">确认配送</span>
-					</span>
+	<div class="deliveredListItemBox">
+		<div class="box">
+			<span class="title">
+				<span>
+					<span class="title_top">包厢</span>
+					<span class="title_top">{{itemData.countNumber}}</span>
+					<span class="title_state">{{itemData.statues | statuesFilter}}</span>
+				</span>
+				<span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
+				<span v-else></span>
+			</span>			
+			<span class="tcname">{{itemData.mealName}}</span>
+			<div class="spnameBox" ref="spnameBox" :style="{maxHeight: maxHeight}">
+				<span class="spname" v-for="(item, index) in meals" :key="index">
+					<span>{{item.name}}</span>
+					<span>x{{item.number}}</span>
 				</span>
 			</div>
+			<span class="ellipsis" v-show="itemData.meals.length > 3 && !openListStatues">...</span>
+			<span class="bottom">
+				<span>{{itemData.create_date}}</span>
+				<span>
+					<span class="btn qx_btn" @click="detailBtn">详情</span>
+					<span class="btn confirm_btn" @click="confirmBtn" v-if="itemData.statues == 1 ? true:false">确认配送</span>
+				</span>
+			</span>
 		</div>
-	</transition>
+	</div>
 </template>
 
 <script>
@@ -89,24 +87,21 @@
 		}
 	}
 </script>
-<style>
-	.fade-enter-active, .fade-leave-active {
-	  transition: all .5s;
-	}
-	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	  opacity: 0;
-	  transform: translateY(-10px);
-	}
-</style>
 <style scoped="scoped" lang="less">
 	.deliveredListItemBox{
-		margin: 10px;
 		background-color: white;
 		padding: 15px;
+		transition: all 1s;
+		display: flex;
+		width: 100%;
+		box-sizing: border-box;
+		border: 10px solid;
+		border-color: #f6f6f6; 
 		.box{
 			border: 1px solid #EEEEEE;
 			padding: 10px;
 			display: flex;
+			width: 100%;
 			flex-direction: column;
 			.btn{
 				padding: 2px 4px;

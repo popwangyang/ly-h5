@@ -88,5 +88,6 @@
 <style scoped="scoped" lang="less">
 	.haveBeenDeliveredBox{
 		height: 100%;
+		overflow: auto;
 	}
 </style>

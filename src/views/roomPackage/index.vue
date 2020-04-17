@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="combo">
     <div class="combo-top">
       <span class="combo-top-title">套餐列表（{{total}}/10）</span>
@@ -207,3 +208,17 @@ export default {
   margin-top: 10%;
 }
 </style>
+=======
+	<div>
+		
+	</div>
+</template>
+
+<script>
+	
+</script>
+
+<style scoped="scoped" lang="less">
+	
+</style>
+>>>>>>> wangyan
