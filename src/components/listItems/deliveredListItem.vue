@@ -91,12 +91,13 @@
 	.deliveredListItemBox{
 		background-color: white;
 		padding: 15px;
-		transition: all 1s;
+		// transition: all 1s;
 		display: flex;
 		width: 100%;
 		box-sizing: border-box;
-		border: 10px solid;
-		border-color: #f6f6f6; 
+		// overflow: hidden;
+		// border: 10px solid;
+		// border-color: #f6f6f6; 
 		.box{
 			border: 1px solid #EEEEEE;
 			padding: 10px;

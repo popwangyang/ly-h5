@@ -59,6 +59,22 @@
 							{
 								name: '可口可乐',
 								number: 1,
+							},
+							{
+								name: '百威',
+								number: 1,
+							},
+							{
+								name: '可口可乐',
+								number: 1,
+							},
+							{
+								name: '百威',
+								number: 1,
+							},
+							{
+								name: '可口可乐',
+								number: 1,
 							}
 						],
 						create_date:'2020-01-09 12:09:01'
