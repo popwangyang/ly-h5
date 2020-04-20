@@ -1,5 +1,5 @@
 <template>
-  <div class="combo-time">
+  <div class="combo-time" ref="scroll">
     <p class="title">请选择每周可用时间</p>
     <van-checkbox-group class="week" v-model="result">
       <van-checkbox
@@ -48,8 +48,10 @@
 </template>
 
 <script>
+import { cacheMixins } from "@/libs/mixins";
 export default {
-  name: "",
+  name: "comboTime",
+  mixins: [cacheMixins],
   data() {
     return {
       columns: [
@@ -219,7 +221,7 @@ export default {
     },
     init() {
       this.currentTime = this.$store.state.combo.addNewComboItem.currentTime;
-      this.pks = this.$store.state.combo.addNewComboItem.pks;
+      this.pks = this.$store.state.combo.addNewComboItem.pk;
       this.currentEndTime = this.$store.state.combo.addNewComboItem.currentEndTime;
       this.result =
         this.$store.state.combo.addNewComboItem.period_weekdays || [];

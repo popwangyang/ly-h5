@@ -95,7 +95,10 @@ export default {
       }
       this.$store.commit("set_addNewComboItem", null);
       this.$router.push({
-        name: "newcombo"
+        name: "newcombo",
+        query: {
+          c: true
+        }
       });
     }
   }

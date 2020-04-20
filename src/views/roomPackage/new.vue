@@ -1,5 +1,5 @@
 <template>
-  <div class="newCombo">
+  <div class="newCombo" ref="scroll">
     <!-- <van-cell title="套餐封面" value="请选择" is-link @click="show=true" /> -->
     <van-field clearable required maxlength="20" input-align="right" label="套餐名称" v-model="pkname" />
     <div v-for="(item, index) in listArr" :key="index" class="newCombo-item">
@@ -59,15 +59,8 @@
       />
     </van-cell-group>
 
-    <van-cell
-      class="usetime"
-      @click="linkTime"
-      required
-      title="可用时段"
-      :value="useTime"
-      is-link
-      to="comboTime"
-    />
+    <!-- @click="linkTime" -->
+    <van-cell class="usetime" required title="可用时段" :value="useTime" is-link to="comboTime" />
     <van-cell required title="上架状态">
       <van-switch v-model="upChecked" size="24px" />
     </van-cell>
@@ -96,6 +89,7 @@
 </template>
 
 <script>
+import { cacheMixins } from "@/libs/mixins";
 import {
   createContract,
   getPackageDetail,
@@ -103,7 +97,8 @@ import {
   modiInfoCombo
 } from "@/api/combo";
 export default {
-  name: "",
+  name: "newcombo",
+  mixins: [cacheMixins],
   data() {
     return {
       comboPart: "", // 套餐部分信息
@@ -210,6 +205,29 @@ export default {
     period_time_end() {
       return this.$route.query.period_time_end || 0;
     },
+    // 是否新增
+    isAddd() {
+      return this.$route.query.c;
+    },
+    // 数据集合
+    selection() {
+      // let arr = this.listArr.filter(function(e) {
+      //   e.original_price = parseFloat(e.original_price);
+      //   return e;
+      // });
+      let data = {
+        // name: this.pkname,
+        // goods: !this.listArr[0].name ? [] : arr,
+        // enabled: this.upChecked,
+        // actual_price: this.actual_price,
+        // pk: this.$route.query.pk || null,
+        period_weekdays:
+          this.$route.query.period_weekdays || this.quaryDay || [],
+        currentTime: this.$route.query.currentTime || this.quaryStart,
+        currentEndTime: this.$route.query.currentEndTime || this.quaryEnd
+      };
+      return data;
+    },
     // 开始时间显示
     currentTime() {
       return this.$route.query.currentTime || 0;
@@ -225,53 +243,77 @@ export default {
         : "";
     }
   },
+  beforeRouteUpdate(to, from, next) {
+    console.log(to);
+    console.log(from);
+
+    if (from.name === "comboTime") {
+      // todo
+    }
+    next();
+  },
   methods: {
+    // 获取套餐详情
+    getComboDetailData() {},
     // 初始化
     initData() {
-      if (this.$route.query.pk) {
-        this.$store.commit("set_addNewComboItem", null);
-        getPackageDetail(
-          this.$store.state.user.ktv_id,
-          this.$store.state.combo.comboItem.id
-        ).then(r => {
-          if (r.status < 400) {
-            let _data = r.data;
-            this.pkname = _data.name;
-            this.listArr = _data.goods;
-            this.upChecked = _data.enabled;
-            this.quaryDay = _data.period_weekdays;
-
-            var arra = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-            let a = [];
-            _data.period_weekdays.forEach(i => {
-              this.week.forEach(e => {
-                if (e.id === i) {
-                  a.push(e.label);
-                }
-              });
-            });
-            a.sort(function(a, b) {
-              var aIndex = arra.indexOf(a);
-              var bIndex = arra.indexOf(b);
-              return aIndex - bIndex;
-            });
-            let atr = a.join("，");
-            this.timeObj = {
-              label:
-                atr +
-                " " +
-                this.changeTime(_data.period_time_start) +
-                " - " +
-                this.changeTime(_data.period_time_end)
-            };
-
-            this.quaryStart = _data.period_time_start || 0;
-            this.quaryEnd = _data.period_time_end;
-            this.actual_price = _data.actual_price;
+      this.$store.commit("set_addNewComboItem", null);
+      // 封装以下获取详情
+      getPackageDetail(
+        this.$store.state.user.ktv_id,
+        this.$store.state.combo.comboItem.id
+      ).then(r => {
+        if (r.status < 400) {
+          let _data = r.data;
+          this.pkname = _data.name;
+          if (_data.goods.length === 0) {
+            this.listArr = [
+              {
+                name: "",
+                count: "",
+                original_price: 0
+              }
+            ];
+          } else {
+            this.listArr = data.goods;
           }
-        });
-      }
+          this.upChecked = _data.enabled;
+          this.quaryDay = _data.period_weekdays;
+
+          var arra = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
+          let a = [];
+          _data.period_weekdays.forEach(i => {
+            this.week.forEach(e => {
+              if (e.id === i) {
+                a.push(e.label);
+              }
+            });
+          });
+          a.sort(function(a, b) {
+            var aIndex = arra.indexOf(a);
+            var bIndex = arra.indexOf(b);
+            return aIndex - bIndex;
+          });
+          let atr = a.join("，");
+          this.timeObj = {
+            label:
+              atr +
+              " " +
+              this.changeTime(_data.period_time_start) +
+              " - " +
+              this.changeTime(_data.period_time_end)
+          };
+
+          this.quaryStart = _data.period_time_start || 0;
+          this.quaryEnd = _data.period_time_end;
+          this.actual_price = _data.actual_price;
+        }
+      });
+
+      // 上面已封装为getComboDetailData
       let data = this.addNewComboItem;
+      console.log(this.addNewComboItem);
+
       if (data) {
         this.pkname = data.name;
         this.actual_price = data.actual_price;
@@ -408,22 +450,7 @@ export default {
     },
 
     linkTime() {
-      let arr = this.listArr.filter(function(e) {
-        e.original_price = parseFloat(e.original_price);
-        return e;
-      });
-      let data = {
-        name: this.pkname,
-        goods: !this.listArr[0].name ? [] : arr,
-        enabled: this.upChecked,
-        actual_price: this.actual_price,
-        currentTime: this.$route.query.currentTime || this.quaryStart,
-        currentEndTime: this.$route.query.currentEndTime || this.quaryEnd,
-        pk: this.$route.query.pk || null,
-        period_weekdays:
-          this.$route.query.period_weekdays || this.quaryDay || []
-      };
-      this.$store.commit("set_addNewComboItem", data);
+      this.$store.commit("set_addNewComboItem", this.selection);
     },
     generationObj() {
       return {
