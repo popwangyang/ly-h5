@@ -8,7 +8,18 @@ export default {
       state.comboItem = comboItem;
     },
     set_comboItemAttr(state, obj) {
-      state.comboItem[obj.attr] = obj.val;
+      console.log(obj);
+      if (!obj) {
+        state.comboItem = null
+        return
+      }
+      let art = obj.attr
+      if (state.comboItem) {
+        state.comboItem[obj.attr] = obj.val;
+        return
+      }
+      state.comboItem = {}
+      state.comboItem[String(art)] = obj.val;
     },
     set_addNewComboItem(state, addNewComboItem) {
       state.addNewComboItem = addNewComboItem;

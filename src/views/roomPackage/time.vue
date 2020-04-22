@@ -177,16 +177,24 @@ export default {
         });
         return;
       }
+      this.$store.commit("set_comboItemAttr", {
+        attr: "period_time_end",
+        val: this.EndTime
+      });
+
+      this.$store.commit("set_comboItemAttr", {
+        attr: "period_time_start",
+        val: this.startTime
+      });
+
+      this.$store.commit("set_comboItemAttr", {
+        attr: "period_weekdays",
+        val: this.result
+      });
       this.$router.push({
         name: "newcombo",
         query: {
-          period_weekdays: this.result,
-          period_time_start: this.startTime,
-          period_time_end: this.EndTime,
-          currentEndTime: this.currentEndTime,
-          currentTime: this.currentTime,
-          currentWeek: this.currentWeek,
-          pk: this.pks
+          c: this.$route.query.c
         }
       });
     }, // 起始时间
@@ -220,17 +228,27 @@ export default {
       return options;
     },
     init() {
-      this.currentTime = this.$store.state.combo.addNewComboItem.currentTime;
-      this.pks = this.$store.state.combo.addNewComboItem.pk;
-      this.currentEndTime = this.$store.state.combo.addNewComboItem.currentEndTime;
-      this.result =
-        this.$store.state.combo.addNewComboItem.period_weekdays || [];
+      if (!this.comboItem) return;
+      this.result = this.comboItem.period_weekdays;
+      this.startTime = this.comboItem.period_time_start;
+      this.EndTime = this.comboItem.period_time_end;
+      this.currentTime =
+        (this.startTime / 60 == "0" ? "00" : this.startTime / 60) +
+        ":" +
+        (this.startTime % 60 == "0" ? "00" : this.startTime / 60);
+      this.currentEndTime =
+        (this.EndTime / 60 == "0" ? "00" : this.EndTime / 60) +
+        ":" +
+        (this.EndTime % 60 == "0" ? "00" : this.EndTime / 60);
     }
   },
-  created() {
+  activated() {
     this.init();
   },
   computed: {
+    comboItem() {
+      return this.$store.state.combo.comboItem;
+    },
     currentWeek() {
       var arra = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
       let a = [];

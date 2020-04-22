@@ -1,42 +1,47 @@
 <template>
-  <div class="combo">
-    <div class="combo-top">
-      <span class="combo-top-title">套餐列表（{{total}}/10）</span>
-      <div class="combo-top-op">
-        <button class="op-btn op-btn-man" @click="manaCombo">管理</button>
-        <button class="op-btn op-btn-new" @click="newCombo">创建</button>
-      </div>
-    </div>
-    <div v-if="total !== 0" class="combo-ul">
-      <li @click="detail(item)" v-for="(item, index) in results" :key="index">
-        <img style="display:none;" width="40" height="40" class="leftimg" :src="listImg" alt />
-        <div class="combo-ul-content">
-          <div class="combo-ul-content-p1">
-            <span class="p1-name">{{item.name}}</span>
-            <!-- <img class="tip" width="31" height="16" :src="recommendImg" alt /> -->
-            <div class="tip1">{{item.enabled?"已上架":"未上架"}}</div>
+  <div ref="scroll" class="combo">
+    <PageList :getData="getData" ref="pageList" :params="params">
+      <template>
+        <div>
+          <div class="combo-top">
+            <span class="combo-top-title">套餐列表（{{total}}/10）</span>
+            <div class="combo-top-op">
+              <button class="op-btn op-btn-man" @click="manaCombo">管理</button>
+              <button class="op-btn op-btn-new" @click="newCombo">创建</button>
+            </div>
           </div>
-          <p class="combo-ul-content-p2">
-            <span class="p2-1">￥{{item.actual_price|toFixed2}}</span>
-            <b class="p2-2">￥{{item.original_price|toFixed2}}</b>
-          </p>
+          <div class="combo-ul">
+            <li @click="detail(item)" v-for="(item, index) in results" :key="index">
+              <img style="display:none;" width="40" height="40" class="leftimg" :src="listImg" alt />
+              <div class="combo-ul-content">
+                <div class="combo-ul-content-p1">
+                  <span class="p1-name">{{item.name}}</span>
+                  <!-- <img class="tip" width="31" height="16" :src="recommendImg" alt /> -->
+                  <div class="tip1">{{item.enabled?"已上架":"未上架"}}</div>
+                </div>
+                <p class="combo-ul-content-p2">
+                  <span class="p2-1">￥{{item.actual_price|toFixed2}}</span>
+                  <b class="p2-2">￥{{item.original_price|toFixed2}}</b>
+                </p>
+              </div>
+            </li>
+          </div>
         </div>
-      </li>
-    </div>
-
-    <p class="noneInfo" v-else>
-      <van-loading type="spinner" v-if="showLoading"></van-loading>
-      <span v-else>暂无套餐</span>
-    </p>
+      </template>
+    </PageList>
   </div>
 </template>
 
 <script>
+import PageList from "@/components/pageList";
 import { getPackageList } from "@/api/combo";
+import { cacheMixins } from "@/libs/mixins";
 export default {
   name: "roomPackage",
+  mixins: [cacheMixins],
   data() {
     return {
+      params: { load: true },
       showLoading: true,
       results: [], // 列表
       total: 0, // 套餐数量
@@ -45,9 +50,10 @@ export default {
       recommendImg: require("@/assets/backicon.png")
     };
   },
-  mounted() {
-    this.getList();
+  components: {
+    PageList
   },
+  mounted() {},
   methods: {
     // 详情
     detail(item) {
@@ -57,18 +63,29 @@ export default {
       });
     },
     // 获取套餐列表
-    getList() {
-      getPackageList(this.$store.state.user.ktv_id).then(res => {
-        if (res.status === 200 || res.status < 400) {
-          this.isCreate = true;
-          this.total = res.data.results.length;
-          this.results = res.data.results;
-          if (this.results.length) {
-            this.showLoading = true;
-            return;
-          }
-          this.showLoading = false;
-        }
+    getData() {
+      return new Promise((resolve, reject) => {
+        getPackageList(this.$store.state.user.ktv_id)
+          .then(r => {
+            if (r.data) {
+              this.isCreate = true;
+              this.total = r.data.results.length;
+              this.results = r.data.results;
+              if (this.results.length) {
+                this.showLoading = true;
+                resolve({
+                  total: this.total,
+                  data: this.results
+                });
+                return;
+              }
+              this.showLoading = false;
+            }
+            resolve(r);
+          })
+          .catch(err => {
+            reject(err);
+          });
       });
     },
     // 管理套餐
@@ -93,7 +110,7 @@ export default {
         });
         return;
       }
-      this.$store.commit("set_addNewComboItem", null);
+      this.$store.commit("set_comboItemAttr", null);
       this.$router.push({
         name: "newcombo",
         query: {
@@ -116,6 +133,7 @@ export default {
   right: 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   .combo-top {
     width: 100%;
     height: 40px;

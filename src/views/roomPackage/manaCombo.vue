@@ -1,10 +1,9 @@
 <template>
-  <div class="manaCombo">
-    <div v-if="total !== 0">
+  <div ref="scroll" class="manaCombo">
+    <PageList class="pagelist" :getData="getList" ref="pageList">
       <div class="common">
         <p>已上架套餐</p>
-		
-        <TranstionsList v-if='up.length > 0'>
+        <TranstionsList v-if="up.length > 0">
           <div class="item" v-for="(item, index) in this.up" :key="item.id">
             <div class="wrapper">
               <div class="cont">
@@ -33,9 +32,9 @@
             />
           </div>
         </TranstionsList>
-		<transition v-else>
-			<p  style="background-color: yellow;" class="mtp5 noneInfo">暂无套餐</p>
-		</transition>
+        <transition v-else>
+          <p class="mtp5 noneInfo">暂无套餐</p>
+        </transition>
       </div>
       <div class="common">
         <p>已下架套餐</p>
@@ -65,7 +64,7 @@
             />
           </div>
         </TranstionsList>
-        <p v-if="this.down.length === 0"  class="mtp5 noneInfo">暂无套餐</p>
+        <p v-if="this.down.length === 0" class="mtp5 noneInfo">暂无套餐</p>
       </div>
       <div class="common">
         <p>已删除套餐</p>
@@ -89,12 +88,7 @@
         </TranstionsList>
         <p v-if="this.clear.length === 0" class="mtp5 noneInfo">暂无删除套餐</p>
       </div>
-    </div>
-
-    <p class="noneInfo" v-else>
-      <van-loading type="spinner" v-if="showLoading"></van-loading>
-      <span v-else>暂无套餐</span>
-    </p>
+    </PageList>
     <div class="bottom">
       <div @click="cancle" class="btn cancle">取消</div>
       <div @click="save" class="btn save">保存</div>
@@ -110,10 +104,13 @@
 
 <script>
 import { getPackageList, manaCombo } from "@/api/combo";
+import PageList from "@/components/pageList";
+import { cacheMixins } from "@/libs/mixins";
 
 import TranstionsList from "@/components/transtionList";
 export default {
-  name: "",
+  name: "manaCombo",
+  mixins: [cacheMixins],
   data() {
     return {
       overlay: false, // 加载中
@@ -126,9 +123,7 @@ export default {
     };
   },
   watch: {},
-  mounted() {
-    this.getList();
-  },
+  mounted() {},
   methods: {
     // 删除套餐
     clearItem(w, item, index) {
@@ -156,23 +151,38 @@ export default {
     getList() {
       this.up = [];
       this.down = [];
-      getPackageList(this.$store.state.user.ktv_id).then(res => {
-        if (res.status === 200 || res.status < 400) {
-          this.total = res.data.results.length;
-          let results = res.data.results;
-          results.forEach(e => {
-            if (e.enabled) {
-              this.up.push(e);
-              return;
+
+      return new Promise((resolve, reject) => {
+        getPackageList(this.$store.state.user.ktv_id)
+          .then(r => {
+            if (r.data) {
+              this.total = r.data.results.length;
+              let results = r.data.results;
+              results.forEach(e => {
+                if (e.enabled) {
+                  this.up.push(e);
+                  return;
+                }
+                this.down.push(e);
+              });
+              if (results.length) {
+                this.showLoading = true;
+                resolve({
+                  total: this.total,
+                  data: results
+                });
+                return;
+              }
+              this.showLoading = false;
+              resolve({
+                total: 0,
+                data: []
+              });
             }
-            this.down.push(e);
+          })
+          .catch(err => {
+            reject(err);
           });
-          if (results.length) {
-            this.showLoading = true;
-            return;
-          }
-          this.showLoading = false;
-        }
       });
     },
     // 数据处理
@@ -241,18 +251,20 @@ export default {
     }
   },
   components: {
-    TranstionsList
+    TranstionsList,
+    PageList
   }
 };
 </script>
 <style>
-	.fade-enter-active, .fade-leave-active {
-	  transition: all .5s ease 0.5s; 
-	}
-	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	  opacity: 0;
-	 height: 0;
-	}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  height: 0;
+}
 </style>
 
 <style lang="scss" scoped>
@@ -272,91 +284,97 @@ export default {
   margin-top: 5% !important;
 }
 .manaCombo {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
   padding-bottom: 45px;
-  .common {
-    display: block;
-    width: 100%;
-    padding: 22px 15px;
-    overflow: hidden;
-    background-color: #fff;
-    margin-bottom: 10px;
-    transition: all 2s;
-    .item {
-      display: flex;
+  .pagelist {
+    height: auto !important;
+    .common {
+      display: block;
       width: 100%;
-      align-items: center;
-      transition: all 1s;
-      .wrapper {
-        flex: 1;
-        background-color: #fff;
-        display: block;
-        border-radius: 12px;
-        box-shadow: 1px 4px 5px 0px #eae8e8;
-        margin-bottom: 10px;
-        padding: 17px 17px 0 17px;
-        .cont {
-          border-bottom: 1px solid #eeeeee;
-          display: flex;
-          padding: 17px 0;
-          align-items: center;
-          .index {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: #0495f5;
-            color: #fff;
-            font-size: 8px;
-            line-height: 16px;
-            text-align: center;
-          }
-          .cont-cont {
-            margin-left: 10px;
-            flex: 1;
-            .name {
-              font-size: 16px;
-              font-family: PingFangSC-Semibold, PingFang SC;
-              font-weight: 600;
-              color: rgba(51, 51, 51, 1);
-              margin-bottom: 10px;
+      padding: 22px 15px;
+      overflow: hidden;
+      background-color: #fff;
+      margin-bottom: 10px;
+      transition: all 2s;
+      .item {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        transition: all 1s;
+        .wrapper {
+          flex: 1;
+          background-color: #fff;
+          display: block;
+          border-radius: 12px;
+          box-shadow: 1px 4px 5px 0px #eae8e8;
+          margin-bottom: 10px;
+          padding: 17px 17px 0 17px;
+          .cont {
+            border-bottom: 1px solid #eeeeee;
+            display: flex;
+            padding: 17px 0;
+            align-items: center;
+            .index {
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              background-color: #0495f5;
+              color: #fff;
+              font-size: 8px;
+              line-height: 16px;
+              text-align: center;
             }
-            .price {
-              .s1 {
-                margin-right: 25px;
-                color: #fe6042;
+            .cont-cont {
+              margin-left: 10px;
+              flex: 1;
+              .name {
+                font-size: 16px;
+                font-family: PingFangSC-Semibold, PingFang SC;
+                font-weight: 600;
+                color: rgba(51, 51, 51, 1);
+                margin-bottom: 10px;
               }
-              .s2 {
-                margin-right: 25px;
-                color: #999999;
-                text-decoration: line-through;
+              .price {
+                .s1 {
+                  margin-right: 25px;
+                  color: #fe6042;
+                }
+                .s2 {
+                  margin-right: 25px;
+                  color: #999999;
+                  text-decoration: line-through;
+                }
               }
+            }
+          }
+          .op {
+            padding: 7px 0;
+            .op-s {
+              display: inline-block;
+              border-radius: 4px;
+              padding: 4px 10px;
+            }
+            .op1 {
+              border: 1px solid rgba(0, 150, 247, 1);
+              color: rgba(0, 150, 247, 1);
+              margin-right: 10px;
+            }
+            .op2 {
+              border: 1px solid #00cda2;
+              color: #00cda2;
+              margin-right: 10px;
+            }
+            .op3 {
+              border: 1px solid #ff5562;
+              color: #ff5562;
             }
           }
         }
-        .op {
-          padding: 7px 0;
-          .op-s {
-            display: inline-block;
-            border-radius: 4px;
-            padding: 4px 10px;
-          }
-          .op1 {
-            border: 1px solid rgba(0, 150, 247, 1);
-            color: rgba(0, 150, 247, 1);
-            margin-right: 10px;
-          }
-          .op2 {
-            border: 1px solid #00cda2;
-            color: #00cda2;
-            margin-right: 10px;
-          }
-          .op3 {
-            border: 1px solid #ff5562;
-            color: #ff5562;
-          }
+        .cancelImg {
+          margin-left: 15px;
         }
-      }
-      .cancelImg {
-        margin-left: 15px;
       }
     }
   }
