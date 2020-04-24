@@ -1,19 +1,4 @@
 <template>
-<<<<<<< HEAD
-	<div class="homeBox">
-		<div class="routerView theme">
-			<transition :name="transitionName" v-if="transitionName!='slide-none'">
-				<keep-alive :include="keepAliveList">
-					<router-view></router-view>
-				</keep-alive>
-			</transition>
-			<keep-alive :include="keepAliveList" v-else>
-				<router-view></router-view>
-			</keep-alive>
-		</div>
-		<BottomBar v-show="showTab" @goView="goView" />
-	</div>
-=======
   <div class="homeBox">
     <div class="routerView theme">
 		<transition :name="transitionName">
@@ -24,7 +9,6 @@
     </div>
     <BottomBar v-show="showTab" @goView="goView" />
   </div>
->>>>>>> wangyan
 </template>
 
 <script>
@@ -106,29 +90,6 @@
 	}
 </style>
 <style scoped="scoped" lang="less">
-<<<<<<< HEAD
-	.homeBox {
-		height: 100%;
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		background: #f6f6f6;
-
-		.routerView {
-			flex: 1;
-			overflow: auto;
-		}
-	}
-
-	.slide-none-enter-active,
-	.slide-none-enter-active {
-		transition: opacity 0.01s ease-out;
-	}
-
-	.slide-none-enter {
-		opacity: 1.0;
-	}
-=======
 .homeBox {
   height: 100%;
   width: 100%;
@@ -146,7 +107,6 @@
 .slide-none-enter{
 	opacity: 0;
 }
->>>>>>> wangyan
 
 	.slide-left-enter-active,
 	.slide-right-enter-active {
