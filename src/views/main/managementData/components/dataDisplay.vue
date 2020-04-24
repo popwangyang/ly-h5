@@ -59,7 +59,10 @@
 		},
 		methods:{
 			getData(){
-				dataDisplay().then(res => {
+				let params= {
+					province: this.$store.state.user.area.number
+				}
+				dataDisplay(params).then(res => {
 					console.log(res);
 					let data = res.data;
 					this.dataList.forEach(item => {
@@ -69,6 +72,9 @@
 					})
 				})
 			}
+		},
+		activated() {
+			this.getData();
 		},
 		mounted() {
 			this.getData();

@@ -56,6 +56,9 @@
 				});
 			}
 		},
+		created() {
+			console.log('ppppp');
+		},
 		mounted() {
 			this.vodBands();
 		}
