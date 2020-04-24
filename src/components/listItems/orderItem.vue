@@ -62,8 +62,7 @@ export default {
       if (
         this.userType === "copyright_party" ||
         this.userType === "platform" ||
-        this.userType === "agentibus" ||
-        this.userType === "employee"
+        this.userType === "agentibus"
       ) {
         this.$router.push({
           name: "orderSharingDetail",
@@ -75,15 +74,46 @@ export default {
         });
         return;
       }
-      this.$router.push({
-        name: "orderSharingIconDetail",
-        query: {
-          type: this.userType,
-          pk: this.data.id,
-          share_amount: this.data.share_amount,
-          payment_channel_rate_display: this.data.payment_channel_rate_display
-        }
-      });
+
+      //平台管理
+      if (this.userType === "employee") {
+        this.$router.push({
+          name: "ordeManaDetail",
+          query: {
+            pk: this.data.id,
+            share_amount: this.data.share_amount,
+            isPlatform: this.userType === "employee" ? 1 : 0
+          }
+        });
+        return;
+      }
+
+      // 代垫方
+      if (this.userType === "advance_party") {
+        this.$router.push({
+          name: "orderSharingIconDetail",
+          query: {
+            type: this.userType,
+            pk: this.data.id,
+            share_amount: this.data.share_amount,
+            payment_channel_rate_display: this.data.payment_channel_rate_display
+          }
+        });
+        return;
+      }
+      // ktv管理方
+      if (this.userType === "ktv") {
+        this.$router.push({
+          name: "orderKTVDetail",
+          query: {
+            type: this.userType,
+            pk: this.data.id,
+            share_amount: this.data.share_amount,
+            payment_channel_rate_display: this.data.payment_channel_rate_display
+          }
+        });
+        return;
+      }
     }
   }
 };

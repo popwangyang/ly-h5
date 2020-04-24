@@ -4,7 +4,6 @@ import {
   getEmployee_user_id
 }
 from '@/api/user'
-
 import socket from '@/config/socket.js'
 
 import {
@@ -102,13 +101,17 @@ export default {
             }
             let token = 'Basic ' + btoa(res.data.data[0].user + ":" + res.data.data[0].token)
             setToken(token);
-			
+
             if (res.data.data[0].actions && res.data.data[0].actions.indexOf('withdrawal_operation') > -1) {
               commit('set_hasWithdrawal', true);
             } else {
               commit('set_hasWithdrawal', false);
             }
+<<<<<<< HEAD
 			commit("SET_THEME", res.data.data[0].user_type);
+=======
+            commit("SET_THEME", res.data.data[0].user_type);
+>>>>>>> 600d22ce886443a97dae6a098220a94eb9e8422c
             commit('setUserType', res.data.data[0].user_type);
             commit('setUserName', res.data.data[0].username);
             commit('setUserID', res.data.data[0].user);
@@ -184,10 +187,8 @@ export default {
     loginOut({
       commit
     }) {
-      return new Promise((resolve, reject) => {
-        if (socket.getWebSocket()) {
-          socket.getWebSocket().disconnect()
-        }
+      return new Promise((resolve) => {
+        socket.closeWs()
         setToken('');
         commit('setUserType', '');
         commit('setUserName', '');

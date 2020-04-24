@@ -1,54 +1,58 @@
 <template>
-  <div class="comboDetail" v-if="combo">
-    <div class="title-wrapper">
-      <div class="left">
-        <span class="name">{{combo.name}}</span>
-        <span class="status">{{combo.enabled?"已上架":"未上架"}}</span>
+  <div class="comboDetail" ref="scroll">
+    <div v-if="combo">
+      <div class="title-wrapper">
+        <div class="left">
+          <span class="name">{{combo.name}}</span>
+          <span class="status">{{combo.enabled?"已上架":"未上架"}}</span>
+        </div>
       </div>
-    </div>
 
-    <div class="combo-detail-cont" v-if="combo.goods && Array.isArray(combo.goods)">
-      <div class="title">
-        <span>商品名称</span>
-        <span>数量</span>
-        <span>单价</span>
+      <div class="combo-detail-cont" v-if="combo.goods && Array.isArray(combo.goods)">
+        <div class="title">
+          <span>商品名称</span>
+          <span>数量</span>
+          <span>单价</span>
+        </div>
+        <div class="detailcont" v-for="(item, index) in combo.goods" :key="index">
+          <span>{{item.name}}</span>
+          <span>{{item.count || 0}}</span>
+          <span>{{item.original_price |toFixed2}}元</span>
+        </div>
       </div>
-      <div class="detailcont" v-for="(item, index) in combo.goods" :key="index">
-        <span>{{item.name}}</span>
-        <span>{{item.count || 0}}</span>
-        <span>{{item.original_price |toFixed2}}元</span>
-      </div>
-    </div>
 
-    <p class="noneInfo">
-      <van-loading type="spinner" v-if="!combo.goods"></van-loading>
-      <span v-if="combo.goods.length === 0">暂无商品信息</span>
-    </p>
+      <p class="noneInfo" v-if="combo.goods">
+        <van-loading type="spinner" v-if="!combo.goods"></van-loading>
+        <span v-if="combo.goods.length === 0">暂无商品信息</span>
+      </p>
 
-    <div class="detail-bottom">
-      <div class="leftpart">
-        <p class="yuan">原价：￥{{combo.original_price|toFixed2}}</p>
-        <p class="youhui">优惠价：￥{{combo.actual_price|toFixed2}}</p>
+      <div class="detail-bottom">
+        <div class="leftpart">
+          <p class="yuan">原价：￥{{combo.original_price|toFixed2}}</p>
+          <p class="youhui">优惠价：￥{{combo.actual_price|toFixed2}}</p>
+        </div>
+        <div class="rightpart">
+          <span class="del bt" @click="delPop">删除</span>
+          <span v-if="combo.enabled" class="down bt" @click="opWays">下架</span>
+          <span v-else class="down bt" @click="opWays">上架</span>
+          <span @click="editItem" class="edit bt">编辑</span>
+        </div>
       </div>
-      <div class="rightpart">
-        <span class="del bt" @click="delPop">删除</span>
-        <span v-if="combo.enabled" class="down bt" @click="opWays">下架</span>
-        <span v-else class="down bt" @click="opWays">上架</span>
-        <span @click="editItem" class="edit bt">编辑</span>
-      </div>
+      <van-overlay :show="overlay">
+        <div class="overlay">
+          <van-loading />
+        </div>
+      </van-overlay>
     </div>
-    <van-overlay :show="overlay">
-      <div class="overlay">
-        <van-loading />
-      </div>
-    </van-overlay>
   </div>
 </template>
 
 <script>
+import { cacheMixins } from "@/libs/mixins";
 import { getPackageDetail, modiCombo, deleCombo } from "@/api/combo";
 export default {
-  name: "",
+  name: "comboDetail",
+  mixins: [cacheMixins],
   data() {
     return {
       overlay: false, // 加载中
@@ -126,10 +130,11 @@ export default {
     },
     // 修改
     editItem() {
+      console.log(this.combo);
       this.$router.push({
         name: "newcombo",
         query: {
-          pk: this.combo.id
+          c: false
         }
       });
     },

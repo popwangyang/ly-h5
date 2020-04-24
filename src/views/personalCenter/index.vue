@@ -97,7 +97,12 @@
           </template>
         </van-cell>
 
-        <van-cell v-if="showPersonalInfo === 1" class="icon-wrapper" is-link to="personContract">
+        <van-cell
+          v-if="showPersonalInfo === 1 && !ktv_clerkShow"
+          class="icon-wrapper"
+          is-link
+          to="personContract"
+        >
           <template slot="title">
             <img :src="contractIcon" alt width="12" height="14" />
             <span class="custom-title">合同信息</span>
@@ -292,11 +297,14 @@ export default {
     ktv_id() {
       return this.$store.state.user.ktv_id;
     },
-
+    ktv_clerkShow() {
+      return this.$store.state.user.usertype === "ktv_clerk";
+    },
     showPersonalInfo() {
       let infoType;
       switch (this.$store.state.user.usertype) {
         case "ktv":
+        case "ktv_clerk":
           infoType = 1;
           break;
         case "platform":

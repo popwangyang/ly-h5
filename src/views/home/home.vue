@@ -89,19 +89,23 @@
 	};
 </script>
 <style lang="less">
-	@import "../../static/style/theme.less";
+@import "../../static/style/theme.less";
 
-	.themea {
-		.theme(); //默认的样式
-	}
+.themea {
+  .theme(); //默认的样式
+}
 
-	.themeb {
-		.theme(#2accdd,
-		linear-gradient(180deg,
-		rgba(24, 223, 208, 1) 0%,
-		rgba(29, 180, 213, 1) 100%),
-		url("../../assets/banner2.png"));
-	}
+.themeb {
+  .theme(
+    #2accdd,
+    linear-gradient(
+      180deg,
+      rgba(24, 223, 208, 1) 0%,
+      rgba(29, 180, 213, 1) 100%
+    ),
+    url("../../assets/banner2.png")
+  );
+}
 </style>
 <style scoped="scoped" lang="less">
 .homeBox {
@@ -110,28 +114,43 @@
   display: flex;
   flex-direction: column;
   background: #f6f6f6;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 600d22ce886443a97dae6a098220a94eb9e8422c
   .routerView {
     flex: 1;
     overflow: auto;
   }
 }
+<<<<<<< HEAD
 .slide-none-enter-active, .slide-none-enter-active{
 	transition: opacity 0.01s ease-out;
 }
 .slide-none-enter{
 	opacity: 0;
+=======
+
+.slide-none-enter-active,
+.slide-none-enter-active {
+  transition: opacity 0.01s ease-out;
 }
 
-	.slide-left-enter-active,
-	.slide-right-enter-active {
-		transition: all 0.2s ease-out;
-	}
+.slide-none-enter {
+  opacity: 1;
+>>>>>>> 600d22ce886443a97dae6a098220a94eb9e8422c
+}
 
-	.slide-left-enter {
-		transform: translate(100%, 0);
-	}
+.slide-left-enter-active,
+.slide-right-enter-active {
+  transition: all 0.2s ease-out;
+}
 
-	.slide-right-enter {
-		transform: translate(-100%, 0);
-	}
+.slide-left-enter {
+  transform: translate(100%, 0);
+}
+
+.slide-right-enter {
+  transform: translate(-100%, 0);
+}
 </style>

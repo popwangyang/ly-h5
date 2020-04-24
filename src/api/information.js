@@ -1,7 +1,7 @@
 import axios from '@/libs/api.request'
 
 // 实时获取消息
-export const socket = (params) => {
+export const socketInfomation = (params) => {
   return axios.request({
     url: '/copyright/rbac/ws-token',
     method: 'get',

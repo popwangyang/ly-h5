@@ -1,101 +1,111 @@
 <template>
-  <div class="newCombo">
-    <!-- <van-cell title="套餐封面" value="请选择" is-link @click="show=true" /> -->
-    <van-field clearable required maxlength="20" input-align="right" label="套餐名称" v-model="pkname" />
-    <div v-for="(item, index) in listArr" :key="index" class="newCombo-item">
-      <!-- <img class="del" width="20" height="20" :src="listImg" alt /> -->
-      <span v-if="listArr.length !== 1" @click="del(index)" class="del">删除</span>
-      <van-cell-group :title="`商品${index+1}`">
-        <van-field
-          input-align="right"
-          maxlength="20"
-          label="商品名称"
-          clearable
-          v-model="item.name"
-          placeholder="请输入"
-        />
-        <van-field
-          input-align="right"
-          type="digit"
-          label="数量"
-          clearable
-          v-model="item.count"
-          placeholder="请输入"
-        />
-        <van-field
-          type="number"
-          input-align="right"
-          label="单价"
-          clearable
-          v-model="item.original_price"
-          @blur="formatter($event, index)"
-          placeholder="0"
-        />
-        <van-field
-          disabled
-          class="field-center"
-          v-if="index === listArr.length-1"
-          input-align="center"
-        >
-          <div slot="label" class="addMusic">
-            <img width="14" height="14" :src="addImg" alt />
-            <span style="margin-left: 5px;" @click="add">增加商品</span>
-          </div>
-        </van-field>
-      </van-cell-group>
-    </div>
-    <van-cell-group>
-      <van-field disabled input-align="right" label="套餐原价(元)" :value="total" />
+  <div ref="scroll">
+    <ContentLoad :getInfo="getDetail" class="newCombo">
+      <!-- <van-cell title="套餐封面" value="请选择" is-link @click="show=true" /> -->
       <van-field
-        required
-        type="number"
-        label-width="120"
-        input-align="right"
         clearable
-        label="套餐 优惠价(元)"
-        @blur="actual_priceFormat($event)"
-        v-model="actual_price"
-        placeholder="将计入到开房扫码的价格中"
+        required
+        maxlength="20"
+        input-align="right"
+        label="套餐名称"
+        v-model="pkname"
       />
-    </van-cell-group>
+      <div v-for="(item, index) in listArr" :key="index" class="newCombo-item">
+        <!-- <img class="del" width="20" height="20" :src="listImg" alt /> -->
+        <span v-if="listArr.length !== 1" @click="del(index)" class="del">删除</span>
+        <van-cell-group :title="`商品${index+1}`">
+          <van-field
+            input-align="right"
+            maxlength="20"
+            label="商品名称"
+            clearable
+            v-model="item.name"
+            placeholder="请输入"
+          />
+          <van-field
+            input-align="right"
+            type="digit"
+            label="数量"
+            clearable
+            v-model="item.count"
+            placeholder="请输入"
+          />
+          <van-field
+            type="number"
+            input-align="right"
+            label="单价"
+            clearable
+            v-model="item.original_price"
+            @blur="formatter($event, index)"
+            placeholder="0"
+          />
+          <van-field
+            disabled
+            class="field-center"
+            v-if="index === listArr.length-1"
+            input-align="center"
+          >
+            <div slot="label" class="addMusic">
+              <img width="14" height="14" :src="addImg" alt />
+              <span style="margin-left: 5px;" @click="add">增加商品</span>
+            </div>
+          </van-field>
+        </van-cell-group>
+      </div>
+      <van-cell-group>
+        <van-field disabled input-align="right" label="套餐原价(元)" :value="total" />
+        <van-field
+          required
+          type="number"
+          label-width="120"
+          input-align="right"
+          clearable
+          label="套餐 优惠价(元)"
+          @blur="actual_priceFormat($event)"
+          v-model="actual_price"
+          placeholder="将计入到开房扫码的价格中"
+        />
+      </van-cell-group>
 
-    <van-cell
-      class="usetime"
-      @click="linkTime"
-      required
-      title="可用时段"
-      :value="useTime"
-      is-link
-      to="comboTime"
-    />
-    <van-cell required title="上架状态">
-      <van-switch v-model="upChecked" size="24px" />
-    </van-cell>
-    <!-- <van-cell title="推荐标志">
+      <van-cell
+        class="usetime"
+        required
+        title="可用时段"
+        :value="timeStr"
+        is-link
+        :to="{path: 'comboTime', query: {c:this.$route.query.c}}"
+      />
+      <van-cell required title="上架状态">
+        <van-switch v-model="upChecked" size="24px" />
+      </van-cell>
+      <!-- <van-cell title="推荐标志">
       <van-switch v-model="signChecked" size="24px" />
-    </van-cell>-->
+      </van-cell>-->
 
-    <div style="width:100%;text-align: center;">
-      <van-button class="savebtn" @click="save" type="info">保存</van-button>
-    </div>
-    <!-- 推荐 -->
-    <van-action-sheet :round="false" class="uppop" v-model="show" title>
-      <div class="uppop-wrapper">
-        <div class="top">
-          <van-button type="default">取消</van-button>
-          <van-button type="default">确定</van-button>
+      <div style="width:100%;text-align: center;">
+        <van-button class="savebtn" @click="save" type="info">保存</van-button>
+      </div>
+      <!-- 推荐 -->
+      <van-action-sheet :round="false" class="uppop" v-model="show" title>
+        <div class="uppop-wrapper">
+          <div class="top">
+            <van-button type="default">取消</van-button>
+            <van-button type="default">确定</van-button>
+          </div>
         </div>
-      </div>
-    </van-action-sheet>
-    <van-overlay :show="overlay">
-      <div class="overlay">
-        <van-loading />
-      </div>
-    </van-overlay>
+      </van-action-sheet>
+      <van-overlay :show="overlay">
+        <div class="overlay">
+          <van-loading />
+        </div>
+      </van-overlay>
+    </ContentLoad>
   </div>
 </template>
 
 <script>
+import { cacheMixins } from "@/libs/mixins";
+import ContentLoad from "@/components/contentLoad";
 import {
   createContract,
   getPackageDetail,
@@ -103,9 +113,13 @@ import {
   modiInfoCombo
 } from "@/api/combo";
 export default {
-  name: "",
+  name: "newcombo",
+  mixins: [cacheMixins],
   data() {
     return {
+      mainval: false, //是否保存
+      weekString: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], // 周数据
+      weekSelected: [], // 可用时间一选择
       comboPart: "", // 套餐部分信息
       comboInfo: "", // 套餐模板信息
       timeObj: null, // 显示时间
@@ -172,22 +186,96 @@ export default {
       addImg: require("@/assets/addHome.png")
     };
   },
+  components: {
+    ContentLoad
+  },
   created() {
     this.initData();
   },
+  activated() {
+    if (
+      (typeof this.isAdd === "string" && this.isAdd === "false") ||
+      (typeof this.isAdd === "boolean" && !this.isAdd)
+    ) {
+      // 获取判断
+      console.log(this.comboItem);
+      return;
+    }
+    this.setDetail();
+  },
+  beforeRouteLeave(to, from, next) {
+    this.mainval = false;
+    console.log(to.name);
+    let _this = this;
+    function beforeClose(action, done) {
+      if (action === "confirm") {
+        console.log(1);
+        _this.mainval = true;
+        console.log(_this.mainval);
+        _this.$router.push({
+          name: "roomPackage"
+        });
+        done();
+        next();
+      } else {
+        done();
+      }
+    }
+    if (this.mainval) {
+      next();
+      return;
+    }
+    if (from.name === "newcombo" && to.name === "comboDetail") {
+      this.$dialog.confirm({
+        title: "提示",
+        message: "是否保存修改的信息",
+        beforeClose
+      });
+      next(false);
+      return;
+    }
+    console.log(this.mainval);
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.name === "comboDetail") {
+      next(vm => {
+        vm.clearData();
+        vm.setData();
+      });
+      return;
+    }
+    next(false);
+  },
   computed: {
-    // 可用数据
-    addNewComboItem() {
-      return this.$store.state.combo.addNewComboItem;
+    comboItem() {
+      return this.$store.state.combo.comboItem;
     },
     // 可用时段
-    useTime() {
-      if (this.timeObj) return this.timeObj.label;
-      return `${this.currentWeek}${this.currentWeek ? "；" : ""}${
-        this.currentTime === 0
-          ? ""
-          : this.currentTime + "-" + this.currentEndTime
-      }`;
+    timeStr() {
+      let a = [];
+      if (this.comboItem) {
+        this.comboItem.period_weekdays.forEach(i => {
+          this.week.forEach(e => {
+            if (e.id === i) {
+              a.push(e.label);
+            }
+          });
+        });
+        a.sort((a, b) => {
+          var aIndex = this.weekString.indexOf(a);
+          var bIndex = this.weekString.indexOf(b);
+          return aIndex - bIndex;
+        });
+        let atr = a.join("，");
+        return (
+          atr +
+          " " +
+          this.changeTime(this.comboItem.period_time_start) +
+          " - " +
+          this.changeTime(this.comboItem.period_time_end)
+        );
+      }
+      return "";
     },
     // 套餐总价
     total() {
@@ -198,96 +286,100 @@ export default {
       }
       return num.toFixed(2);
     },
-    // 日期
-    period_weekdays() {
-      return this.$route.query.period_weekdays || [];
-    },
-    // 开始时间
-    period_time_start() {
-      return this.$route.query.period_time_start || 0;
-    },
-    // 结束时间
-    period_time_end() {
-      return this.$route.query.period_time_end || 0;
-    },
-    // 开始时间显示
-    currentTime() {
-      return this.$route.query.currentTime || 0;
-    },
-    // 结束时间显示
-    currentEndTime() {
-      return this.$route.query.currentEndTime || 0;
-    },
-    // 日期显示
-    currentWeek() {
-      return this.$route.query.currentWeek
-        ? this.$route.query.currentWeek.join("、")
-        : "";
+    // 是否新增
+    isAdd() {
+      return this.$route.query.c;
     }
   },
   methods: {
-    // 初始化
-    initData() {
-      if (this.$route.query.pk) {
-        this.$store.commit("set_addNewComboItem", null);
+    // 新增详情
+    setDetail() {
+      this.getDetail = () => {
+        return new Promise(resolve => {
+          console.log(1);
+          resolve({});
+        });
+      };
+    },
+    // 获取套餐详情
+    getComboDetailData() {},
+    // 初始化数据
+    setData() {
+      this.getDetail();
+    },
+    // 获取详情
+    getDetail() {
+      return new Promise((resolve, reject) => {
         getPackageDetail(
           this.$store.state.user.ktv_id,
           this.$store.state.combo.comboItem.id
-        ).then(r => {
-          if (r.status < 400) {
-            let _data = r.data;
-            this.pkname = _data.name;
-            this.listArr = _data.goods;
-            this.upChecked = _data.enabled;
-            this.quaryDay = _data.period_weekdays;
+        )
+          .then(r => {
+            if (r.status < 400) {
+              let _data = r.data;
+              this.pkname = _data.name;
+              this.upChecked = _data.enabled;
+              this.actual_price = _data.actual_price;
 
-            var arra = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-            let a = [];
-            _data.period_weekdays.forEach(i => {
-              this.week.forEach(e => {
-                if (e.id === i) {
-                  a.push(e.label);
-                }
-              });
-            });
-            a.sort(function(a, b) {
-              var aIndex = arra.indexOf(a);
-              var bIndex = arra.indexOf(b);
-              return aIndex - bIndex;
-            });
-            let atr = a.join("，");
-            this.timeObj = {
-              label:
-                atr +
-                " " +
-                this.changeTime(_data.period_time_start) +
-                " - " +
-                this.changeTime(_data.period_time_end)
-            };
-
-            this.quaryStart = _data.period_time_start || 0;
-            this.quaryEnd = _data.period_time_end;
-            this.actual_price = _data.actual_price;
-          }
-        });
-      }
-      let data = this.addNewComboItem;
-      if (data) {
-        this.pkname = data.name;
-        this.actual_price = data.actual_price;
-        this.upChecked = data.enabled;
-        if (data.goods.length === 0) {
-          this.listArr = [
-            {
-              name: "",
-              count: "",
-              original_price: 0
+              if (_data.goods.length === 0) {
+                this.setFood();
+                resolve(r);
+                return;
+              }
+              this.listArr = _data.goods;
             }
-          ];
-          return;
+            resolve(r);
+          })
+          .catch(err => {
+            reject(err);
+          });
+      });
+    },
+    // 清空数据
+    clearData() {
+      this.pkname = "优选套餐";
+      this.listArr = [
+        {
+          name: "",
+          count: "",
+          original_price: 0
         }
-        this.listArr = data.goods;
+      ];
+      this.actual_price = "";
+      // this.timeObj = null;
+      this.upChecked = true;
+    },
+    // 添加数据
+    adder() {
+      this.$store.commit("set_comboItem", null);
+      this.clearData();
+    },
+    // 修改数据
+    editer() {
+      this.clearData();
+      this.setData();
+    },
+    //设置初始商品
+    setFood() {
+      this.listArr = [
+        {
+          name: "",
+          count: "",
+          original_price: 0
+        }
+      ];
+    },
+    // 初始化
+    initData() {
+      if (
+        (typeof this.isAdd === "string" && this.isAdd === "false") ||
+        (typeof this.isAdd === "boolean" && !this.isAdd)
+      ) {
+        this.editer();
+        return;
       }
+      this.setDetail();
+      this.adder();
     },
     // 修改套餐
     modiComboItem() {
@@ -334,9 +426,9 @@ export default {
       let data = {
         name: this.pkname,
         goods: !this.listArr[0].name ? [] : arr,
-        period_weekdays: this.period_weekdays,
-        period_time_start: this.period_time_start,
-        period_time_end: this.period_time_end,
+        period_weekdays: this.comboItem.period_weekdays,
+        period_time_start: this.comboItem.period_time_start,
+        period_time_end: this.comboItem.period_time_end,
         enabled: this.upChecked,
         actual_price: this.actual_price
       };
@@ -407,24 +499,6 @@ export default {
       return `${a}:${b}`;
     },
 
-    linkTime() {
-      let arr = this.listArr.filter(function(e) {
-        e.original_price = parseFloat(e.original_price);
-        return e;
-      });
-      let data = {
-        name: this.pkname,
-        goods: !this.listArr[0].name ? [] : arr,
-        enabled: this.upChecked,
-        actual_price: this.actual_price,
-        currentTime: this.$route.query.currentTime || this.quaryStart,
-        currentEndTime: this.$route.query.currentEndTime || this.quaryEnd,
-        pk: this.$route.query.pk || null,
-        period_weekdays:
-          this.$route.query.period_weekdays || this.quaryDay || []
-      };
-      this.$store.commit("set_addNewComboItem", data);
-    },
     generationObj() {
       return {
         name: "",
@@ -480,15 +554,17 @@ export default {
         return;
       }
 
-      if (!this.useTime) {
+      if (!this.timeStr) {
         this.toast("请选择可用时段");
         return;
       }
-      if (this.$route.query.pk) {
-        this.modiComboItem();
+      if (this.$route.query.c) {
+        this.addCombo();
+        console.log("新增");
         return;
       }
-      this.addCombo();
+      console.log("修改");
+      // this.modiComboItem();
     },
     // 提示
     toast(message) {
