@@ -8,18 +8,28 @@ export default {
       state.comboItem = comboItem;
     },
     set_comboItemAttr(state, obj) {
-      console.log(obj);
-      if (!obj) {
-        state.comboItem = null
-        return
-      }
       let art = obj.attr
-      if (state.comboItem) {
-        state.comboItem[obj.attr] = obj.val;
+      if (!state.comboItem) {
+        state.comboItem = {}
+        state.comboItem[String(art)] = obj.val;
         return
       }
-      state.comboItem = {}
-      state.comboItem[String(art)] = obj.val;
+      state.comboItem[obj.attr] = obj.val;
+      // if (!obj) {
+      //   state.comboItem = null
+      //   console.log(0);
+      //   return
+      // }
+      // let art = obj.attr
+      // if (state.comboItem) {
+      //   console.log(1);
+
+      //   state.comboItem[obj.attr] = obj.val;
+      //   return
+      // }
+      // console.log(2);
+      // state.comboItem = {}
+      // state.comboItem[String(art)] = obj.val;
     },
     set_addNewComboItem(state, addNewComboItem) {
       state.addNewComboItem = addNewComboItem;

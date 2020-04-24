@@ -228,18 +228,29 @@ export default {
       return options;
     },
     init() {
-      if (!this.comboItem) return;
+      if (!this.comboItem) {
+        this.result = [];
+        this.startTime = "";
+        this.EndTime = "";
+        this.currentTime = "";
+        this.currentEndTime = "";
+        return;
+      }
       this.result = this.comboItem.period_weekdays;
       this.startTime = this.comboItem.period_time_start;
       this.EndTime = this.comboItem.period_time_end;
+      let format = String(parseInt(this.EndTime / 60)).length === 2;
+      let res = format
+        ? String(parseInt(this.EndTime / 60))
+        : "0" + String(parseInt(this.EndTime / 60));
       this.currentTime =
         (this.startTime / 60 == "0" ? "00" : this.startTime / 60) +
         ":" +
         (this.startTime % 60 == "0" ? "00" : this.startTime / 60);
       this.currentEndTime =
-        (this.EndTime / 60 == "0" ? "00" : this.EndTime / 60) +
+        (this.EndTime / 60 == "0" ? "00" : res) +
         ":" +
-        (this.EndTime % 60 == "0" ? "00" : this.EndTime / 60);
+        (this.EndTime % 60 == "0" ? "00" : this.EndTime % 60);
     }
   },
   activated() {

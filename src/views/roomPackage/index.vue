@@ -110,7 +110,7 @@ export default {
         });
         return;
       }
-      this.$store.commit("set_comboItemAttr", null);
+      this.$store.commit("set_comboItem", null);
       this.$router.push({
         name: "newcombo",
         query: {

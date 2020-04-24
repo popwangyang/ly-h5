@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <p class="noneInfo">
+      <p class="noneInfo" v-if="combo.goods">
         <van-loading type="spinner" v-if="!combo.goods"></van-loading>
         <span v-if="combo.goods.length === 0">暂无商品信息</span>
       </p>
