@@ -21,7 +21,7 @@ if (url.indexOf('info.bjywkd.com') > -1) {
   socketUrl = 'wkceshi.bjywkd.com'
 } else {
   baseUrl = config.baseUrl.dev
-  socketUrl = 'wkceshi.bjywkd.com'
+  socketUrl = 'wkdev.bjywkd.com'
 }
 
 config.baseUrl.socket = 'wss://' + socketUrl + ':9112/connection/websocket'

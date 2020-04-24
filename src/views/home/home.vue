@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      if (to.name === "personalCenter") this.getUnRead();
+      // if (to.name === "personalCenter") this.getUnRead();
       document.title = to.meta.title;
       const toDepth = to.path.split("/").length;
       const fromDepth = from.path.split("/").length;
