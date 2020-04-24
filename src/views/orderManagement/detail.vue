@@ -9,18 +9,17 @@
 			<span class="left circle"></span>
 			<span class="right circle"></span>
 		</span>
-		<van-cell title="音乐服务费" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="开房套餐费用" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="扫码订单金额" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="实付金额" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="订单编号" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="支付方式" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="交易时间" value-class="cellValue" value="音乐服务费" />
-		<van-cell title="支付方式" value-class="cellValue" value="音乐服务费" />
+		<van-cell title="音乐服务费" value-class="cellValue" :value="detail.music_amount_display" />
+		<van-cell title="开房套餐费用" value-class="cellValue" :value="detail.package_amount_display" />
+		<van-cell title="扫码订单金额" value-class="cellValue" :value="detail.amount_display" />
+		<van-cell title="实付金额" value-class="cellValue" :value="detail.real_amount_display" />
+		<van-cell title="订单编号" value-class="cellValue" :value="detail.platform_id" />
+		<van-cell title="支付方式" value-class="cellValue" :value="detail.platform_display" />
+		<van-cell title="交易时间" value-class="cellValue" :value="detail.pay_time" />
 		<span class="title">购买套餐</span>
 		<van-cell title="套餐名称" value-class="cellValue">
 			<span class="vanValue">
-				<span>套餐A</span>
+				<span>{{detail.package.name}}</span>
 				<van-icon name="warning-o" @click.native="iconBtn"/>
 			</span>
 		</van-cell>
@@ -32,8 +31,6 @@
 				未参与活动
 			</span>
 		</van-cell>
-		
-		
 		<van-cell title="活动名称" v-else>
 			<span slot="title" class="vanTitle">
 				<span>活动名称</span>
@@ -54,30 +51,16 @@
 			</span>
 		</van-cell>
 		</ContentLoad>
-		<van-dialog v-model="dialogFlage" title="套餐名称A">
+		<van-dialog v-model="dialogFlage" :title="detail.package.name">
 		  <div class="dialogContent">
 			  <span>套餐内容</span>
 			  <span>
-				  <span class="dialogListItem">
+				  <span class="dialogListItem" v-for="(item, index) in detail.goods" :key="index">
 					  <span>
-						  <span class="tradeName">商品名称</span>
-						  <span class="tradeNum">X1</span>
+						  <span class="tradeName">{{item.name}}</span>
+						  <span class="tradeNum">X{{item.count}}</span>
 					  </span>
-					  <span class="tradePrice">￥10.00</span>
-				  </span>
-				  <span class="dialogListItem">
-				  					  <span>
-				  						  <span class="tradeName">商品名称</span>
-				  						  <span class="tradeNum">X1</span>
-				  					  </span>
-				  					  <span class="tradePrice">￥10.00</span>
-				  </span>
-				  <span class="dialogListItem">
-				  					  <span>
-				  						  <span class="tradeName">商品名称</span>
-				  						  <span class="tradeNum">X1</span>
-				  					  </span>
-				  					  <span class="tradePrice">￥10.00</span>
+					  <span class="tradePrice">￥{{item.original_price}}</span>
 				  </span>
 			  </span>
 		  </div>
@@ -87,15 +70,19 @@
 
 <script>
 	import ContentLoad from "@/components/contentLoad";
+	import { getOrderDetail } from '@/api/ktvClerkOrder.js'
 	export default{
 		components:{
 		  ContentLoad
 		},
 		data(){
 			return{
-				dialogFlage:false,
-				inActivity:true,
-				useCard:false
+				dialogFlage: false,
+				inActivity: false,
+				useCard: false,
+				detail: {
+					package:{}
+				}
 			}
 		},
 		methods:{
@@ -104,9 +91,11 @@
 			},
 			getData() {
 				return new Promise((resolve, reject) => {
-					setTimeout(() => {
-						resolve({})
-					}, 1000)
+					let id = this.$route.query.id;
+					getOrderDetail(id).then(res => {
+						this.detailData = res.data;
+						resolve(res.data);
+					})
 				});
 			}
 		}

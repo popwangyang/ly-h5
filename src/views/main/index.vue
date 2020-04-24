@@ -1,7 +1,7 @@
 <template>
 	<div ref='scroll' class="mainPageBox">
-		<!-- <KTVData/> -->
-		<ManagementData/>
+		<KTVData v-if="isKtv"/>
+		<ManagementData v-else/>
 	</div>
 </template>
 
@@ -15,6 +15,11 @@
 		components:{
 			KTVData,
 			ManagementData
+		},
+		computed:{
+			isKtv(){
+				return this.$store.state.user.usertype == 'ktv' ? true:false;
+			}
 		},
 		data(){
 			return{

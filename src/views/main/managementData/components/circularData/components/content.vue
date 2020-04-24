@@ -7,7 +7,7 @@
 			  :speed="100"
 			  color="#0082FF"
 			  layer-color="#ECECEC"
-			  stroke-width="120"
+			  stroke-width="150"
 			  stroke-linecap="butt"
 			  :clockwise="false"
 			/>
@@ -26,7 +26,6 @@
 				default:0
 			}
 		},
-		
 		data(){
 			return{
 				currentRate:0
@@ -40,6 +39,7 @@
 			  height: 136px;
 			  display: flex;
 			  align-items: center;
+			  padding: 0 20px;
 			  &>span:nth-child(2){
 				  flex: 1;
 				  height: 100%;

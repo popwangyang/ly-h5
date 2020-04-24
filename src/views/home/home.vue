@@ -1,14 +1,11 @@
 <template>
   <div class="homeBox">
     <div class="routerView theme">
-		<transition :name="transitionName" v-if="transitionName!='slide-none'">
+		<transition :name="transitionName">
 		  <keep-alive :include="keepAliveList">
 		    <router-view></router-view>
 		  </keep-alive>
 		</transition>
-		<keep-alive :include="keepAliveList" v-else>
-		  <router-view></router-view>
-		</keep-alive>
     </div>
     <BottomBar v-show="showTab" @goView="goView" />
   </div>
@@ -112,7 +109,7 @@ export default {
 	transition: opacity 0.01s ease-out;
 }
 .slide-none-enter{
-	opacity: 1.0;
+	opacity: 0;
 }
 
 .slide-left-enter-active, .slide-right-enter-active{

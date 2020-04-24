@@ -404,11 +404,24 @@ export const Delayering = (data) => {
 
 // 根据区域code查询区域信息
 export const getMapData = (params) => {
-	if(params.province){
-		return mapData.find(item => {
-			return item.value == params.province;
-		}).children;
-	}else{
-		return mapData;
+	
+	let result = null;
+	
+	switch(params.level){
+		case 1:
+		  result = mapData;
+		break;
+		case 2:
+		  result = mapData.find(item => {
+		  	return item.value == params.province;
+		  }).children;
+		break;
+		case 3:
+		  result = mapData.find(item => {
+		  	return item.value == params.province;
+		  }).children[0].children; 
+		  
+		 break;
 	}
+	return result;
 }

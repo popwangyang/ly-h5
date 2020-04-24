@@ -5,24 +5,26 @@
 				<span>
 					<span class="title_top">包厢</span>
 					<span class="title_top">{{itemData.countNumber}}</span>
-					<span class="title_state">{{itemData.statues | statuesFilter}}</span>
+					<span class="title_state">{{itemData.package_status | statuesFilter}}</span>
 				</span>
 				<span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
 				<span v-else></span>
 			</span>			
-			<span class="tcname">{{itemData.mealName}}</span>
+			<span class="tcname">{{itemData.package.name}}</span>
 			<div class="spnameBox" ref="spnameBox" :style="{maxHeight: maxHeight}">
 				<span class="spname" v-for="(item, index) in meals" :key="index">
 					<span>{{item.name}}</span>
-					<span>x{{item.number}}</span>
+					<span>x{{item.count}}</span>
 				</span>
 			</div>
-			<span class="ellipsis" v-show="itemData.meals.length > 3 && !openListStatues">...</span>
+			<span class="ellipsis" v-show="itemData.package.goods.length > 3 && !openListStatues">...</span>
 			<span class="bottom">
-				<span>{{itemData.create_date}}</span>
+				<span>{{itemData.pay_time}}</span>
 				<span>
-					<span class="btn qx_btn" @click="detailBtn">详情</span>
-					<span class="btn confirm_btn" @click="confirmBtn" v-if="itemData.statues == 1 ? true:false">确认配送</span>
+					<van-button size="mini" class="btn" plain type="primary" @click="detailBtn">详情</van-button>
+					<van-button class="btn confirm_btn" @click="confirmBtn" size="mini" plain type="info" v-if="itemData.package_status == 2 ? true:false">
+						{{confirmText}}
+					</van-button>
 				</span>
 			</span>
 		</div>
@@ -30,14 +32,28 @@
 </template>
 
 <script>
+	import Loading from '@/components/loading/loading.vue'
 	export default{
+		components:{
+			Loading
+		},
 		props:{
 			itemData:{
-				type:Object
+				type:Object,
+				default: () => {
+					return {
+						package:{
+							goods:[]
+						}
+					}
+				}
 			},
 			rows:{
 				type:Number,
 				default: 12
+			},
+			confirmAjax:{
+				type: Function
 			}
 		},
 		computed:{
@@ -45,7 +61,7 @@
 				return 20 * this.rows + 8 + "px";
 			},
 			openListText(){
-				if(this.itemData.meals.length <= 3){
+				if(this.itemData.package.goods.length <= 3){
 					return '';
 				}else if(this.openListStatues){
 					return '收起';
@@ -55,20 +71,24 @@
 			},
 			meals(){
 				if(this.openListStatues){
-					return this.itemData.meals;
+					return this.itemData.package.goods;
 				}else{
-					return this.itemData.meals.slice(0, 3);
+					return this.itemData.package.goods.slice(0, 3);
 				}
+			},
+			confirmText(){
+				return this.confirmLoading ? '确认中...':'确认配送';
 			}
 		},
 		data(){
 		   return{
-			   openListStatues: false
+			   openListStatues: false,
+			   confirmLoading: false,
 		   }
 		},
 		filters:{
 			statuesFilter(state){
-				return state == 1 ? '待配送':'已配送';
+				return state == 1 ? '已配送':'待配送';
 			}
 		},
 		methods:{
@@ -79,7 +99,12 @@
 				this.$emit('showDetail', this.itemData.id);
 			},
 			confirmBtn(){
-				this.$emit('haveBeDeliver', this.itemData.id);
+				this.confirmLoading = true;
+				this.confirmAjax(this.itemData.id).then(res => {
+					this.confirmLoading = false;
+				}).catch(err => {
+					this.confirmLoading = false;
+				})
 			}
 		},
 		mounted() {
@@ -166,13 +191,11 @@
 					font-weight:400;
 					color:rgba(204,204,204,1);
 				}
-				.qx_btn{
-					color: #00CDA2;
-					border: 1px solid #00CDA2;
+				.btn{
+					min-width: auto;
+					padding: 0 6px;
 				}
 				.confirm_btn{
-					color: #0096F7;
-					border: 1px solid #0096F7;
 					margin-left: 20px;
 				}
 			}

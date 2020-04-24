@@ -2,7 +2,7 @@
 	<div class="haveBeenDeliveredBox">
 		<PageList
 		:getData="getData"
-		noListText="暂无待配送订单"
+		noListText="暂无已配送订单"
 		ref="pageList"
 		>
 			<template v-slot:default="slotProps">
@@ -10,7 +10,6 @@
 				 :itemData="item"
 				 :key="item.id"
 				 @showDetail="showDetail"
-				 @haveBeDeliver="haveBeDeliver"
 				 />
 			</template>
 		</PageList>
@@ -20,6 +19,7 @@
 <script>
 	import PageList from '@/components/pageList'
 	import DeliveredListItem from '@/components/listItems/deliveredListItem'
+	import { getOrderList } from '@/api/ktvClerkOrder.js'
 	export default{
 		components:{
 			PageList,
@@ -41,44 +41,21 @@
 				console.log(this.$refs.pageList.deletedItem);
 				this.$refs.pageList.deletedItem('id', id);
 			},
-			getData(){
+			getData(params){
+				console.log(params);
+				let send_data = {
+					ktv_id_list: this.$store.state.user.ktv_id,
+					package_status: 1
+				}
+				Object.assign(send_data, params);
 				return new Promise((resolve, reject) => {
-					let data = [{
-						id: 3,
-						countNumber: '888',
-						statues: 2,
-						mealName: '娱乐大酬宾',
-						meals:[
-							{
-								name: '百威',
-								number: 1,
-							},
-							{
-								name: '可口可乐',
-								number: 1,
-							}
-						],
-						create_date:'2020-01-09 12:09:01'
-					},{
-						id: 4,
-						countNumber: '888',
-						statues: 2,
-						mealName: '娱乐大酬宾',
-						meals:[
-							{
-								name: '百威',
-								number: 1,
-							},
-							{
-								name: '可口可乐',
-								number: 1,
-							}
-						],
-						create_date:'2020-01-09 12:09:01'
-					}];
-					setTimeout(() => {
-						resolve({total: 2, data: data})
-					}, 1000)
+					getOrderList(send_data).then(res => {
+						let result = {
+							total: res.data.count,
+							data: res.data.results
+						};
+						resolve(result);
+					})
 				})
 			}
 		}

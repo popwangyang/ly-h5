@@ -1,27 +1,21 @@
 <template>
 	<div class="chinaMapBox">
-		<Lenged :subTipData="lengedData"/>
+		<slot name='title'></slot>
 		<div id="china-map"></div>
 	</div>
-	
 </template>
 
 <script>
 	import echarts from 'echarts';
 	import Vue from 'vue'
 	import china from './components/map/china';
-	import Lenged from './components/lenged.vue'
+	import mapData from '@/static/json/map.json';
 	import {
-		provinces,
 		provincesText,
-		modules,
+		tooltip,
 		visualMapPieces,
 	} from './components/config'
-	import mapData from './components/json/map.json'
 	export default {
-		components:{
-			Lenged
-		},
 		props:{
 		  controller:{
 			  type: Object,
@@ -30,21 +24,32 @@
 			  type: String,
 			  default: '全国',
 			  validator: function(val){
-				  return provincesText.indexOf(val) > -1 || val == '全国';
+				  let code = provincesText.findIndex(item => val.indexOf(item) > -1);
+				  if(code || val == '全国'){
+					  return true;
+				  }else{
+					  return false;
+				  }
 			  }
 		  },
 		  getData:{
 		      type: Function,
 			  required: true
+		  },
+		  itemClick:{
+			  type: Function
+		  },
+		  plantform:{
+			  type:String,
+			  default: 'PC',
+			  validator:(value) => ['PC', 'h5'].indexOf(value) !== -1
 		  }
 		},
 		data() {
 			return {
 				myChart: null,
-				cityName: this.defaultArea,
-				lengedData: {},
+				cityName: provincesText.find(item => this.defaultArea.indexOf(item) > -1 ),
 				regionData:[],
-				isFlage: false
 			}
 		},
 		methods: {
@@ -64,25 +69,37 @@
 						zlevel: 0
 				});
 				let send_data = {
-					name: pName,
+					level: 1,
+					name: pName
 				}
 				let code = "";
-				if(send_data.name != '全国'){
-					code = mapData.find(item => {
-						if(item.label.indexOf(send_data.name) != -1){
+				if(pName != '全国'){
+					let codeData = mapData.find(item => {
+						if(item.label.indexOf(pName) != -1){
 							return true;
 						}
-					}).value;
+					});
+					if(codeData.children.length == 1){
+						send_data.level = 3;
+						send_data.province = codeData.value;
+						send_data.city = codeData.children[0].value;
+					}else{
+						send_data.level = 2;
+						send_data.province = codeData.value;
+					}
 				}
-				send_data.province = code;
 				this.getData(send_data).then(res => {
 					this.regionData = res;
-					this.setLengedData();
 					myChart.hideLoading();
-					this.cityName = send_data.name;
+					this.cityName = pName;
 					var tmpSeriesData = res.map(item => {
 						item.value = item.ktv
-						item.selected = false;
+						item.itemStyle = {
+							normal: {
+								borderColor: item.ktv == 0 ? '#cecece':'#FFF',
+								color: '#FFF'
+							},
+						}
 						return item;
 					});
 					var option = {
@@ -104,6 +121,7 @@
 								color: 'black'
 							}
 						},
+						tooltip: this.plantform == 'PC' ? tooltip:{},
 						series: [{
 							name: pName,
 							type: 'map',
@@ -138,7 +156,7 @@
 								}
 							},
 							data: tmpSeriesData,
-							// top: "6%" //组件距离容器的距离
+							top: "6%" //组件距离容器的距离
 						}]
 					};
 
@@ -147,66 +165,44 @@
 					myChart.off("click");
 
 					myChart.on('click', (param) => {
-						
-						tmpSeriesData.forEach(item => {
-							if(item.name == param.name){
-								item.selected = !item.selected;
-							}else{
-								item.selected = false;
-							}
-						})
-						let data = this.regionData.find(item => {
-							if(item.name == param.name && item.selected){
-								return true;
-							}
-						})
-						myChart.setOption(option);
-						this.setLengedData(data);
+						let data = param.data;
+						if(this.plantform == 'PC'){
+							this.showProvince(param.name);
+						}else{
+							tmpSeriesData.forEach(item => {
+								if(item.name == param.name){
+									item.selected = !item.selected;
+									if(!item.selected){
+										data = '';
+									}
+								}else{
+									item.selected = false;
+								}
+							})
+							myChart.setOption(option);
+						}
+						this.$emit('itemClick', data);
 					});
-					myChart.on('mapselectchanged', (params) => {
-						console.log('ppppp');
-					})
 				})
 			},
-			setLengedData(data){
-				let name, ktv = 0, count = 0, city = 0;
-				if(data && data != 'undefind'){
-					name = data.name;
-					city = data.ktv > 0 ? 1:0;
-					ktv = data.ktv;
-					count = data.count;
-				}else{
-					name = this.cityName;
-					this.regionData.forEach(item => {
-						if(item.ktv){
-							city++;
-						}
-						ktv += item.ktv;
-						count += item.count
-					})
-				}
-				this.lengedData = {
-					name: name,
-					city: city,
-					ktv: ktv,
-					count: count
-				};
+			// 展示省级数据
+			showProvince(pName) {
+				this.setArea(pName);
 			},
 			setArea(name){
 				if(provincesText.indexOf(name) > -1){
 					this.cityName = name;
 					this.initEcharts(name);
 				}
-			}
+			},
 		},
 		mounted() {
-			this.myChart = echarts.init(document.getElementById('china-map'));
-			this.initEcharts(this.cityName);
-			this.lengedData = {
-				name: this.cityName,
-				city:0,
-				ktv:0,
-				count:0
+			this.myChart = echarts.init(document.getElementById('china-map'))
+			this.initEcharts(this.cityName)
+			if(this.controller){
+				this.controller.addListener('area', (area) => {
+					this.setArea(area);
+				})
 			}
 		}
 	}
@@ -222,4 +218,35 @@
 		}
 	}
 	
+</style>
+<style>
+	
+	#china-map .tooltip {
+		background: #0f2542c7;
+		color: white;
+		border-radius: 3px;
+		min-width: 120px;
+		overflow: hidden;
+	}
+	
+	.tooltip>span {
+		display: flex;
+		height: 25px;
+		padding: 0 10px;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 12px;
+	}
+	
+	.tooltipGo img{
+		width: 14px;
+		height: 14px;
+		vertical-align: middle;
+	}
+	
+	.tooltip>span:nth-child(1) {
+		background: #0f2542;
+		font-size: 14px;
+		padding: 4px 10px;
+	}
 </style>

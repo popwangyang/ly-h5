@@ -51,7 +51,7 @@ export default {
 				case 'platform':
 				case 'agentibus':
 				case 'employee':
-					state.theme = theme.theme_ktv_clerk;
+					state.theme = theme.theme_platform;
 					state.className = 'themea';
 					break;
 				case 'ktv_clerk':

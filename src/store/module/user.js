@@ -18,6 +18,7 @@ export default {
 		user_id: '', // usertype +id
 		ktv_id: '', // ktv角色的专属Id
 		forgetPasswordKey: 'phone', // phone 为手机验证，email 为邮箱验证
+		area: {}, // 用户所属地区
 	},
 	mutations: {
 		setKTVId(state, ktv_id) {
@@ -40,6 +41,9 @@ export default {
 		},
 		setUser_id(state, user_id) {
 			state.user_id = user_id;
+		},
+		setUserArea(state, data) {
+			state.area = data;
 		},
 	},
 	actions: {
@@ -76,6 +80,7 @@ export default {
 						commit('setUserName', res.data.data[0].username);
 						commit('setUserID', res.data.data[0].user);
 						commit('setUserEmail', res.data.data[0].email);
+						commit('setUserArea', res.data.data[0].areas[0] || {name: '全国', number: ''});
 						if (res.data.data[0].belong_participant) {
 							commit('setUser_id', res.data.data[0].belong_participant.unique_key || '');
 							if (res.data.data[0].belong_participant.participant_type === 'ktv') {
