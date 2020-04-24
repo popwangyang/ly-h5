@@ -4,9 +4,6 @@ import {
   getEmployee_user_id
 }
 from '@/api/user'
-import {
-  socketInfomation
-} from "@/api/information";
 import socket from '@/config/socket.js'
 
 import {
@@ -181,10 +178,8 @@ export default {
     loginOut({
       commit
     }) {
-      return new Promise((resolve, reject) => {
-        if (socket.getWebSocket(socketInfomation)) {
-          socket.getWebSocket(socketInfomation).disconnect()
-        }
+      return new Promise((resolve) => {
+        socket.closeWs()
         setToken('');
         commit('setUserType', '');
         commit('setUserName', '');

@@ -112,8 +112,11 @@ export default {
             socketInfomation,
             { user_id: this.$store.state.user.userID },
             this.getUnRead,
-            this.$store.state.user.userID
+            {
+              msg: this.$store.state.user.userID
+            }
           );
+
           this.$toast.success({
             duration: 1000, // 持续展示 toast
             forbidClick: true,

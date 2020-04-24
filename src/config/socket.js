@@ -9,7 +9,7 @@ export default {
    * @param {执行回调} cb 
    * @param {签名参数} key 
    */
-  getWebSocket(api, params, cb, key) {
+  getWebSocket(api, params, cb, obj) {
     if ("WebSocket" in window && !self.connectStatus) {
       api(params).then(res => {
         const sign = res.data.access_token; // 签名： 后端根据secret、user、timestamp等，通过hashmap、二进制流、sha256换算得到
@@ -22,12 +22,14 @@ export default {
           timestamp: timestamp,
           token: sign
         });
+        console.log(socketIns);
+
         // 与Websocket端点建立连接,并通过签名授权
         socketIns.connect();
         // 监听msg:userid 是否有未读新消息
         socketIns.subscribe(
           // `msg:${self.$store.state.user.userID}`,
-          `msg:${key}`,
+          `{obj.key}:${obj.val}`,
           message => {
             /**
              * userID 用户 的实时系统消息
@@ -57,5 +59,10 @@ export default {
       return socketIns
     }
     return socketIns
+  },
+  closeWs() {
+    if (socketIns) {
+      socketIns.disconnect();
+    }
   }
 }
