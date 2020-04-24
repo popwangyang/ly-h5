@@ -1,5 +1,5 @@
 import {
-  socket
+  socketInfomation
 }
 from "@/api/information";
 import { wsk } from "@/libs/api.request.js";
@@ -64,7 +64,7 @@ export const websocket = (params) => {
 	return new Promise((resolve, reject) => {
 		console.log(WEBSOCKET)
 		if(WEBSOCKET ==  null){
-			socket(params).then(res => {
+			socketInfomation(params).then(res => {
 				const sign = res.data.access_token; // 签名： 后端根据secret、user、timestamp等，通过hashmap、二进制流、sha256换算得到
 				const timestamp = res.data.timestamp; // 时间戳
 				const user = res.data.user; // 当前登录用户id

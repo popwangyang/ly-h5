@@ -114,31 +114,17 @@
   display: flex;
   flex-direction: column;
   background: #f6f6f6;
-<<<<<<< HEAD
-=======
 
->>>>>>> 600d22ce886443a97dae6a098220a94eb9e8422c
   .routerView {
     flex: 1;
     overflow: auto;
   }
 }
-<<<<<<< HEAD
 .slide-none-enter-active, .slide-none-enter-active{
 	transition: opacity 0.01s ease-out;
 }
 .slide-none-enter{
 	opacity: 0;
-=======
-
-.slide-none-enter-active,
-.slide-none-enter-active {
-  transition: opacity 0.01s ease-out;
-}
-
-.slide-none-enter {
-  opacity: 1;
->>>>>>> 600d22ce886443a97dae6a098220a94eb9e8422c
 }
 
 .slide-left-enter-active,

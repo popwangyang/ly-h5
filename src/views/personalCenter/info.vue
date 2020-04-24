@@ -125,6 +125,7 @@ export default {
             type: "success",
             message: "全部已读"
           });
+          this.$store.commit("SET_UNREAD", 0);
         }
       });
     }
