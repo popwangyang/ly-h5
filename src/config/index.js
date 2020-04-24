@@ -14,6 +14,12 @@ export default {
 		pre: 'https://pre.bjywkd.com',
 		info: 'https://info.bjywkd.com'
 	},
+	socketUrl:{
+		dev: 'wkdev.bjywkd.com',
+		test: 'wkceshi.bjywkd.com',
+		pre:  'wkpre.bjywkd.com',
+		info: 'wkinfo.bjywkd.com',
+	},
 	ktv_contract_data: [{
 			title: '合同类型',
 			key: 'contract_type',

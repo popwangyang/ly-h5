@@ -8,25 +8,25 @@ import {
 } from '@/libs/util'
 
 let baseUrl = null;
-let socketUrl = ''
+let socketUrl = null;
 
 const url = window.location.href
 if (url.indexOf('info.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.info
+  socketUrl = config.socketUrl.info
 } else if (url.indexOf('pre.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.pre
-  socketUrl = 'wkpre.bjywkd.com'
+  socketUrl = config.socketUrl.pre
 } else if (url.indexOf('test.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.test
-  socketUrl = 'wkceshi.bjywkd.com'
+  socketUrl = config.socketUrl.test
 } else {
   baseUrl = config.baseUrl.dev
-  socketUrl = 'wkceshi.bjywkd.com'
+  socketUrl = config.socketUrl.dev
 }
 
-config.baseUrl.socket = 'wss://' + socketUrl + ':9112/connection/websocket'
-
 export const URL = baseUrl
+export const wsk = 'wss://' + socketUrl + ':9112/connection/websocket';
 const Ajax = new HttpRequest(baseUrl)
 const axios = {
   request: (option) => {

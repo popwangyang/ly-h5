@@ -16,6 +16,7 @@
 		mapActions
 	} from "vuex";
 	import BottomBar from "./components/bottomTabbar";
+	import { websocket } from '@/config/webSocket'
 	export default {
 		components: {
 			BottomBar
@@ -34,7 +35,6 @@
 		},
 		data() {
 			return {
-				timer: null,
 				transitionName: 'slide-none'
 			};
 		},
@@ -66,9 +66,23 @@
 		mounted() {
 			let body = document.getElementsByTagName("body")[0];
 			body.className = this.$store.state.app.className;
+			// 设置websocket,
+			let ktv_id = this.$store.state.user.ktv_id;
+			let user_id = this.$store.state.user.user_id;
+			websocket({user_id}).then(content => {
+				console.log(content);
+				if(ktv_id){
+					content.addListeners(`package:${ktv_id}`, res => {
+						console.log(res);
+					})
+				}
+				
+				content.addListeners(`msg:${user_id}`, res => {
+					console.log(res);
+				})
+			})
 		},
 		destroyed() {
-			clearInterval(this.timer);
 			let body = document.getElementsByTagName("body")[0];
 			body.className = "themea";
 		}

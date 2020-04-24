@@ -2,7 +2,7 @@ import {
   socket
 }
 from "@/api/information";
-import config from "@/config";
+import { wsk } from "@/libs/api.request.js";
 import Centrifuge from "centrifuge";
 let socketIns = null;
 export default {
@@ -15,9 +15,9 @@ export default {
         const sign = res.data.access_token; // 签名： 后端根据secret、user、timestamp等，通过hashmap、二进制流、sha256换算得到
         const timestamp = res.data.timestamp; // 时间戳
         const user = res.data.user; // 当前登录用户id
-        if (!user) return
+        if (user) return
         socketIns = new Centrifuge({
-          url: config.baseUrl.socket,
+          url: wsk,
           user: user,
           timestamp: timestamp,
           token: sign
