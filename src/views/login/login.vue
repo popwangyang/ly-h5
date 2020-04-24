@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { socketInfomation } from "@/api/information";
 import socket from "@/config/socket.js";
 import { mapActions } from "vuex";
 import ForgetPassword from "./components/forgetPassword";
@@ -107,7 +108,12 @@ export default {
         .then(res => {
           // this.$store.commit("SET_THEME", this.$store.state.user.usertype);
           this.getUnRead();
-          socket.getWebSocket(this.$store.state.user.userID, this.getUnRead);
+          socket.getWebSocket(
+            socketInfomation,
+            { user_id: this.$store.state.user.userID },
+            this.getUnRead,
+            this.$store.state.user.userID
+          );
           this.$toast.success({
             duration: 1000, // 持续展示 toast
             forbidClick: true,
