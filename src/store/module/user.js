@@ -5,7 +5,6 @@ import {
 }
 from '@/api/user'
 import socket from '@/config/socket.js'
-import { websocket } from '@/config/webSocket'
 
 import {
   setToken,
@@ -186,7 +185,6 @@ export default {
     }) {
       return new Promise((resolve) => {
         socket.closeWs()
-		websocket.disconnect();
         setToken('');
         commit('setUserType', '');
         commit('setUserName', '');

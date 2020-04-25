@@ -29,7 +29,7 @@ export default {
           refreshEndpoint: `${URL}/cperm/cent/refresh`,
         });
         // 与Websocket端点建立连接,并通过签名授权
-        socketIns.connect();
+        // socketIns.connect();
         // 监听msg:userid 是否有未读新消息
         socketIns.subscribe(
           // `msg:${self.$store.state.user.userID}`,

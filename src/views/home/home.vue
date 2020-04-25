@@ -36,7 +36,8 @@
 		},
 		data() {
 			return {
-				transitionName: 'slide-none'
+				transitionName: 'slide-none',
+				socketConent: null,
 			};
 		},
 		watch: {
@@ -71,6 +72,7 @@
 			let ktv_id = this.$store.state.user.ktv_id;
 			let user_id = this.$store.state.user.user_id;
 			websocket({user_id}).then(content => {
+				this.socketConent = content;
 				if(ktv_id){
 					content.addListeners(`package:${ktv_id}`, res => {
 						let send_data = {
@@ -82,7 +84,6 @@
 						})
 					})
 				}
-				
 				content.addListeners(`msg:${user_id}`, res => {
 					console.log(res);
 				})
@@ -91,6 +92,9 @@
 		destroyed() {
 			let body = document.getElementsByTagName("body")[0];
 			body.className = "themea";
+			if(this.socketConent != null){
+				this.socketConent.disconnect();
+			}
 		}
 	};
 </script>

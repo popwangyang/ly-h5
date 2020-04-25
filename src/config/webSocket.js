@@ -27,9 +27,6 @@ class WebSocket extends Centrifuge{
 		
 		this.on("disconnect", context => {
 		  console.log("断开连接", context);
-		  // if(getToken()){
-			 //  this.connect();
-		  // }
 		});
 		
 		this.on("error", error => {
@@ -77,6 +74,9 @@ export const websocket = (params) => {
 				resolve(WEBSOCKET);
 			})
 		}else{
+			if(WEBSOCKET._status == 'disconnected'){
+				WEBSOCKET.connect();
+			}
 			resolve(WEBSOCKET);
 		}
 	})
