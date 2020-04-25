@@ -27,7 +27,7 @@
 	import haveBeenDelivered from './components/haveBeenDelivered.vue'
 	import { cacheMixins } from "@/libs/mixins";
 	export default{
-		name: 'orderManagement',
+		// name: 'orderManagement',
 		mixins: [cacheMixins],
 		components:{
 			TabTitle,

@@ -17,6 +17,7 @@
 	} from "vuex";
 	import BottomBar from "./components/bottomTabbar";
 	import { websocket } from '@/config/webSocket'
+	import { getOrderList } from '@/api/ktvClerkOrder.js'
 	export default {
 		components: {
 			BottomBar
@@ -70,10 +71,15 @@
 			let ktv_id = this.$store.state.user.ktv_id;
 			let user_id = this.$store.state.user.user_id;
 			websocket({user_id}).then(content => {
-				console.log(content);
 				if(ktv_id){
 					content.addListeners(`package:${ktv_id}`, res => {
-						console.log(res);
+						let send_data = {
+							ktv_id_list: ktv_id,
+							package_status: 2
+						}
+						getOrderList(send_data).then(res => {
+							this.$store.commit('setUndelivered', res.data.count);
+						})
 					})
 				}
 				

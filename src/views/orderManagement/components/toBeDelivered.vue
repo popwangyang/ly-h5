@@ -63,7 +63,6 @@
 				
 			},
 			getData(params){
-				console.log(params);
 				let send_data = {
 					ktv_id_list: this.$store.state.user.ktv_id,
 					package_status: 2
@@ -80,7 +79,7 @@
 					})
 				})
 			}
-		}
+		},
 	}
 </script>
 
