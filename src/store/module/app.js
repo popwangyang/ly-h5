@@ -56,7 +56,7 @@ export default {
 					break;
 				case 'ktv_clerk':
 					state.theme = theme.theme_ktv_clerk;
-					state.className = 'themeb';
+					state.className = 'themea';
 					break;
 				default:
 					state.theme = theme.themea;
