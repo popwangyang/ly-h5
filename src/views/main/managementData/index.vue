@@ -10,7 +10,7 @@
 	import ContentLoad from "@/components/contentLoad";
 	import DataDisplay from './components/dataDisplay.vue'
 	import CircularData from './components/circularData'
-	import RegionData from './components/region/chinaMap'
+	import RegionData from './components/region'
 	export default{
 		components:{
 			DataDisplay,
