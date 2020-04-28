@@ -4,8 +4,8 @@ import axios from '@/libs/api.request'
 export const socketInfomation = (params) => {
   return axios.request({
     url: '/cperm/cent/refresh',
+	params,
     method: 'get',
-    params
   })
 }
 

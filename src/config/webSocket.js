@@ -57,14 +57,15 @@ class WebSocket extends Centrifuge{
 
 let WEBSOCKET = null;
 
-export const websocket = (params) => {
+export const websocket = () => {
 	return new Promise((resolve, reject) => {
 		console.log(WEBSOCKET)
 		if(WEBSOCKET ==  null){
-			socketInfomation(params).then(res => {
+			socketInfomation().then(res => {
 				const sign = res.data.access_token; // 签名： 后端根据secret、user、timestamp等，通过hashmap、二进制流、sha256换算得到
 				const timestamp = res.data.timestamp; // 时间戳
 				const user = res.data.user; // 当前登录用户id
+				
 				WEBSOCKET = new WebSocket({
 					  url: wsk,
 					  user: user,
