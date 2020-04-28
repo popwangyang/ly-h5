@@ -65,7 +65,7 @@ export const region = (params) => {
 					obj.count = areaData.sign_num_room;
 					Object.assign(obj, areaData);
 				}
-				console.log(params);
+				// console.log(params);
 				results.push(obj);
 			})
 			resolve(results);
