@@ -68,7 +68,7 @@ export default {
 		tabBottoms: [
 			{
 				text: '订单管理',
-				info: '0',
+				info: 0,
 				path: '/orderManagement',
 				active: require('@/assets/bottomTabs/mainA.png'),
 				inactive: require('@/assets/bottomTabs/mainB.png')
@@ -87,7 +87,7 @@ export default {
 			},
 			{
 				text: '个人中心',
-				info: '0',
+				info: 0,
 				path: '/personalCenter',
 				active: require('@/assets/bottomTabs/personA.png'),
 				inactive: require('@/assets/bottomTabs/personB.png')
