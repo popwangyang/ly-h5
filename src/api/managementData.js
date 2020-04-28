@@ -2,6 +2,14 @@ import axios from '@/libs/api.request';
 import {getMapData} from '@/libs/util';
 
 
+// 合同生效中的场所数量
+export const getAllContractingKtv = () => {
+	return axios.request({
+	  url: '/ktv/place/contracting-ktv',
+	  method: 'get',
+	})
+}
+
 // 场所概况(全部场所统计信息)
 export const dataDisplay = (params) => {
 	return axios.request({
@@ -30,15 +38,24 @@ const axiosRegion = (params) => {
 	})
 }
 
+const goo = (params) => {
+	let p1 = axiosRegion(params);
+	let p2 = getAllContractingKtv();
+	return Promise.all([p1, p2]);
+}
+
+
 
 
 
 export const region = (params) => {
 	return new Promise((resolve, reject) => {
-		axiosRegion(params).then(res => {
+		goo(params).then(res => {
+			console.log(res);
 			let mapData = getMapData(params);
 			let results = [];
-			let data = res.data;
+			let data = res[0].data;
+			let allTotal = res[1].data.contracting_count;
 			let key = params.level == 1 ? 'province': params.level == 2 ? 'city':'country';
 			mapData.forEach(item => {
 				let obj = {
