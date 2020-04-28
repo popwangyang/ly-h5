@@ -74,6 +74,7 @@ export const region = (params) => {
 					scan_num_room: 0,
 					business: 0,
 					un_business: 0,
+					all_sign_num_ktv: allTotal
 				}
 				let areaData = data.find(resItem => resItem[key].indexOf(item.label) > -1 );
 				if(areaData){
