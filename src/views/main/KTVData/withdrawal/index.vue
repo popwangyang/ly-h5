@@ -106,10 +106,10 @@ export default {
     },
     // 可提现
     withdrawalMoney() {
-      return this.$store.state.user.withdrawalValue;
+      return this.$store.state.withdrawal.withdrawalValue;
     },
     financialObj() {
-      return this.$store.state.user.financialObj;
+      return this.$store.state.withdrawal.financialObj;
     }
   },
   mounted() {
