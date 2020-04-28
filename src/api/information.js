@@ -3,9 +3,9 @@ import axios from '@/libs/api.request'
 // 实时获取消息
 export const socketInfomation = (params) => {
   return axios.request({
-    url: '/copyright/rbac/ws-token',
+    url: '/cperm/cent/refresh',
+	params,
     method: 'get',
-    params
   })
 }
 

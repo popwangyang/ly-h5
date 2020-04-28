@@ -1,5 +1,5 @@
 <template>
-  <div class="orderSharing">
+  <div class="orderSharing" ref="scroll">
     <div :class="['search',isOrderNum?'':'isNoOrderNum']">
       <Search v-if="isOrderNum" placeholder="请输入订单号" :hasPay="showOrder !== 3" style="flex: 1;"></Search>
       <div class="img-wrapper">

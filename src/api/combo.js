@@ -59,6 +59,22 @@ export const modiInfoCombo = (quary, data) => {
   })
 }
 
+// 修改套餐全部信息
+export const modifyComboAll = (quary, data) => {
+  return new Promise((resolve, reject) => {
+    let p1 = modiCombo(quary, data.in);
+    let p2 = modiInfoCombo(quary, data.out);
+    Promise.all([p1, p2]).then(allRes => {
+      let result = [...allRes];
+      resolve(result);
+    }).catch(err => {
+      reject();
+    })
+  })
+}
+
+
+
 // 套餐批量管理
 export const manaCombo = (quary, package_opts) => {
   return axios.request({

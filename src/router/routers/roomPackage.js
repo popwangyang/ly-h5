@@ -19,7 +19,7 @@ export default [{
   meta: {
     title: '套餐新增',
     showBottomTab: false,
-    cacheTos: ['comboTime']
+    // cacheTos: ['comboTime']
   },
   component: newcombo,
 }, {
@@ -37,7 +37,7 @@ export default [{
   meta: {
     title: '可用时段',
     showBottomTab: false,
-    cacheTos: ['newcombo']
+    // cacheTos: ['newcombo']
   },
   component: comboTime,
 }, {
