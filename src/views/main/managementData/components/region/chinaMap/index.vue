@@ -93,10 +93,10 @@
 					myChart.hideLoading();
 					this.cityName = pName;
 					var tmpSeriesData = res.map(item => {
-						item.value = item.ktv
+						item.value = (item.ktv / item.all_sign_num_ktv)*100
 						item.itemStyle = {
 							normal: {
-								borderColor: item.ktv == 0 ? '#cecece':'#FFF',
+								borderColor: item.value == 0 ? '#cecece':'#cecece',
 								color: '#FFF'
 							},
 						}
@@ -105,10 +105,11 @@
 					var option = {
 						visualMap: {
 							type: 'piecewise',
-							bottom: 0,
+							bottom: 20,
 							splitNumber: 5,
-							itemWidth: 10,
-							itemHeight: 10,
+							itemWidth: 8,
+							itemHeight: 8,
+							textGap: 4,
 							pieces: visualMapPieces,
 							orient: 'horizontal',
 							inRange: {
@@ -118,7 +119,8 @@
 							},
 							show:true,//是否显示组件
 							textStyle: {
-								color: 'black'
+								color: 'black',
+								fontSize: 10,
 							}
 						},
 						tooltip: this.plantform == 'PC' ? tooltip:{},

@@ -4,36 +4,40 @@ const path = require('path')
 const modules = {}
 province.keys().forEach(key => {
 	const name = path.basename(key, '.js')
-	console.log(name)
 	modules[name] = province(key).default || province(key)
 })
 
 export default modules;
 
 export const visualMapPieces = [{
-		min: 60,
-		label: '> 60'
-	},
+			gte: 81,
+			label: '> 81(%)'
+	    },
 		{
-			min: 40,
-			max: 59,
-			label: '40 ~ 59'
+			gte: 61,
+			lte: 80,
+			label: '61~80'
 		},
 		{
-			min: 20,
-			max: 39,
-			label: '20 ~ 39'
+			gte: 46,
+			lte: 60,
+			label: '46~60'
 		},
 		{
-			min: 1,
-			max: 19,
-			label: '1 ~ 19'
+			gte: 31,
+			lte: 45,
+			label: '31~45'
 		},
 		{
-			value: 0,
-			label: '0'
+			gte: 16,
+			lte: 30,
+			label: '16~30'
 		},
-	]
+		{
+			gt: 0,
+			lte: 15,
+			label: '0~15'
+		},]
 
 export const tooltip =  {
 		trigger: 'item',

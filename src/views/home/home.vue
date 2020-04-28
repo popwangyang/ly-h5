@@ -71,9 +71,11 @@
 			// 设置websocket,
 			let ktv_id = this.$store.state.user.ktv_id;
 			let user_id = this.$store.state.user.user_id;
+			let usertype = this.$store.state.user.user_type;
+			
 			websocket().then(content => {
 				this.socketConent = content;
-				if(ktv_id){
+				if(usertype == 'ktv_clerk'){
 					content.addListeners(`package:${ktv_id}`, res => {
 						let send_data = {
 							ktv_id_list: ktv_id,
