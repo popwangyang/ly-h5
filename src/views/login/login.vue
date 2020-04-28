@@ -106,19 +106,6 @@ export default {
       });
       this.getLogin(send_data)
         .then(res => {
-          // this.$store.commit("SET_THEME", this.$store.state.user.usertype);
-          // this.getUnRead();
-          console.log("socket正在进入：");
-          socket.getWebSocket(
-            socketInfomation,
-            { user_id: this.$store.state.user.userID },
-            this.getUnRead,
-            {
-              key: "msg",
-              val: this.$store.state.user.userID
-            }
-          );
-
           this.$toast.success({
             duration: 1000, // 持续展示 toast
             forbidClick: true,
