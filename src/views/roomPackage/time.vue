@@ -191,12 +191,13 @@ export default {
         attr: "period_weekdays",
         val: this.result
       });
-      this.$router.push({
+      this.$router.replace({
         name: "newcombo",
         query: {
           c: this.$route.query.c
         }
       });
+      this.$router.go(-1);
     }, // 起始时间
     selectStartTime(val) {
       var arr = val.split(":");

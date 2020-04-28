@@ -130,7 +130,6 @@ export default {
     },
     // 修改
     editItem() {
-      console.log(this.combo);
       this.$router.push({
         name: "newcombo",
         query: {
