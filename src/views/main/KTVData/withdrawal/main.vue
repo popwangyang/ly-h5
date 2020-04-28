@@ -99,11 +99,11 @@ export default {
     },
     // 账户状态
     financialState() {
-      return this.$store.state.user.financialState;
+      return this.$store.state.withdrawal.financialState;
     },
     // 允许提现
     allow_withdraw() {
-      return this.$store.state.user.allow_withdraw;
+      return this.$store.state.withdrawal.allow_withdraw;
     },
     // 可提现金额
     withdrawalValue() {
