@@ -105,7 +105,7 @@
 					var option = {
 						visualMap: {
 							type: 'piecewise',
-							bottom: 20,
+							bottom: 8,
 							splitNumber: 5,
 							itemWidth: 8,
 							itemHeight: 8,
