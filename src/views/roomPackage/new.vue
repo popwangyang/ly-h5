@@ -104,23 +104,13 @@
 </template>
 
 <script>
-import { cacheMixins } from "@/libs/mixins";
 import ContentLoad from "@/components/contentLoad";
 import { createContract, getPackageDetail, modiInfoCombo } from "@/api/combo";
 export default {
   name: "newcombo",
-  mixins: [cacheMixins],
   data() {
     return {
-      isUseTime: false, //是否设置可用时间
       weekString: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], // 周数据
-      weekSelected: [], // 可用时间一选择
-      comboPart: "", // 套餐部分信息
-      comboInfo: "", // 套餐模板信息
-      timeObj: null, // 显示时间
-      quaryStart: 0, // 开始时间
-      quaryEnd: 0, // 结束时间
-      quaryDay: [], // 区间时间
       week: [
         // 选项
         {
@@ -160,16 +150,12 @@ export default {
         }
       ],
       overlay: false, // 加载中
+      conti: false, // 返回套餐列表
       pkname: "优选套餐", // 套餐默认名称
       show: false,
       actual_price: "", // 优惠价
+      intercept: true, // 拦截
       upChecked: true, // 上架状态
-      actions: [
-        { name: "选项", color: "#07c160" },
-        { loading: true },
-        { name: "禁用选项", disabled: true }
-      ],
-      signChecked: false, // 推荐标志
       listArr: [
         {
           name: "",
@@ -186,34 +172,26 @@ export default {
   },
   watch: {},
   created() {
-    console.log(123);
-
     this.initData();
   },
   activated() {
+    this.intercept = true;
     if (
       (typeof this.isAdd === "string" && this.isAdd === "false") ||
       (typeof this.isAdd === "boolean" && !this.isAdd)
     ) {
-      console.log(this.$route);
-      console.log(this.$router);
-
       return;
     }
-    this.clearData();
     this.setDetail();
   },
   beforeRouteLeave(to, from, next) {
-    let conti = false;
+    this.conti = false;
     let _this = this;
     function beforeClose(action, done) {
       if (action === "confirm") {
-        setTimeout(done, 1000);
-        // _this.save();
-        if (conti) next();
-        _this.$router.push({
-          path: "/roomPackage"
-        });
+        setTimeout(done, 200);
+        _this.save();
+        if (this.conti) next();
       } else {
         done();
         next();
@@ -232,10 +210,11 @@ export default {
     } else if (
       to.name === "roomPackage" &&
       from.name === "newcombo" &&
-      !this._isAdd
+      !this._isAdd &&
+      this.intercept
     ) {
       next(false);
-      conti = true;
+      this.conti = true;
       this.$dialog.confirm({
         title: "提示",
         message: "是否保存修改的信息",
@@ -251,9 +230,15 @@ export default {
         vm.clearData();
         vm.setData();
       });
+      next();
       return;
     }
-    next();
+    if (from.name === "roomPackage") {
+      next(vm => {
+        vm.clearData();
+      });
+      return;
+    }
   },
   computed: {
     comboItem() {
@@ -361,7 +346,6 @@ export default {
         }
       ];
       this.actual_price = "";
-      // this.timeObj = null;
       this.upChecked = true;
     },
     // 添加数据
@@ -452,6 +436,7 @@ export default {
             message: "套餐新增成功",
             type: "success"
           });
+          this.intercept = false;
           this.$router.push({
             name: "roomPackage"
           });
@@ -499,15 +484,17 @@ export default {
       let b = "";
       let hour = Math.floor(s / 60);
       let minut = Math.floor(s % 60);
-      if (hour < 10) {
-        a = `0${hour}`;
-      } else {
-        a = hour;
-      }
       if (minut < 10) {
         b = `0${minut}`;
       } else {
         b = minut;
+      }
+      if (hour < 10) {
+        a = `0${hour}`;
+      } else if (hour == 24) {
+        return `次日 00: ${b}`;
+      } else if (hour > 24) {
+        return `次日 ${hour - 24}: ${b}`;
       }
       return `${a}:${b}`;
     },
@@ -525,6 +512,7 @@ export default {
     },
     // 保存
     save() {
+      this.conti = false;
       let go = true;
       if (!this.pkname) {
         this.toast("套餐名称不可为空");
@@ -571,12 +559,11 @@ export default {
         this.toast("请选择可用时段");
         return;
       }
+      this.conti = true;
       if (!this._isAdd) {
-        console.log("新增");
         this.addCombo();
         return;
       }
-      console.log("修改");
       this.modiComboItem();
     },
     // 提示
