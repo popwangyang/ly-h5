@@ -38,14 +38,19 @@ const LOGIN_PAGE_NAME = 'login'
 router.beforeEach((to, from, next) => {
 	const token = getToken();
 	const theme = store.state.app.theme;
-	if ((!token && to.name != LOGIN_PAGE_NAME) || !theme) { // 未登录且要跳转的页面不是登录页
+	if (!token && to.name != LOGIN_PAGE_NAME ) { // 未登录且要跳转的页面不是登录页
 		next({
 			name: LOGIN_PAGE_NAME,
 		})
 	} else if (!token && to.name == LOGIN_PAGE_NAME) { // 未登录想要跳到登陆页面;
 		next();
 	} else if (token && to.name == LOGIN_PAGE_NAME) { // 已登录想要跳到登陆页面;
-	let path = store.state.app.theme.tabBottoms[0].path;
+	    let path = null;
+		if(store.state.app.theme && store.state.app.theme.tabBottoms[0].path){
+			path = store.state.app.theme.tabBottoms[0].path;
+		}else{
+			path = LOGIN_PAGE_NAME;
+		}
 		next({
 			path: path
 		})
