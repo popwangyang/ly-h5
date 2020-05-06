@@ -38,7 +38,7 @@ const LOGIN_PAGE_NAME = 'login'
 router.beforeEach((to, from, next) => {
 	const token = getToken();
 	const theme = store.state.app.theme;
-	if ((!token || !theme) && to.name != LOGIN_PAGE_NAME ) { // 未登录且要跳转的页面不是登录页
+	if ((!token && to.name != LOGIN_PAGE_NAME) || !theme) { // 未登录且要跳转的页面不是登录页
 		next({
 			name: LOGIN_PAGE_NAME,
 		})
