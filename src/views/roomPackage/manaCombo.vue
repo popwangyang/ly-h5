@@ -121,7 +121,7 @@ export default {
     };
   },
   watch: {},
-  activated() {
+  mounted() {
     this.getList();
   },
   methods: {
