@@ -17,7 +17,7 @@
                 <div class="combo-ul-content-p1">
                   <span class="p1-name">{{item.name}}</span>
                   <!-- <img class="tip" width="31" height="16" :src="recommendImg" alt /> -->
-                  <div class="tip1">{{item.enabled?"已上架":"未上架"}}</div>
+                  <div class="tip1">{{item.enabled?"已上架":"已下架"}}</div>
                 </div>
                 <p class="combo-ul-content-p2">
                   <span class="p2-1">￥{{item.actual_price|toFixed2}}</span>
@@ -27,6 +27,7 @@
             </li>
           </div>
         </div>
+        <p v-if="!total" class="noneInfo">暂无套餐</p>
       </template>
     </PageList>
   </div>
@@ -35,10 +36,10 @@
 <script>
 import PageList from "@/components/pageList";
 import { getPackageList } from "@/api/combo";
-import { cacheMixins } from "@/libs/mixins";
+// import { cacheMixins } from "@/libs/mixins";
 export default {
   name: "roomPackage",
-  mixins: [cacheMixins],
+  // mixins: [cacheMixins],
   data() {
     return {
       params: { load: true },

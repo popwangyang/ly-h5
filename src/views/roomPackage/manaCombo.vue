@@ -1,6 +1,6 @@
 <template>
   <div ref="scroll" class="manaCombo">
-    <PageList class="pagelist" :getData="getList" ref="pageList">
+    <div class="pagelist" ref="pageList">
       <div class="common">
         <p>已上架套餐</p>
         <TranstionsList v-if="up.length > 0">
@@ -88,7 +88,7 @@
         </TranstionsList>
         <p v-if="this.clear.length === 0" class="mtp5 noneInfo">暂无删除套餐</p>
       </div>
-    </PageList>
+    </div>
     <div class="bottom">
       <div @click="cancle" class="btn cancle">取消</div>
       <div @click="save" class="btn save">保存</div>
@@ -104,13 +104,11 @@
 
 <script>
 import { getPackageList, manaCombo } from "@/api/combo";
-import PageList from "@/components/pageList";
-import { cacheMixins } from "@/libs/mixins";
+// import { cacheMixins } from "@/libs/mixins";
 
 import TranstionsList from "@/components/transtionList";
 export default {
   name: "manaCombo",
-  mixins: [cacheMixins],
   data() {
     return {
       overlay: false, // 加载中
@@ -123,7 +121,9 @@ export default {
     };
   },
   watch: {},
-  mounted() {},
+  activated() {
+    this.getList();
+  },
   methods: {
     // 删除套餐
     clearItem(w, item, index) {
@@ -151,11 +151,12 @@ export default {
     getList() {
       this.up = [];
       this.down = [];
-
+      this.overlay = true;
       return new Promise((resolve, reject) => {
         getPackageList(this.$store.state.user.ktv_id)
           .then(r => {
             if (r.data) {
+              this.overlay = false;
               this.total = r.data.results.length;
               let results = r.data.results;
               results.forEach(e => {
@@ -251,8 +252,7 @@ export default {
     }
   },
   components: {
-    TranstionsList,
-    PageList
+    TranstionsList
   }
 };
 </script>
@@ -289,6 +289,7 @@ export default {
   min-height: 100%;
   padding-bottom: 45px;
   .pagelist {
+    width: 100%;
     height: auto !important;
     .common {
       display: block;

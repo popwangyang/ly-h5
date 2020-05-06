@@ -1,10 +1,8 @@
 import {
   login,
-  getPersonMidInfo,
   getEmployee_user_id
 }
 from '@/api/user'
-import socket from '@/config/socket.js'
 
 import {
   setToken,
@@ -17,36 +15,15 @@ export default {
     username: '',
     userID: '',
     userEmail: '',
-    financialObj: null, // 资金账户信息 
     isHasWithdrawal: true, // 是否有提现资格
-    financialState: false, // 是否有资金账户可提现
-    allow_withdraw: false, // 是否允许提现 后台字段
-    withdrawalValue: 0, // 可提现金额
     user_id: '', // usertype +id
     ktv_id: '', // ktv角色的专属Id
     forgetPasswordKey: 'phone', // phone 为手机验证，email 为邮箱验证
-		area: {}, // 用户所属地区
+    area: {}, // 用户所属地区
   },
   mutations: {
-    set_withdrawalValue(state, withdrawalValue) {
-      state.withdrawalValue = withdrawalValue;
-    },
-    set_allow_withdraw(state, allow_withdraw) {
-      state.allow_withdraw = allow_withdraw;
-    },
-    set_financialObj(state, financialObj) {
-      let obj = {
-        bank: financialObj ? financialObj.bank_account_name : "",
-        name: financialObj ? financialObj.name : "",
-        cardNumber: financialObj ? financialObj.bank_card_number : "",
-      }
-      state.financialObj = obj;
-    },
     set_hasWithdrawal(state, isHasWithdrawal) {
       state.isHasWithdrawal = isHasWithdrawal;
-    },
-    set_financialState(state, financialState) {
-      state.financialState = financialState;
     },
     setKTVId(state, ktv_id) {
       state.ktv_id = ktv_id;
@@ -69,9 +46,9 @@ export default {
     setUser_id(state, user_id) {
       state.user_id = user_id;
     },
-		setUserArea(state, data) {
-			state.area = data;
-		},
+    setUserArea(state, data) {
+      state.area = data;
+    },
   },
   actions: {
     getLogin({
@@ -112,7 +89,10 @@ export default {
             commit('setUserName', res.data.data[0].username);
             commit('setUserID', res.data.data[0].user);
             commit('setUserEmail', res.data.data[0].email);
-			commit('setUserArea', res.data.data[0].areas[0] || {name: '全国', number: ''});
+            commit('setUserArea', res.data.data[0].areas[0] || {
+              name: '全国',
+              number: ''
+            });
             if (res.data.data[0].belong_participant) {
               commit('setUser_id', res.data.data[0].belong_participant.unique_key || '');
               if (res.data.data[0].belong_participant.participant_type === 'ktv') {
@@ -125,54 +105,6 @@ export default {
                 }
               })
             }
-            getPersonMidInfo().then(resa => {
-              if (resa.status >= 200 && resa.status < 400 && resa.data) {
-                // if (this.usertype === "employee") {
-                // }
-                if (resa.data.belong_participant) {
-                  let _datas = resa.data.belong_participant
-                  if (
-                    _datas &&
-                    _datas.financial_account &&
-                    _datas.financial_account.state === "succeeded"
-                  ) {
-                    commit("set_financialState", true);
-                  } else {
-                    commit("set_financialState", false);
-                  }
-
-                  if (
-                    _datas &&
-                    _datas.financial_account
-                  ) {
-                    commit(
-                      "set_financialObj",
-                      _datas.financial_account
-                    );
-                  }
-
-                  if (
-                    _datas &&
-                    _datas.settlement
-                  ) {
-                    commit(
-                      "set_withdrawalValue",
-                      _datas.settlement.withdrawable_balance
-                    );
-                  }
-
-                  if (
-                    _datas &&
-                    _datas.financial_account &&
-                    _datas.financial_account.allow_withdraw
-                  ) {
-                    commit("set_allow_withdraw", true);
-                  } else {
-                    commit("set_allow_withdraw", false);
-                  }
-                }
-              }
-            })
             resolve(res)
           } else {
             reject(res)
@@ -184,7 +116,6 @@ export default {
       commit
     }) {
       return new Promise((resolve) => {
-        socket.closeWs()
         setToken('');
         commit('setUserType', '');
         commit('setUserName', '');
@@ -195,4 +126,3 @@ export default {
     }
   }
 }
-

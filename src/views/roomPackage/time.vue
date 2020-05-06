@@ -26,20 +26,28 @@
           <van-datetime-picker
             :filter="filter"
             @confirm="selectStartTime"
-            @cancel="show = false"
-            v-model="currentTime"
+            v-model="starInitVal"
+            @cancel="startCancel"
             type="time"
           />
         </div>
       </van-popup>
       <van-popup :close-on-click-overlay="false" v-model="showEnd" position="bottom">
         <div class="timePicker">
-          <van-picker
+          <van-datetime-picker
+            :filter="filter"
+            :stop-propagation="false"
+            v-model="endInitVal"
+            @confirm="selectEndTime"
+            @cancel="endCancel"
+            type="time"
+          />
+          <!-- <van-picker
             @confirm="selectEndTime"
             @cancel="showEnd = false"
             show-toolbar
             :columns="columns"
-          />
+          />-->
         </div>
       </van-popup>
     </div>
@@ -54,6 +62,8 @@ export default {
   mixins: [cacheMixins],
   data() {
     return {
+      starInitVal: "00:00",
+      endInitVal: "00:00",
       columns: [
         {
           values: ["当日", "次日"],
@@ -98,8 +108,8 @@ export default {
       show: false,
       showEnd: false,
       pks: null,
-      currentTime: "", // 开始显示时间
-      currentEndTime: "", // 结束显示时间
+      currentTime: "00:00", // 开始显示时间
+      currentEndTime: "00:00", // 结束显示时间
       comboright: require("@/assets/comboright.png"),
       result: [],
       week: [
@@ -155,19 +165,7 @@ export default {
         return;
       }
       // 起始时间不能小于结束时间
-      let a =
-        this.currentTime.split(":")[0] ===
-        this.currentEndTime.split(":")[0].substring(3);
-      let d = this.currentEndTime.split(":")[0].substring(0, 2) === "当日";
-      let b =
-        this.currentTime.split(":")[0] !==
-        this.currentEndTime.split(":")[0].substring(3);
-      let e =
-        this.currentTime.split(":")[0] >=
-        this.currentEndTime.split(":")[0].substring(3);
-      let c =
-        this.currentTime.split(":")[1] >= this.currentEndTime.split(":")[1];
-      if ((a && c && d) || (b && e && d)) {
+      if (this.EndTime < this.startTime) {
         this.$toast.fail({
           duration: 2500,
           forbidClick: true,
@@ -198,7 +196,33 @@ export default {
         }
       });
       this.$router.go(-1);
-    }, // 起始时间
+    },
+    // 时间处理
+    timeChange(s) {
+      let hour = Math.floor(s / 60);
+      let minut = Math.floor(s % 60);
+      let a = this.doubleChange(hour);
+      let b = this.doubleChange(minut);
+      return `${a}:${b}`;
+    },
+    doubleChange(val) {
+      let a = 0;
+      if (val < 10) {
+        a = `0${val}`;
+      } else {
+        a = val;
+      }
+      return a;
+    },
+    // 开始时间取消
+    startCancel() {
+      this.show = false;
+    },
+    // 结束时间取消
+    endCancel() {
+      this.showEnd = false;
+    },
+    // 起始时间
     selectStartTime(val) {
       var arr = val.split(":");
       var a1 = parseInt(arr[0] * 60);
@@ -209,17 +233,12 @@ export default {
     },
     // 终止时间
     selectEndTime(val) {
-      let _val = `${val[1]}:${val[2]}`;
-      var arr = _val.split(":");
+      var arr = val.split(":");
       var a1 = parseInt(arr[0]) * 60;
       var a2 = parseInt(arr[1]);
-      if (val[0] === "当日") {
-        this.EndTime = a1 + a2;
-      } else {
-        this.EndTime = a1 + a2 + 24 * 60;
-      }
+      this.EndTime = a1 + a2;
       this.showEnd = false;
-      this.currentEndTime = `${val[0]} ${_val}`;
+      this.currentEndTime = `${val}`;
     },
     // 选项过滤
     filter(type, options) {
@@ -240,18 +259,11 @@ export default {
       this.result = this.comboItem.period_weekdays;
       this.startTime = this.comboItem.period_time_start;
       this.EndTime = this.comboItem.period_time_end;
-      let format = String(parseInt(this.EndTime / 60)).length === 2;
-      let res = format
-        ? String(parseInt(this.EndTime / 60))
-        : "0" + String(parseInt(this.EndTime / 60));
-      this.currentTime =
-        (this.startTime / 60 == "0" ? "00" : this.startTime / 60) +
-        ":" +
-        (this.startTime % 60 == "0" ? "00" : this.startTime / 60);
-      this.currentEndTime =
-        (this.EndTime / 60 == "0" ? "00" : res) +
-        ":" +
-        (this.EndTime % 60 == "0" ? "00" : this.EndTime % 60);
+      console.log(this.startTime);
+      console.log(this.EndTime);
+
+      this.currentTime = this.timeChange(this.startTime);
+      this.currentEndTime = this.timeChange(this.EndTime);
     }
   },
   activated() {

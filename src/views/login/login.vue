@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import { socketInfomation } from "@/api/information";
-import socket from "@/config/socket.js";
 import { mapActions } from "vuex";
 import ForgetPassword from "./components/forgetPassword";
 import "./login.less";
@@ -85,7 +83,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getLogin", "getUnRead"]),
+    ...mapActions(["getLogin", "getUnRead", "setPersonInfo"]),
     forgetPassword() {
       this.$store.commit("setforgetPasswordKey", "phone");
       this.isforgetPassword = !this.isforgetPassword;
@@ -106,6 +104,7 @@ export default {
       });
       this.getLogin(send_data)
         .then(res => {
+          this.setPersonInfo();
           this.$toast.success({
             duration: 1000, // 持续展示 toast
             forbidClick: true,
