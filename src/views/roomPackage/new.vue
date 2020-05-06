@@ -73,7 +73,7 @@
         title="可用时段"
         :value="timeStr"
         is-link
-        :to="{path: 'comboTime', query: {c:this.$route.query.c}}"
+        :to="{path: 'comboTime', query: {c:this.$route.query.c},}"
       />
       <van-cell required title="上架状态">
         <van-switch v-model="upChecked" size="24px" />
@@ -104,9 +104,11 @@
 </template>
 
 <script>
+import { cacheMixins } from "@/libs/mixins";
 import ContentLoad from "@/components/contentLoad";
 import { createContract, getPackageDetail, modiInfoCombo } from "@/api/combo";
 export default {
+  mixins: [cacheMixins],
   name: "newcombo",
   data() {
     return {
@@ -171,18 +173,10 @@ export default {
     ContentLoad
   },
   watch: {},
-  created() {
-    this.initData();
-  },
+  created() {},
   activated() {
     this.intercept = true;
-    if (
-      (typeof this.isAdd === "string" && this.isAdd === "false") ||
-      (typeof this.isAdd === "boolean" && !this.isAdd)
-    ) {
-      return;
-    }
-    this.setDetail();
+    this.initData();
   },
   beforeRouteLeave(to, from, next) {
     this.conti = false;
@@ -228,17 +222,17 @@ export default {
     if (from.name === "comboDetail") {
       next(vm => {
         vm.clearData();
-        vm.setData();
+        vm.getDetail();
       });
       next();
       return;
     }
     if (from.name === "roomPackage") {
       next(vm => {
-        vm.clearData();
+        vm.adder();
       });
-      return;
     }
+    next();
   },
   computed: {
     comboItem() {
@@ -302,37 +296,41 @@ export default {
     },
     // 获取套餐详情
     getComboDetailData() {},
-    // 初始化数据
-    setData() {
-      this.getDetail();
-    },
     // 获取详情
     getDetail() {
-      this.overlay = true;
-      return new Promise((resolve, reject) => {
-        getPackageDetail(
-          this.$store.state.user.ktv_id,
-          this.$store.state.combo.comboItem.id
-        )
-          .then(r => {
-            if (r.status < 400) {
-              this.overlay = false;
-              let _data = r.data;
-              this.pkname = _data.name;
-              this.upChecked = _data.enabled;
-              this.actual_price = _data.actual_price;
-              if (_data.goods.length === 0) {
-                this.setFood();
-                resolve(r);
-                return;
+      if (
+        (typeof this.isAdd === "string" && this.isAdd === "false") ||
+        (typeof this.isAdd === "boolean" && !this.isAdd)
+      ) {
+        this.overlay = true;
+        return new Promise((resolve, reject) => {
+          getPackageDetail(
+            this.$store.state.user.ktv_id,
+            this.$store.state.combo.comboItem.id
+          )
+            .then(r => {
+              if (r.status < 400) {
+                this.overlay = false;
+                let _data = r.data;
+                this.pkname = _data.name;
+                this.upChecked = _data.enabled;
+                this.actual_price = _data.actual_price;
+                if (_data.goods.length === 0) {
+                  this.setFood();
+                  resolve(r);
+                  return;
+                }
+                this.listArr = _data.goods;
               }
-              this.listArr = _data.goods;
-            }
-            resolve(r);
-          })
-          .catch(err => {
-            reject(err);
-          });
+              resolve(r);
+            })
+            .catch(err => {
+              reject(err);
+            });
+        });
+      }
+      return new Promise(resolve => {
+        resolve({});
       });
     },
     // 清空数据
@@ -356,7 +354,7 @@ export default {
     // 修改数据
     editer() {
       this.clearData();
-      this.setData();
+      this.getDetail();
     },
     //设置初始商品
     setFood() {
@@ -374,11 +372,11 @@ export default {
         (typeof this.isAdd === "string" && this.isAdd === "false") ||
         (typeof this.isAdd === "boolean" && !this.isAdd)
       ) {
-        this.editer();
+        console.log("编辑");
         return;
       }
+      console.log("新增");
       this.setDetail();
-      this.adder();
     },
     // 修改套餐
     modiComboItem() {
@@ -459,7 +457,8 @@ export default {
     formatter(e, i) {
       let value = 0;
       if (
-        e.target.value.substring(0, 1) === "0" ||
+        (e.target.value.substring(0, 1) === "0" &&
+          e.target.value.substring(1, 2) !== ".") ||
         Number(e.target.value) === 0
       ) {
         this.listArr[i].original_price = 0;

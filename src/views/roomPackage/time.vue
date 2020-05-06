@@ -198,6 +198,7 @@ export default {
         }
       });
       this.$router.go(-1);
+      console.log("time");
     }, // 起始时间
     selectStartTime(val) {
       var arr = val.split(":");
