@@ -73,7 +73,7 @@
         title="可用时段"
         :value="timeStr"
         is-link
-        :to="{path: 'comboTime', query: {c:this.$route.query.c}}"
+        :to="{path: 'comboTime', query: {c:this.$route.query.c},}"
       />
       <van-cell required title="上架状态">
         <van-switch v-model="upChecked" size="24px" />
@@ -108,19 +108,11 @@ import { cacheMixins } from "@/libs/mixins";
 import ContentLoad from "@/components/contentLoad";
 import { createContract, getPackageDetail, modiInfoCombo } from "@/api/combo";
 export default {
-  name: "newcombo",
   mixins: [cacheMixins],
+  name: "newcombo",
   data() {
     return {
-      isUseTime: false, //是否设置可用时间
       weekString: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], // 周数据
-      weekSelected: [], // 可用时间一选择
-      comboPart: "", // 套餐部分信息
-      comboInfo: "", // 套餐模板信息
-      timeObj: null, // 显示时间
-      quaryStart: 0, // 开始时间
-      quaryEnd: 0, // 结束时间
-      quaryDay: [], // 区间时间
       week: [
         // 选项
         {
@@ -160,16 +152,12 @@ export default {
         }
       ],
       overlay: false, // 加载中
+      conti: false, // 返回套餐列表
       pkname: "优选套餐", // 套餐默认名称
       show: false,
-      actual_price: "", // 优惠价
+      actual_price: 0, // 优惠价
+      intercept: true, // 拦截
       upChecked: true, // 上架状态
-      actions: [
-        { name: "选项", color: "#07c160" },
-        { loading: true },
-        { name: "禁用选项", disabled: true }
-      ],
-      signChecked: false, // 推荐标志
       listArr: [
         {
           name: "",
@@ -185,35 +173,19 @@ export default {
     ContentLoad
   },
   watch: {},
-  created() {
-    console.log(123);
-
+  created() {},
+  activated() {
+    this.intercept = true;
     this.initData();
   },
-  activated() {
-    if (
-      (typeof this.isAdd === "string" && this.isAdd === "false") ||
-      (typeof this.isAdd === "boolean" && !this.isAdd)
-    ) {
-      console.log(this.$route);
-      console.log(this.$router);
-
-      return;
-    }
-    this.clearData();
-    this.setDetail();
-  },
   beforeRouteLeave(to, from, next) {
-    let conti = false;
+    this.conti = false;
     let _this = this;
     function beforeClose(action, done) {
       if (action === "confirm") {
-        setTimeout(done, 1000);
-        // _this.save();
-        if (conti) next();
-        _this.$router.push({
-          path: "/roomPackage"
-        });
+        setTimeout(done, 200);
+        _this.save();
+        if (this.conti) next();
       } else {
         done();
         next();
@@ -232,10 +204,11 @@ export default {
     } else if (
       to.name === "roomPackage" &&
       from.name === "newcombo" &&
-      !this._isAdd
+      !this._isAdd &&
+      this.intercept
     ) {
       next(false);
-      conti = true;
+      this.conti = true;
       this.$dialog.confirm({
         title: "提示",
         message: "是否保存修改的信息",
@@ -249,9 +222,15 @@ export default {
     if (from.name === "comboDetail") {
       next(vm => {
         vm.clearData();
-        vm.setData();
+        vm.getDetail();
       });
+      next();
       return;
+    }
+    if (from.name === "roomPackage") {
+      next(vm => {
+        vm.adder();
+      });
     }
     next();
   },
@@ -307,6 +286,17 @@ export default {
     }
   },
   methods: {
+    // 时间处理
+    timeChange(val) {
+      let a = 0;
+      if (val < 10) {
+        a = `0${val}`;
+      } else {
+        a = val;
+      }
+      return a;
+    },
+
     // 新增详情
     setDetail() {
       this.getDetail = () => {
@@ -317,37 +307,41 @@ export default {
     },
     // 获取套餐详情
     getComboDetailData() {},
-    // 初始化数据
-    setData() {
-      this.getDetail();
-    },
     // 获取详情
     getDetail() {
-      this.overlay = true;
-      return new Promise((resolve, reject) => {
-        getPackageDetail(
-          this.$store.state.user.ktv_id,
-          this.$store.state.combo.comboItem.id
-        )
-          .then(r => {
-            if (r.status < 400) {
-              this.overlay = false;
-              let _data = r.data;
-              this.pkname = _data.name;
-              this.upChecked = _data.enabled;
-              this.actual_price = _data.actual_price;
-              if (_data.goods.length === 0) {
-                this.setFood();
-                resolve(r);
-                return;
+      if (
+        (typeof this.isAdd === "string" && this.isAdd === "false") ||
+        (typeof this.isAdd === "boolean" && !this.isAdd)
+      ) {
+        this.overlay = true;
+        return new Promise((resolve, reject) => {
+          getPackageDetail(
+            this.$store.state.user.ktv_id,
+            this.$store.state.combo.comboItem.id
+          )
+            .then(r => {
+              if (r.status < 400) {
+                this.overlay = false;
+                let _data = r.data;
+                this.pkname = _data.name;
+                this.upChecked = _data.enabled;
+                this.actual_price = _data.actual_price;
+                if (_data.goods.length === 0) {
+                  this.setFood();
+                  resolve(r);
+                  return;
+                }
+                this.listArr = _data.goods;
               }
-              this.listArr = _data.goods;
-            }
-            resolve(r);
-          })
-          .catch(err => {
-            reject(err);
-          });
+              resolve(r);
+            })
+            .catch(err => {
+              reject(err);
+            });
+        });
+      }
+      return new Promise(resolve => {
+        resolve({});
       });
     },
     // 清空数据
@@ -361,7 +355,6 @@ export default {
         }
       ];
       this.actual_price = "";
-      // this.timeObj = null;
       this.upChecked = true;
     },
     // 添加数据
@@ -372,7 +365,7 @@ export default {
     // 修改数据
     editer() {
       this.clearData();
-      this.setData();
+      this.getDetail();
     },
     //设置初始商品
     setFood() {
@@ -390,11 +383,11 @@ export default {
         (typeof this.isAdd === "string" && this.isAdd === "false") ||
         (typeof this.isAdd === "boolean" && !this.isAdd)
       ) {
-        this.editer();
+        // console.log("编辑");
         return;
       }
+      // console.log("新增");
       this.setDetail();
-      this.adder();
     },
     // 修改套餐
     modiComboItem() {
@@ -452,6 +445,7 @@ export default {
             message: "套餐新增成功",
             type: "success"
           });
+          this.intercept = false;
           this.$router.push({
             name: "roomPackage"
           });
@@ -461,7 +455,7 @@ export default {
     // 格式化输入
     actual_priceFormat(e) {
       if (!e.target.value) {
-        this.actual_price = "";
+        this.actual_price = 0;
         return;
       }
       let value = 0;
@@ -474,7 +468,8 @@ export default {
     formatter(e, i) {
       let value = 0;
       if (
-        e.target.value.substring(0, 1) === "0" ||
+        (e.target.value.substring(0, 1) === "0" &&
+          e.target.value.substring(1, 2) !== ".") ||
         Number(e.target.value) === 0
       ) {
         this.listArr[i].original_price = 0;
@@ -495,20 +490,11 @@ export default {
       this.listArr.splice(index, 1);
     },
     changeTime(s) {
-      let a = "";
-      let b = "";
+      console.log(s);
       let hour = Math.floor(s / 60);
       let minut = Math.floor(s % 60);
-      if (hour < 10) {
-        a = `0${hour}`;
-      } else {
-        a = hour;
-      }
-      if (minut < 10) {
-        b = `0${minut}`;
-      } else {
-        b = minut;
-      }
+      let a = this.timeChange(hour);
+      let b = this.timeChange(minut);
       return `${a}:${b}`;
     },
 
@@ -525,6 +511,7 @@ export default {
     },
     // 保存
     save() {
+      this.conti = false;
       let go = true;
       if (!this.pkname) {
         this.toast("套餐名称不可为空");
@@ -534,7 +521,7 @@ export default {
       if (this.listArr.length > 1) {
         for (let i = 0; i < this.listArr.length; i++) {
           const el = this.listArr[i];
-          if (!el.name || !el.count || !el.original_price) {
+          if (!el.name || !el.count) {
             this.toast("商品信息请输入完整");
             go = false;
             break;
@@ -545,14 +532,7 @@ export default {
 
       if (this.listArr.length === 1) {
         let ell = this.listArr[0];
-        if (
-          (ell.name && !ell.count) ||
-          (ell.name && !ell.original_price) ||
-          (ell.count && !ell.name) ||
-          (ell.count && !ell.original_price) ||
-          (ell.original_price && !ell.name) ||
-          (ell.original_price && !ell.count)
-        ) {
+        if ((ell.name && !ell.count) || (ell.count && !ell.name)) {
           this.toast("商品信息请输入完整");
           return;
         }
@@ -562,21 +542,16 @@ export default {
         this.toast("请输入套餐优惠价");
         return;
       }
-      if (this.actual_price == 0) {
-        this.toast("套餐优惠价不可为0");
-        return;
-      }
 
       if (!this.timeStr) {
         this.toast("请选择可用时段");
         return;
       }
+      this.conti = true;
       if (!this._isAdd) {
-        console.log("新增");
         this.addCombo();
         return;
       }
-      console.log("修改");
       this.modiComboItem();
     },
     // 提示

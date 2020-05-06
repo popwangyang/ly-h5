@@ -4,7 +4,7 @@
       <div class="title-wrapper">
         <div class="left">
           <span class="name">{{combo.name}}</span>
-          <span class="status">{{combo.enabled?"已上架":"未上架"}}</span>
+          <span class="status">{{combo.enabled?"已上架":"已下架"}}</span>
         </div>
       </div>
 

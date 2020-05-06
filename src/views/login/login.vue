@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import { socketInfomation } from "@/api/information";
-import socket from "@/config/socket.js";
 import { mapActions } from "vuex";
 import ForgetPassword from "./components/forgetPassword";
 import "./login.less";

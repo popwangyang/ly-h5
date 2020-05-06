@@ -3,7 +3,6 @@ import {
   getEmployee_user_id
 }
 from '@/api/user'
-import socket from '@/config/socket.js'
 
 import {
   setToken,
@@ -117,7 +116,6 @@ export default {
       commit
     }) {
       return new Promise((resolve) => {
-        socket.closeWs()
         setToken('');
         commit('setUserType', '');
         commit('setUserName', '');
