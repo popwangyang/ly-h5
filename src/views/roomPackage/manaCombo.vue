@@ -90,10 +90,18 @@
       </div>
     </div>
     <div class="bottom">
-      <div @click="cancle" class="btn cancle">取消</div>
+      <div @click="cancelpop" class="btn cancle">取消</div>
       <div @click="save" class="btn save">保存</div>
     </div>
-
+    <van-dialog
+      title="提示"
+      v-model="cancelDialog"
+      show-cancel-button
+      closeOnPopstate
+      :beforeClose="beforeClose"
+    >
+      <p class="cancelDialogtext">确定放弃已修改的内容吗？</p>
+    </van-dialog>
     <van-overlay :show="overlay">
       <div class="overlay">
         <van-loading />
@@ -111,6 +119,7 @@ export default {
   name: "manaCombo",
   data() {
     return {
+      cancelDialog: false, // 取消弹窗
       overlay: false, // 加载中
       showLoading: true, // 加载中
       total: 0, // 列表总数
@@ -121,10 +130,22 @@ export default {
     };
   },
   watch: {},
-  activated() {
+  mounted() {
     this.getList();
   },
   methods: {
+    // 取消确认
+    cancelpop() {
+      this.cancelDialog = true;
+    },
+    beforeClose(action, done) {
+      if (action === "confirm") {
+        this.getList();
+        done();
+      } else {
+        done();
+      }
+    },
     // 删除套餐
     clearItem(w, item, index) {
       if (w === "up") {
@@ -218,12 +239,6 @@ export default {
       this.up.push(item);
       this.down.splice(index, 1);
     },
-    // 取消
-    cancle() {
-      this.$router.push({
-        name: "roomPackage"
-      });
-    },
     // 保存
     save() {
       this.overlay = true;
@@ -304,6 +319,7 @@ export default {
         width: 100%;
         align-items: center;
         transition: all 1s;
+        overflow: hidden;
         .wrapper {
           flex: 1;
           background-color: #fff;
@@ -398,5 +414,10 @@ export default {
     background: rgba(0, 130, 255, 1);
     color: #fff;
   }
+}
+.cancelDialogtext {
+  text-align: center;
+  padding: 20px;
+  color: grey;
 }
 </style>

@@ -43,6 +43,7 @@ export default {
       document.title = to.meta.title;
       const toDepth = to.path.split("/").length;
       const fromDepth = from.path.split("/").length;
+			console.log(to);
       if (toDepth == fromDepth) {
         this.transitionName = "slide-none";
       } else if (toDepth < fromDepth) {
