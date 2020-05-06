@@ -24,13 +24,15 @@
 					<van-cell title="垫付费用" value-class="cellValue" :value="formData.substitute_payment | filterUnitB" />
 					<van-cell title="代垫方" value-class="cellValue"  :value="formData.substitute" />
 					<van-cell title="代垫方分润比例" value-class="cellValue" :value="formData.proportion_of_substitute | filterUnitA" />
+				    <van-cell title="场所分润比例" value-class="cellValue" :value="formData.proportion_of_places | filterUnitA"/>
 				</span>
-				<van-cell title="场所分润比例" value-class="cellValue" :value="formData.proportion_of_places | filterUnitA"/>
 				<van-cell title="音乐服务费" value-class="cellValue">
 					<span slot="label">
 						<sweepCodeBillDetail :charging_duration="formData.charging_duration"/>
 					</span>
 				</van-cell>
+				<cell-image title="合同附件" :dataList="formData.annex"></cell-image>
+				<cell-image title="确认函" :dataList="formData.replies"></cell-image>
 			</span>
 			<div v-if="!showPersonContract">
 				<div class="divider"></div>
@@ -182,6 +184,7 @@
 						this.$store.commit('setContractDetail', res.data);
 						this.formData = Delayering(res.data);
 						this.formData.annex = JSON.parse(res.data.annex); //合同附件
+						this.formData.replies = this.formData.replies ? JSON.parse(res.data.replies):[]; //合同附件
 						console.log(this.formData);
 						resolve(res);
 					}).catch(err => {
