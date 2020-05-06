@@ -20,7 +20,7 @@
 				<van-cell title="结束日期" value-class="cellValue" :value="formData.end_date" />
 				<div class="divider"></div>
 				<van-cell title="支付方式" value-class="cellValue" :value="formData.pay_method | filterPayMethod" />
-				<span v-if="formData.pay_method == 1">
+				<span v-if="formData.pay_method == 2">
 					<van-cell title="垫付费用" value-class="cellValue" :value="formData.substitute_payment | filterUnitB" />
 					<van-cell title="代垫方" value-class="cellValue"  :value="formData.substitute" />
 					<van-cell title="代垫方分润比例" value-class="cellValue" :value="formData.proportion_of_substitute | filterUnitA" />
@@ -102,10 +102,10 @@
 				let result = null;
 				switch (state) {
 					case 1:
-						result = "代理商垫付";
+						result = "场所支付";
 						break;
 					default:
-						result = "场所支付";
+						result = "代垫方垫付";
 						break;
 				}
 				return result;

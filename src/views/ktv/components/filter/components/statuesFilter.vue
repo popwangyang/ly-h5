@@ -25,7 +25,6 @@
 				result: '',
 				columns:[
 					'全部',
-					'待确认到账',
 					'待实施',
 					'已实施'
 				]
@@ -40,7 +39,7 @@
 			},
 			onConfirm(value, index){
 				this.result = value == '全部' ? "":value;
-				this.$emit('onChange', {implement_state: index == 0 ? '':index});
+				this.$emit('onChange', {implement_state: index == 0 ? '':index+1});
 				this.show = false;
 			}
 		}
