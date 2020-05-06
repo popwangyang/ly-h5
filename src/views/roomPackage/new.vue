@@ -155,7 +155,7 @@ export default {
       conti: false, // 返回套餐列表
       pkname: "优选套餐", // 套餐默认名称
       show: false,
-      actual_price: "", // 优惠价
+      actual_price: 0, // 优惠价
       intercept: true, // 拦截
       upChecked: true, // 上架状态
       listArr: [
@@ -286,6 +286,17 @@ export default {
     }
   },
   methods: {
+    // 时间处理
+    timeChange(val) {
+      let a = 0;
+      if (val < 10) {
+        a = `0${val}`;
+      } else {
+        a = val;
+      }
+      return a;
+    },
+
     // 新增详情
     setDetail() {
       this.getDetail = () => {
@@ -372,10 +383,10 @@ export default {
         (typeof this.isAdd === "string" && this.isAdd === "false") ||
         (typeof this.isAdd === "boolean" && !this.isAdd)
       ) {
-        console.log("编辑");
+        // console.log("编辑");
         return;
       }
-      console.log("新增");
+      // console.log("新增");
       this.setDetail();
     },
     // 修改套餐
@@ -444,7 +455,7 @@ export default {
     // 格式化输入
     actual_priceFormat(e) {
       if (!e.target.value) {
-        this.actual_price = "";
+        this.actual_price = 0;
         return;
       }
       let value = 0;
@@ -479,22 +490,11 @@ export default {
       this.listArr.splice(index, 1);
     },
     changeTime(s) {
-      let a = "";
-      let b = "";
+      console.log(s);
       let hour = Math.floor(s / 60);
       let minut = Math.floor(s % 60);
-      if (minut < 10) {
-        b = `0${minut}`;
-      } else {
-        b = minut;
-      }
-      if (hour < 10) {
-        a = `0${hour}`;
-      } else if (hour == 24) {
-        return `次日 00: ${b}`;
-      } else if (hour > 24) {
-        return `次日 ${hour - 24}: ${b}`;
-      }
+      let a = this.timeChange(hour);
+      let b = this.timeChange(minut);
       return `${a}:${b}`;
     },
 
@@ -521,7 +521,7 @@ export default {
       if (this.listArr.length > 1) {
         for (let i = 0; i < this.listArr.length; i++) {
           const el = this.listArr[i];
-          if (!el.name || !el.count || !el.original_price) {
+          if (!el.name || !el.count) {
             this.toast("商品信息请输入完整");
             go = false;
             break;
@@ -532,14 +532,7 @@ export default {
 
       if (this.listArr.length === 1) {
         let ell = this.listArr[0];
-        if (
-          (ell.name && !ell.count) ||
-          (ell.name && !ell.original_price) ||
-          (ell.count && !ell.name) ||
-          (ell.count && !ell.original_price) ||
-          (ell.original_price && !ell.name) ||
-          (ell.original_price && !ell.count)
-        ) {
+        if ((ell.name && !ell.count) || (ell.count && !ell.name)) {
           this.toast("商品信息请输入完整");
           return;
         }
@@ -547,10 +540,6 @@ export default {
 
       if (this.actual_price === "") {
         this.toast("请输入套餐优惠价");
-        return;
-      }
-      if (this.actual_price == 0) {
-        this.toast("套餐优惠价不可为0");
         return;
       }
 

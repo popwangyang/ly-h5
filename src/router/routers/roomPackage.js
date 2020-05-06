@@ -10,7 +10,6 @@ export default [{
   meta: {
     title: '开房套餐',
     showBottomTab: true,
-    cacheTos: ['manaCombo'],
   },
   component: combo
 }, {
@@ -28,7 +27,6 @@ export default [{
   meta: {
     title: '套餐管理',
     showBottomTab: false,
-    cacheTos: ['roomPackage']
   },
   component: manaCombo,
 }, {
