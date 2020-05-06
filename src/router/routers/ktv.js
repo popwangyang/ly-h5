@@ -26,7 +26,7 @@ const accountNumber = () => import('@/views/ktv/components/accountNumber') // �
 const activity = () => import('@/views/ktv/components/activity') // 账户信息
 
 export default [{
-		path: 'ktvmanage',
+		path: '/ktvmanage',
 		name: 'ktvmanage',
 		meta: {
 			title: 'KTV',
@@ -36,7 +36,7 @@ export default [{
 		component: ktvmanage
 	},
 	{
-		path: 'KTVDetail',
+		path: '/KTVDetail',
 		name: 'KTVDetail',
 		meta: {
 			title: '场所详情',
@@ -45,7 +45,7 @@ export default [{
 		component: ktvDetail
 	},
 	{
-		path: 'contract',
+		path: '/contract',
 		name: 'contract',
 		meta: {
 			title: '合同信息',
@@ -54,7 +54,7 @@ export default [{
 		component: contract
 	},
 	{
-		path: 'accountRecord',
+		path: '/accountRecord',
 		name: 'accountRecord',
 		meta: {
 			title: '计费记录'
@@ -62,7 +62,7 @@ export default [{
 		component: accountRecord
 	},
 	{
-		path: 'contractDetail',
+		path: '/contractDetail',
 		name: 'contractDetail',
 		meta: {
 			title: '合同详情',
@@ -71,7 +71,7 @@ export default [{
 		component: contractDetail
 	},
 	{
-		path: 'contractChangeHistory',
+		path: '/contractChangeHistory',
 		name: 'contractChangeHistory',
 		meta: {
 			title: '变更历史'
@@ -79,7 +79,7 @@ export default [{
 		component: contractChangeHistory
 	},
 	{
-		path: 'approvalRecord',
+		path: '/approvalRecord',
 		name: 'approvalRecord',
 		meta: {
 			title: '审批记录'
@@ -87,7 +87,7 @@ export default [{
 		component: approvalRecord
 	},
 	{
-		path: 'implementation',
+		path: '/implementation',
 		name: 'implementation',
 		meta: {
 			title: '实施信息'
@@ -95,7 +95,7 @@ export default [{
 		component: implementation
 	},
 	{
-		path: 'impletDetail',
+		path: '/impletDetail',
 		name: 'impletDetail',
 		meta: {
 			title: '实施信息'
@@ -103,7 +103,7 @@ export default [{
 		component: impletDetail
 	},
 	{
-		path: 'boxInformation',
+		path: '/boxInformation',
 		name: 'boxInformation',
 		meta: {
 			title: '包厢信息'
@@ -111,7 +111,7 @@ export default [{
 		component: boxInformation
 	},
 	{
-		path: 'QRCode',
+		path: '/QRCode',
 		name: 'QRCode',
 		meta: {
 			title: '二维码投射坐标'
@@ -119,7 +119,7 @@ export default [{
 		component: QRCode
 	},
 	{
-		path: 'formatResolution',
+		path: '/formatResolution',
 		name: 'formatResolution',
 		meta: {
 			title: '格式及分辨率'
@@ -127,7 +127,7 @@ export default [{
 		component: formatResolution
 	},
 	{
-		path: 'account',
+		path: '/account',
 		name: 'account',
 		meta: {
 			title: '账户信息'
@@ -135,7 +135,7 @@ export default [{
 		component: account
 	},
 	{
-		path: 'accountNumber',
+		path: '/accountNumber',
 		name: 'accountNumber',
 		meta: {
 			title: '账号信息'
@@ -143,7 +143,7 @@ export default [{
 		component: accountNumber
 	},
 	{
-		path: 'activity',
+		path: '/activity',
 		name: 'activity',
 		meta: {
 			title: '活动信息'
