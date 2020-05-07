@@ -1,11 +1,9 @@
 <template>
   <div class="homeBox">
     <div class="routerView theme">
-      <transition :name="transitionName">
-        <keep-alive :include="keepAliveList">
-          <router-view></router-view>
-        </keep-alive>
-      </transition>
+      <keep-alive :include="keepAliveList">
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <BottomBar v-show="showTab" />
   </div>
@@ -41,16 +39,16 @@ export default {
   watch: {
     $route(to, from) {
       document.title = to.meta.title;
-      const toDepth = to.path.split("/").length;
-      const fromDepth = from.path.split("/").length;
-			console.log(to);
-      if (toDepth == fromDepth) {
-        this.transitionName = "slide-none";
-      } else if (toDepth < fromDepth) {
-        this.transitionName = "slide-right";
-      } else {
-        this.transitionName = "slide-left";
-      }
+   //    const toDepth = to.path.split("/").length;
+   //    const fromDepth = from.path.split("/").length;
+			// console.log(to);
+   //    if (toDepth == fromDepth) {
+   //      this.transitionName = "slide-none";
+   //    } else if (toDepth < fromDepth) {
+   //      this.transitionName = "slide-right";
+   //    } else {
+   //      this.transitionName = "slide-left";
+   //    }
     }
   },
   methods: {
@@ -126,25 +124,5 @@ export default {
     flex: 1;
     overflow: auto;
   }
-}
-.slide-none-enter-active,
-.slide-none-enter-active {
-  transition: opacity 0.01s ease-out;
-}
-.slide-none-enter {
-  opacity: 0;
-}
-
-.slide-left-enter-active,
-.slide-right-enter-active {
-  transition: all 0.2s ease-out;
-}
-
-.slide-left-enter {
-  transform: translate(100%, 0);
-}
-
-.slide-right-enter {
-  transform: translate(-100%, 0);
 }
 </style>
