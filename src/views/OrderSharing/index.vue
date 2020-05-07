@@ -96,8 +96,7 @@ export default {
       ktv_name: "",
       params: {
         pay_time_start: getDayTime(new Date()),
-        pay_time_end: getDayTime(new Date(), 1),
-        user_id: this.$store.state.user.user_id
+        pay_time_end: getDayTime(new Date(), 1)
       },
       popupValue: {
         deal_status: 0,
@@ -119,8 +118,8 @@ export default {
     orderItem,
     datePick
   },
-  mounted() {
-    this.getAtr();
+  created() {
+    this.getAtr(this.params);
   },
   watch: {
     searchValue: {
@@ -215,9 +214,9 @@ export default {
         pay_time_end: getDayTime(new Date(), 1),
         user_id: this.$store.state.user.user_id,
         ordering: "-pay_time",
-        is_valid: 1,
-        agent_id: ""
+        is_valid: 1
       };
+      this.getAtr(this.params);
       this.searchValue = {
         deal_status: 0,
         pay_way: 0
@@ -251,6 +250,7 @@ export default {
           ordering: "-pay_time",
           is_valid: 1
         };
+        this.getAtr(this.params);
       } else {
         this.params = {
           ktv_name: this.ktv_name,
@@ -262,21 +262,21 @@ export default {
           ordering: "-pay_time",
           is_valid: 1
         };
+        this.getAtr(this.params);
       }
       this.handleObj(this.params);
     },
 
-    getAtr() {
-      console.log(this.userType);
-      switch (this.userType) {
-        case "ktv":
-        case "ktv_clerk":
-          return "place_id";
-        case "advance_party":
-          return "advance_id";
-        default:
-          break;
+    getAtr(obj) {
+      let str = "";
+      if (this.userType === "ktv" || this.userType === "ktv_clerk") {
+        str = "place_id";
+      } else if (this.userType === "agentibus") {
+        str = "agent_id";
+      } else if (this.userType === "advance_party") {
+        str = "advance_id";
       }
+      obj[str] = this.user_id;
     },
 
     formatter(type, value) {
