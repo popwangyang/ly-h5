@@ -6,6 +6,13 @@
 			<van-cell title="合同编号" value-class="cellValue" :value="formData.number" />
 			<span v-if="formData.type == 1">
 				<openService :service="formData.service_list" />
+				<div class="divider"></div>
+				<van-cell title="付款凭证" value-class="cellValue">
+					<span slot="label">
+						<paymentVoucher :charging_duration="formData.charging_duration"/>
+					</span>
+				</van-cell>
+				<div class="divider"></div>
 				<cell-image title="合同附件" :dataList="formData.annex"></cell-image>
 				<van-cell title="其他约定" value-class="cellValue">
 					<span slot="label">
@@ -48,6 +55,7 @@
 	import approvalSteps from "./components/approvalSteps";
 	import expensesDetails from "./components/expensesDetails";
 	import sweepCodeBillDetail from './components/sweepCodeBillDetail.vue'
+	import paymentVoucher from './components/paymentVoucher.vue'
 	import openService from './components/openService.vue'
 	import timeNote from './components/timeNote'
 	import ContentLoad from "@/components/contentLoad";
@@ -67,7 +75,8 @@
 			openService,
 			approvalSteps,
 			timeNote,
-			TextOverflow
+			TextOverflow,
+			paymentVoucher
 		},
 		computed: {
 			hasChangeHistory() { // 依据合同详情里的变更计费和最晚支付时间来判断是否合同发生了变更；
