@@ -14,7 +14,7 @@
 <script>
 	import PageList from '@/components/pageList'
 	import accountRecordItem from '@/components/listItems/accountRecordItem'
-	import { getAccountRecord } from '@/api/ktv'
+	import { billingLog } from '@/api/ktv'
 	export default{
 		components:{
 			PageList,
@@ -23,10 +23,11 @@
 		methods:{
 			getData(send_data){
 				return new Promise((resolve, reject) => {
-					getAccountRecord(send_data).then(res => {
+					billingLog(send_data).then(res => {
+						console.log(res);
 						let results = {
-							data: [1, 2, 3, 4, 5, 6],
-							total: 6
+							data: res.data.results,
+							total: res.data.count
 						}
 						resolve(results);
 					}).catch(err => {

@@ -182,10 +182,25 @@ export const getActivityList = (params) => {
 	})
 }
 
-// 获取ktv账号信息
+// 获取账号信息
 export const getAccountNumberInfo = (ktv_id) => {
+	let p1 = getKtvAccountInfo(ktv_id);
+	let p2 = getClerkAccountInfo(ktv_id);
+	return Promise.all([p1, p2]);
+}
+
+// 获取ktv账号信息
+export const getKtvAccountInfo = (ktv_id) => {
 	return axios.request({
 	  url: `/cperm/ktvs/${ktv_id}/user`,
+	  method: 'get'
+	})
+}
+
+// 获取服务员账号信息
+export const getClerkAccountInfo = (ktv_id) => {
+	return axios.request({
+	  url: `/cperm/ktvs/${ktv_id}/clerks`,
 	  method: 'get'
 	})
 }
@@ -397,5 +412,14 @@ export const patchBoxInfoList = (data) => {
 	  url: `/ktv/ktv/room`,
 	  data,
 	  method: 'patch'
+	})
+}
+
+// 场所计费状态更新记录
+export const billingLog = (params) => {
+	return axios.request({
+	  url: `/ktv/place/billing-log`,
+	  params,
+	  method: 'get'
 	})
 }

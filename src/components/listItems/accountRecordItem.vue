@@ -1,7 +1,7 @@
 <template>
 	<div class="accountRecordItemBox">
-		<span>开始计费</span>
-		<span>2018-04-03 17:13:11</span>
+		<span>{{data.log_operator}}</span>
+		<span>{{data.billing_time}}</span>
 	</div>
 </template>
 
@@ -9,7 +9,7 @@
 	export default{
 		props:{
 			data:{
-				type:Number
+				type:Object
 			}
 		}
 	}
