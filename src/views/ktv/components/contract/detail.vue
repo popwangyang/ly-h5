@@ -22,7 +22,7 @@
 				<van-cell title="支付方式" value-class="cellValue" :value="formData.pay_method | filterPayMethod" />
 				<span v-if="formData.pay_method == 2">
 					<van-cell title="垫付费用" value-class="cellValue" :value="formData.substitute_payment | filterUnitB" />
-					<van-cell title="代垫方" value-class="cellValue"  :value="formData.substitute" />
+					<van-cell title="代垫方" value-class="cellValue"  :value="formData.substitute_name" />
 					<van-cell title="代垫方分润比例" value-class="cellValue" :value="formData.proportion_of_substitute | filterUnitA" />
 				    <van-cell title="场所分润比例" value-class="cellValue" :value="formData.proportion_of_places | filterUnitA"/>
 				</span>
