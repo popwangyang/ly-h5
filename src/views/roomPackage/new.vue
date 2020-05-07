@@ -153,6 +153,7 @@ export default {
           index: 7
         }
       ],
+      timeStr: "", // 可用时段
       overlay: false, // 加载中
       conti: false, // 返回套餐列表
       pkname: "优选套餐", // 套餐默认名称
@@ -229,6 +230,14 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
+    if (from.name === "comboTime") {
+      next(vm => {
+        vm.clearData();
+        vm.getDetail();
+      });
+      next();
+      return;
+    }
     if (from.name === "comboDetail") {
       next(vm => {
         vm.clearData();
@@ -247,33 +256,6 @@ export default {
   computed: {
     comboItem() {
       return this.$store.state.combo.comboItem;
-    },
-    // 可用时段
-    timeStr() {
-      let a = [];
-      if (this.comboItem) {
-        this.comboItem.period_weekdays.forEach(i => {
-          this.week.forEach(e => {
-            if (e.id === i) {
-              a.push(e.label);
-            }
-          });
-        });
-        a.sort((a, b) => {
-          var aIndex = this.weekString.indexOf(a);
-          var bIndex = this.weekString.indexOf(b);
-          return aIndex - bIndex;
-        });
-        let atr = a.join("，");
-        return (
-          atr +
-          " " +
-          this.changeTime(this.comboItem.period_time_start) +
-          " - " +
-          this.changeTime(this.comboItem.period_time_end)
-        );
-      }
-      return "";
     },
     // 套餐总价
     total() {
@@ -296,6 +278,35 @@ export default {
     }
   },
   methods: {
+    getTimeStr() {
+      let a = [];
+      if (this.comboItem) {
+        this.comboItem.period_weekdays.forEach(i => {
+          this.week.forEach(e => {
+            if (e.id === i) {
+              a.push(e.label);
+            }
+          });
+        });
+        a.sort((a, b) => {
+          var aIndex = this.weekString.indexOf(a);
+          var bIndex = this.weekString.indexOf(b);
+          return aIndex - bIndex;
+        });
+        let atr = a.join("，");
+        console.log(this.comboItem.period_time_start);
+        console.log(this.comboItem.period_time_end);
+
+        return (
+          atr +
+          " " +
+          this.changeTime(this.comboItem.period_time_start) +
+          " - " +
+          this.changeTime(this.comboItem.period_time_end)
+        );
+      }
+      return "";
+    },
     // 编辑是否数据变动
     isDataChangeModi() {
       this.old = this.totalData();
@@ -425,6 +436,7 @@ export default {
     },
     // 初始化
     initData() {
+      this.timeStr = this.getTimeStr();
       if (
         (typeof this.isAdd === "string" && this.isAdd === "false") ||
         (typeof this.isAdd === "boolean" && !this.isAdd)
