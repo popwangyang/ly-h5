@@ -6,6 +6,7 @@ from '@/api/user'
 
 import {
   setToken,
+  clearToken,
   validPlatform,
 } from '@/libs/util'
 

@@ -38,6 +38,7 @@ const HOME_PAGE_NAME = 'mainPage'
 
 router.beforeEach((to, from, next) => {
 	const token = getToken();
+	console.log(to, from);
 	if (!token && to.name != LOGIN_PAGE_NAME ) { // 未登录且要跳转的页面不是登录页
 	    console.log(1);
 		next({
@@ -49,11 +50,20 @@ router.beforeEach((to, from, next) => {
 	} else if (token && to.name == LOGIN_PAGE_NAME) { // 已登录想要跳到登陆页面;
 	   console.log(3);
 	    next({
+			replace: true,
 	    	name: HOME_PAGE_NAME
 	    })
 	} else {
 		console.log(4);
-		next();
+		if(!store.state.app.theme){
+			console.log(0);
+			setToken('');
+			next({
+				name: LOGIN_PAGE_NAME,
+			})
+		} else {
+			next();
+		}
 	}
 })
 
