@@ -28,12 +28,7 @@ export default {
   data() {
     return {
       getlist: getlist,
-      dateValue: [],
-      params: {
-        time_start: getDayTime(new Date()),
-        time_end: getDayTime(new Date(), 1),
-        user_id: this.user_id
-      }
+      dateValue: []
     };
   },
 
@@ -43,6 +38,13 @@ export default {
     datePick
   },
   computed: {
+    params() {
+      return {
+        time_start: getDayTime(new Date()),
+        time_end: getDayTime(new Date(), 1),
+        user_id: this.user_id
+      };
+    },
     // 用户Id
     user_id() {
       return this.$store.state.user.user_id;
