@@ -166,7 +166,7 @@ export default {
     // 获取登录信息
     getInfo() {
       let str = "";
-      if (this.usertype === "ktv") {
+      if (this.usertype === "ktv" || this.usertype === "ktv_clerk") {
         getKTVPersonMidInfo(this.ktv_id).then(res => {
           if (res.status >= 200 && res.status < 400 && res.data) {
             this.resData = res.data;

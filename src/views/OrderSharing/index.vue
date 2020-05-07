@@ -96,8 +96,7 @@ export default {
       ktv_name: "",
       params: {
         pay_time_start: getDayTime(new Date()),
-        pay_time_end: getDayTime(new Date(), 1),
-        user_id: this.$store.state.user.user_id
+        pay_time_end: getDayTime(new Date(), 1)
       },
       popupValue: {
         deal_status: 0,
@@ -119,7 +118,9 @@ export default {
     orderItem,
     datePick
   },
-  mounted() {},
+  created() {
+    this.getAtr(this.params);
+  },
   watch: {
     searchValue: {
       handler(newValue) {
@@ -135,6 +136,10 @@ export default {
     }
   },
   computed: {
+    // 唯一ID
+    user_id() {
+      return this.$store.state.user.user_id;
+    },
     // 用户类型
     userType() {
       return this.$store.state.user.usertype;
@@ -207,8 +212,11 @@ export default {
       this.params = {
         pay_time_start: getDayTime(new Date()),
         pay_time_end: getDayTime(new Date(), 1),
-        user_id: this.$store.state.user.user_id
+        user_id: this.$store.state.user.user_id,
+        ordering: "-pay_time",
+        is_valid: 1
       };
+      this.getAtr(this.params);
       this.searchValue = {
         deal_status: 0,
         pay_way: 0
@@ -238,8 +246,11 @@ export default {
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
           payment_platform: this.searchValue.pay_way,
-          user_id: this.$store.state.user.user_id
+          user_id: this.$store.state.user.user_id,
+          ordering: "-pay_time",
+          is_valid: 1
         };
+        this.getAtr(this.params);
       } else {
         this.params = {
           ktv_name: this.ktv_name,
@@ -247,10 +258,25 @@ export default {
           payment_platform: this.searchValue.pay_way,
           pay_time_start: this.dateValue[0] + " 00:00:00",
           pay_time_end: this.dateValue[1] + " 23:59:59",
-          user_id: this.$store.state.user.user_id
+          user_id: this.$store.state.user.user_id,
+          ordering: "-pay_time",
+          is_valid: 1
         };
+        this.getAtr(this.params);
       }
       this.handleObj(this.params);
+    },
+
+    getAtr(obj) {
+      let str = "";
+      if (this.userType === "ktv" || this.userType === "ktv_clerk") {
+        str = "place_id";
+      } else if (this.userType === "agentibus") {
+        str = "agent_id";
+      } else if (this.userType === "advance_party") {
+        str = "advance_id";
+      }
+      obj[str] = this.user_id;
     },
 
     formatter(type, value) {

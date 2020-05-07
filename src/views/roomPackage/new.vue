@@ -308,7 +308,8 @@ export default {
         pkname: this.pkname,
         listArr: this.listArr,
         actual_price: this.actual_price,
-        timeStr: this.timeStr
+        timeStr: this.timeStr,
+        upChecked: this.upChecked
       });
       return str;
     },
@@ -565,7 +566,11 @@ export default {
       if (this.listArr.length > 1) {
         for (let i = 0; i < this.listArr.length; i++) {
           const el = this.listArr[i];
-          if (!el.name || !el.count) {
+          if (el.count === "0") {
+            this.toast("商品数量不能为0");
+            return;
+          }
+          if (!el.name || !Number(el.count)) {
             this.toast("商品信息请输入完整");
             go = false;
             break;
@@ -576,7 +581,14 @@ export default {
 
       if (this.listArr.length === 1) {
         let ell = this.listArr[0];
-        if ((ell.name && !ell.count) || (ell.count && !ell.name)) {
+        if (ell.count === "0") {
+          this.toast("商品数量不能为0");
+          return;
+        }
+        if (
+          (ell.name && !Number(ell.count)) ||
+          (Number(ell.count) && !ell.name)
+        ) {
           this.toast("商品信息请输入完整");
           return;
         }

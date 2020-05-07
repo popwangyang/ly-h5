@@ -96,7 +96,7 @@ export default {
             });
             if (res.data.data[0].belong_participant) {
               commit('setUser_id', res.data.data[0].belong_participant.unique_key || '');
-              if (res.data.data[0].belong_participant.participant_type === 'ktv') {
+              if (res.data.data[0].belong_participant.participant_type === 'ktv' || res.data.data[0].belong_participant.participant_type === "ktv_clerk") {
                 commit('setKTVId', res.data.data[0].belong_participant.ktv_id);
               }
             } else {

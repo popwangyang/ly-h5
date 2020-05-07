@@ -126,7 +126,6 @@ export default {
     },
     // 可提现
     withdrawalMoney() {
-      return 1.1;
       return this.$store.state.withdrawal.withdrawalValue;
     },
     financialObj() {
