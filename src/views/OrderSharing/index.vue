@@ -119,7 +119,9 @@ export default {
     orderItem,
     datePick
   },
-  mounted() {},
+  mounted() {
+    this.getAtr();
+  },
   watch: {
     searchValue: {
       handler(newValue) {
@@ -135,6 +137,10 @@ export default {
     }
   },
   computed: {
+    // 唯一ID
+    user_id() {
+      return this.$store.state.user.user_id;
+    },
     // 用户类型
     userType() {
       return this.$store.state.user.usertype;
@@ -207,7 +213,10 @@ export default {
       this.params = {
         pay_time_start: getDayTime(new Date()),
         pay_time_end: getDayTime(new Date(), 1),
-        user_id: this.$store.state.user.user_id
+        user_id: this.$store.state.user.user_id,
+        ordering: "-pay_time",
+        is_valid: 1,
+        agent_id: ""
       };
       this.searchValue = {
         deal_status: 0,
@@ -238,7 +247,9 @@ export default {
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
           payment_platform: this.searchValue.pay_way,
-          user_id: this.$store.state.user.user_id
+          user_id: this.$store.state.user.user_id,
+          ordering: "-pay_time",
+          is_valid: 1
         };
       } else {
         this.params = {
@@ -247,10 +258,25 @@ export default {
           payment_platform: this.searchValue.pay_way,
           pay_time_start: this.dateValue[0] + " 00:00:00",
           pay_time_end: this.dateValue[1] + " 23:59:59",
-          user_id: this.$store.state.user.user_id
+          user_id: this.$store.state.user.user_id,
+          ordering: "-pay_time",
+          is_valid: 1
         };
       }
       this.handleObj(this.params);
+    },
+
+    getAtr() {
+      console.log(this.userType);
+      switch (this.userType) {
+        case "ktv":
+        case "ktv_clerk":
+          return "place_id";
+        case "advance_party":
+          return "advance_id";
+        default:
+          break;
+      }
     },
 
     formatter(type, value) {
