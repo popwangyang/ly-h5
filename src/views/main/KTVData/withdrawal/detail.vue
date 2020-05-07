@@ -127,6 +127,10 @@ export default {
 .widthdrawalDetail .van-cell .van-cell__title {
   flex: 3;
 }
+.widthdrawalDetail .van-pull-refresh {
+  height: 100% !important;
+  overflow-y: auto !important;
+}
 .widthdrawalDetail .datePicker {
   width: auto !important;
   padding: 0 5px;

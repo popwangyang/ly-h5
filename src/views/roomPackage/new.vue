@@ -308,7 +308,8 @@ export default {
         pkname: this.pkname,
         listArr: this.listArr,
         actual_price: this.actual_price,
-        timeStr: this.timeStr
+        timeStr: this.timeStr,
+        upChecked: this.upChecked
       });
       return str;
     },

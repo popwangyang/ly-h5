@@ -9,6 +9,8 @@ export const userAmount = (params) => {
       method: 'get'
     }).then(res => {
       resolve(res.data)
+    }).catch(e => {
+      reject(e)
     })
   })
 }

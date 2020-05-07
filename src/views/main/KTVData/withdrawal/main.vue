@@ -90,9 +90,6 @@ export default {
     };
   },
   computed: {
-    financialObj() {
-      return this.$store.state.withdrawal.financialObj;
-    },
     // 账户状态
     financialState() {
       return this.$store.state.withdrawal.financialState;
@@ -197,6 +194,26 @@ export default {
 
     // 提现确认
     enterWithdrawal() {
+      if (!this.financialState) {
+        this.$toast.fail({
+          duration: 1500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "暂未绑定结算账户，请联系商务人员协助绑定。"
+        });
+        return;
+      }
+      if (!this.allow_withdraw) {
+        this.$toast.fail({
+          duration: 1500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "您的账户已冻结，请尽快联系商务人员处理。"
+        });
+        return;
+      }
       this.routerGo("withdrawal");
     },
 
