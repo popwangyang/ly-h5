@@ -282,8 +282,7 @@ export default {
         const e = this.listArr[i];
         num += Number(e.count) * Number(e.original_price || 0);
       }
-      if(num !== 0 ) return num.toFixed(2);
-      return "-"
+      return num.toFixed(2);
     },
     // 是否新增
     isAdd() {
@@ -585,7 +584,10 @@ export default {
           this.toast("商品数量不能为0");
           return;
         }
-        if (!ell.name || !Number(ell.count)) {
+        if (
+          (ell.name && !Number(ell.count)) ||
+          (Number(ell.count) && !ell.name)
+        ) {
           this.toast("商品信息请输入完整");
           return;
         }
