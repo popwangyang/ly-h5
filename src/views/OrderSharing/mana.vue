@@ -51,7 +51,7 @@
         <van-cell title="代理商" :value="`￥${toFixed2(res.royalty_set.agent_royalty_amount)}`" />
         <van-cell title="代垫方" :value="`￥${toFixed2(res.royalty_set.advance_royalty_amount)}`" />
       </van-cell-group>
-      <p class="active">音乐服务费分成（支付通道费率{{res.payment_channel_rate_display}}）</p>
+      <p class="active">商户开房套餐分成（支付通道费率{{res.payment_channel_rate_display}}）</p>
       <van-cell-group v-if="res.royalty_set" class="group2">
         <van-cell title="分成费用" :value="`￥${toFixed2(res.share_amount)}`" />
       </van-cell-group>

@@ -44,12 +44,18 @@
             :value="inputnum? Number(inputnum).toFixed(2) + '元': 0"
             readonly
           />
-          <van-field class="popcreatefield" input-align="right" label="手续费" value="0元" readonly />
+          <van-field
+            class="popcreatefield"
+            input-align="right"
+            label="手续费"
+            :value="`${poundange.toFixed(2)}元`"
+            readonly
+          />
           <van-field
             class="popcreatefield"
             input-align="right"
             label="实际到账金额"
-            :value="inputnum? Number(inputnum).toFixed(2) + '元': 0"
+            :value="arrivemo? Number(arrivemo).toFixed(2) + '元': 0"
             readonly
           />
         </van-cell-group>
@@ -61,6 +67,7 @@
           <div class="bankinfo">
             <span class="title">到账银行卡</span>
             <span
+              v-if="financialObj"
               class="bankName"
             >{{financialObj.bank}}({{String(financialObj.cardNumber).slice(-4)}})</span>
             <span class="content">具体到账时间以银行为主</span>
@@ -72,7 +79,7 @@
       </van-cell>
     </div>
     <van-cell class="item-common" title="提现手续费" :value="poundange|toFixed2|changeMoney" />
-    <van-cell class="item-common highLightFont" :value="withdrawalMoney|changeMoney" size>
+    <van-cell class="item-common highLightFont" :value="arrivemo|changeMoney" size>
       <template slot="title">
         <span class="inMoney">实际到账金额</span>
         <van-icon @click="showHelp" class="actualAccountNum" name="question-o" />
@@ -81,6 +88,7 @@
     <van-button @click="submit" class="confirm entityBtnDefault">提交申请</van-button>
   </div>
 </template>
+// 5w 1 7
 
 <script>
 import { withdrawalApi, withdrawalRecord } from "@/api/withdrawal";
@@ -95,38 +103,37 @@ export default {
       createModal: false, // 确认取消弹窗
       id: null, // 提现id
       inputnum: null, //提现金额
-      num: 0, // 可提现金额
-      poundange: 0 // 手续费
+      num: 0 // 可提现金额
     };
   },
   computed: {
+    // 手续费
+    poundange() {
+      let num = this.inputnum ? this.inputnum : 0;
+      return parseInt(num) <= 50000 ? 1 : 7;
+    },
     // 用户Id
     user_id() {
       return this.$store.state.user.user_id;
     },
+    // 实际到账金额
+    arrivemo() {
+      if (Number(this.inputnum) - Number(this.poundange) < 0) return 0;
+      if (Number(this.inputnum) > Number(this.withdrawalMoney)) return 0;
+      return parseFloat(Number(this.inputnum) - Number(this.poundange)).toFixed(
+        2
+      );
+    },
     // 可提现
     withdrawalMoney() {
+      return 1.1;
       return this.$store.state.withdrawal.withdrawalValue;
     },
     financialObj() {
       return this.$store.state.withdrawal.financialObj;
     }
   },
-  mounted() {
-    getPersonMidInfo().then(resa => {
-      if (resa.status >= 200 && resa.status < 400 && resa.data) {
-        if (resa.data.belong_participant) {
-          let _datas = resa.data.belong_participant;
-          if (_datas && _datas.settlement) {
-            this.$store.commit(
-              "set_withdrawalValue",
-              _datas.settlement.withdrawable_balance
-            );
-          }
-        }
-      }
-    });
-  },
+  mounted() {},
   methods: {
     // 输入变化
     inputchange(val) {
@@ -214,7 +221,7 @@ export default {
         return;
       }
       this.showLoading = true;
-      withdrawalApi(Number(this.inputnum) * 100, this.user_id)
+      withdrawalApi(parseInt(this.inputnum) * 100, this.user_id)
         .then(res => {
           this.id = res.data.id;
           this.showLoading = false;
