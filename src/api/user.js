@@ -62,6 +62,15 @@ export const getPersonMidInfo = () => {
   })
 }
 
+
+// 管理平台获取登录信息
+export const getManaPersonMidInfo = () => {
+  return axios.request({
+    url: '/cperm/platform',
+    method: 'get',
+  })
+}
+
 // 获取平台user_id
 export const getEmployee_user_id = () => {
   return axios.request({

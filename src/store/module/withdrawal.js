@@ -1,5 +1,6 @@
 import {
   getPersonMidInfo,
+  getManaPersonMidInfo,
 }
 from '@/api/user'
 
@@ -19,7 +20,7 @@ export default {
     },
     set_financialObj(state, financialObj) {
       let obj = {
-        bank: financialObj ? financialObj.bank_account_name : "",
+        bank: financialObj ? financialObj.bank_name : "",
         name: financialObj ? financialObj.name : "",
         cardNumber: financialObj ? financialObj.bank_card_number : "",
       }
@@ -33,9 +34,56 @@ export default {
     setPersonInfo({
       commit
     }) {
-      getPersonMidInfo().then(resa => {
-        console.log(resa);
+      if (this.state.user.usertype === 'employee') {
+        getManaPersonMidInfo().then(resa => {
+          if (resa.status >= 200 && resa.status < 400) {
+            if (resa.data) {
+              let _datas = resa.data
+              if (
+                _datas &&
+                _datas.financial_account &&
+                _datas.financial_account.state === "succeeded"
+              ) {
+                commit("set_financialState", true);
+              } else {
+                commit("set_financialState", false);
+              }
 
+              if (
+                _datas &&
+                _datas.financial_account
+              ) {
+                commit(
+                  "set_financialObj",
+                  _datas.financial_account
+                );
+              }
+              if (
+                _datas &&
+                _datas.settlement
+              ) {
+
+                commit(
+                  "set_withdrawalValue",
+                  _datas.settlement.withdrawable_balance
+                );
+              }
+
+              if (
+                _datas &&
+                _datas.financial_account &&
+                _datas.financial_account.allow_withdraw
+              ) {
+                commit("set_allow_withdraw", true);
+              } else {
+                commit("set_allow_withdraw", false);
+              }
+            }
+          }
+        })
+        return
+      }
+      getPersonMidInfo().then(resa => {
         if (resa.status >= 200 && resa.status < 400 && resa.data) {
           if (resa.data.belong_participant) {
             let _datas = resa.data.belong_participant
