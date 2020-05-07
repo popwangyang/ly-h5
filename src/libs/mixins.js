@@ -69,5 +69,6 @@ export const accountMixins = {
     this.formData.business_license_accessory = [this.data.business_license_accessory]
     this.formData.id_photos = [this.data.id_front_photo, this.data.id_reverse_photo]
     this.formData.bank = bankData[this.data.bank]
+		console.log(this.formData)
   }
 }
