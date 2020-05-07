@@ -14,14 +14,14 @@
           <div class="total firsttotal">
             <span class="title">
               <span>累计分成</span>
-              <img
+              <!-- <img
                 @click="explainFunction"
                 class="explain"
                 :src="explain"
                 alt
                 width="10"
                 height="10"
-              />
+              />-->
             </span>
             <span class="num">￥{{ totalMoney | toFixed2 }}</span>
           </div>
@@ -35,7 +35,7 @@
             <p class="title">可提现</p>
             <p class="num popupBoxConfirm">
               <span class="f18">￥</span>
-              {{ withdrawalMoney | toFixed2 }}
+              {{ withdrawalValue || 0 | toFixed2 }}
             </p>
           </div>
           <div class="button">
@@ -90,12 +90,8 @@ export default {
     };
   },
   computed: {
-    // 可提现
-    withdrawalMoney() {
-      return this.$store.state.user.withdrawalValue;
-    },
     financialObj() {
-      return this.$store.state.user.financialObj;
+      return this.$store.state.withdrawal.financialObj;
     },
     // 账户状态
     financialState() {
@@ -107,7 +103,7 @@ export default {
     },
     // 可提现金额
     withdrawalValue() {
-      return this.$store.state.user.withdrawalValue;
+      return this.$store.state.withdrawal.withdrawalValue;
     },
     // 用户类型
     userType() {

@@ -34,22 +34,36 @@ if (process.env.NODE_ENV === 'production') {
 const router = new Router(result)
 
 const LOGIN_PAGE_NAME = 'login'
+const HOME_PAGE_NAME = 'mainPage'
 
 router.beforeEach((to, from, next) => {
 	const token = getToken();
-	if (!token && to.name != LOGIN_PAGE_NAME) { // 未登录且要跳转的页面不是登录页
+	console.log(to, from);
+	if (!token && to.name != LOGIN_PAGE_NAME ) { // 未登录且要跳转的页面不是登录页
+	    console.log(1);
 		next({
 			name: LOGIN_PAGE_NAME,
 		})
 	} else if (!token && to.name == LOGIN_PAGE_NAME) { // 未登录想要跳到登陆页面;
+	    console.log(2);
 		next();
 	} else if (token && to.name == LOGIN_PAGE_NAME) { // 已登录想要跳到登陆页面;
-	let path = store.state.app.theme.tabBottoms[0].path;
-		next({
-			path: path
-		})
+	   console.log(3);
+	    next({
+			replace: true,
+	    	name: HOME_PAGE_NAME
+	    })
 	} else {
-		next();
+		console.log(4);
+		if(!store.state.app.theme){
+			console.log(0);
+			setToken('');
+			next({
+				name: LOGIN_PAGE_NAME,
+			})
+		} else {
+			next();
+		}
 	}
 })
 

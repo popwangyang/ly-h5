@@ -112,6 +112,8 @@ export default {
   name: "newcombo",
   data() {
     return {
+      old: "", // 旧数据
+      new: "", // 新数据
       weekString: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], // 周数据
       week: [
         // 选项
@@ -195,6 +197,10 @@ export default {
       }
     }
     if (from.name === "newcombo" && to.name === "comboDetail") {
+      if (this.isDataChangeModi()) {
+        next();
+        return;
+      }
       next(false);
       this.$dialog.confirm({
         title: "提示",
@@ -209,6 +215,10 @@ export default {
     ) {
       next(false);
       this.conti = true;
+      if (this.isDataChangeNew()) {
+        next();
+        return;
+      }
       this.$dialog.confirm({
         title: "提示",
         message: "是否保存修改的信息",
@@ -286,6 +296,41 @@ export default {
     }
   },
   methods: {
+    // 编辑是否数据变动
+    isDataChangeModi() {
+      this.old = this.totalData();
+      let isOK = this.new === this.old;
+      return isOK;
+    },
+    // 数据集合
+    totalData() {
+      let str = JSON.stringify({
+        pkname: this.pkname,
+        listArr: this.listArr,
+        actual_price: this.actual_price,
+        timeStr: this.timeStr
+      });
+      return str;
+    },
+    // 新建套餐是否数据变动
+    isDataChangeNew() {
+      let pkname = this.pkname === "优选套餐";
+      let listArr =
+        this.listArr.length === 1 &&
+        this.listArr[0].name === "" &&
+        this.listArr[0].count === "" &&
+        this.listArr[0].original_price === 0;
+      if (
+        pkname &&
+        listArr &&
+        !this.actual_price &&
+        !this.timeStr &&
+        this.upChecked
+      ) {
+        return true;
+      }
+      return false;
+    },
     // 时间处理
     timeChange(val) {
       let a = 0;
@@ -328,12 +373,12 @@ export default {
                 this.actual_price = _data.actual_price;
                 if (_data.goods.length === 0) {
                   this.setFood();
-                  resolve(r);
-                  return;
+                } else {
+                  this.listArr = _data.goods;
                 }
-                this.listArr = _data.goods;
+                this.new = this.totalData();
+                resolve(r);
               }
-              resolve(r);
             })
             .catch(err => {
               reject(err);
@@ -490,7 +535,6 @@ export default {
       this.listArr.splice(index, 1);
     },
     changeTime(s) {
-      console.log(s);
       let hour = Math.floor(s / 60);
       let minut = Math.floor(s % 60);
       let a = this.timeChange(hour);

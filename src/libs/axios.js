@@ -41,7 +41,7 @@ class HttpRequest {
     }, error => {
 			console.log(error)
       const { data, status } = error.response
-      if (status === 401) {
+      if (status === 401 || status === 403) {
         setToken('')
         router.push({
           name: 'login'
