@@ -218,6 +218,13 @@ export default {
                 if (vodres.data) this.brand = vodres.data.brand;
               });
             }
+            if (this.showPersonalInfo === 4) {
+              this.comname = result1.name;
+              this.address = result1.address;
+              this.name = result1.name;
+              this.phone = result1.telephone;
+              return;
+            }
             let result2 = res.data;
             this.comname = result1.name;
             this.email = res.data.email;
