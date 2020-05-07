@@ -17,8 +17,8 @@
 	export default{
 		props:{
 			state:{
-				type: Number,
-				default: 1
+				type: String,
+				default: 'pending'
 			}
 		},
 		computed:{
@@ -28,18 +28,20 @@
 			textValue(){
 				let result = "开户成功";
 				switch(this.state){
-					case 1:
+					case 'succeeded':
 					  result = '开户成功';
 					  break;
-					case 2:
+					case 'submitted':
 					  result = '已提交待激活';
 					  break;
-					case 3:
+					case 'pending':
 					  result = '处理审核中';
 					  break;
-					case 4:
+					case 'failed':
 					  result = '开户失败';
 					  break;
+					case 'frozen':
+					  result = '账户冻结'
 				}
 				return result;
 			}

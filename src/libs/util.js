@@ -5,7 +5,10 @@ import {
 } from 'vant'
 import config from '@/config'
 import store from '@/store'
+// 省份名称简写的code表
 import mapData from '@/static/json/map.json'
+// 省份名称全写的code表
+import mapDatas from '@/static/json/mapData.json'
 
 const {
 	title,
@@ -426,5 +429,37 @@ export const getMapData = (params) => {
 		  
 		 break;
 	}
+	return result;
+}
+
+
+
+const getMapName = function(code, isDetail = false) {
+	var result = null
+	function foo(code, data) {
+		if (code == null) {
+			result = data
+			return
+		};
+		data.map(item => {
+			if (item.value == code) {
+				result =  isDetail ? item : item.label
+			} else if (item.children) {
+				foo(code, item.children)
+			}
+		})
+	}
+	foo(code, mapDatas)
+	return result
+}
+
+export const filterArea = (list) => {
+	/**
+	 *
+	 * @param list {array}
+	 */
+	let result = list.reduce((cur, next) => {
+		return cur + ' ' + getMapName(next);
+	}, '').substr(1);
 	return result;
 }
