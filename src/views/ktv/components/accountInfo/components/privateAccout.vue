@@ -78,7 +78,8 @@
 					bank_reserve_mobile: '',
 					bank_name: '',
 					bank_account_name: '',
-					bank_card_type: ''
+					bank_card_type: '',
+					gender: ''
 				}
 			}
 		},

@@ -11,9 +11,20 @@
 		<van-cell title="工商登记名称" :value="formData.business_registration_name"/>
 		<van-cell title="工商注册日期" :value="formData.business_registration_date"/>
 		<van-cell title="营业执照注册号" :value="formData.business_license_registration_number"/>
-		<van-cell title="营业执有效期" value="2019年10月1日-2020年10月1日"/>
+		<van-cell title="营业执有效期">
+			<span>
+				<span>{{formData.business_license_valid_from}}</span>
+				<span> 至 </span>
+				<span>{{formData.business_license_valid_until}}</span>
+			</span>
+		</van-cell>
 		<cell-image title="营业执照附件"  :dataList="formData.business_license_accessory"/>
-		<van-cell title="工商注册地址" :value="formData.area_code_list | filterArea"/>
+		<van-cell title="工商注册地址">
+			<span>
+				<span>{{formData.area_code_list | filterArea}}</span>
+				<span>{{formData.address}}</span>
+			</span>
+		</van-cell>
 		<span class="accountBoxTitle">
 			法人信息
 		</span>
@@ -83,7 +94,10 @@
 					bank_card_type: '',
 					bank_account_name: '',
 					bank_name: '',
-					bank_reserve_mobile: ''
+					bank_reserve_mobile: '',
+					business_license_valid_from: '',
+					business_license_valid_until: '',
+					address: ''
 				}
 			}
 		}

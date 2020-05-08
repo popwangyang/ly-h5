@@ -4,7 +4,7 @@
 			{{textValue}}
 		</span>
 		<van-icon
-		v-if="state != 1"
+		v-if="state != 'succeeded'"
 		style="margin-left: 6px;" 
 		name="info" 
 		:color="color" 
