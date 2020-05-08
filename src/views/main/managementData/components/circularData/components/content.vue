@@ -5,7 +5,7 @@
 			  v-model="currentRate"
 			  :rate="rateNumber"
 			  :speed="100"
-			  color="#0082FF"
+			  :color="color"
 			  layer-color="#ECECEC"
 			  stroke-width="150"
 			  stroke-linecap="butt"
@@ -24,6 +24,10 @@
 			rate:{
 				type:Number,
 				default:0
+			},
+			color:{
+				type:String,
+				default: "#0082FF"
 			}
 		},
 		watch: {
@@ -73,6 +77,9 @@
 				  }
 				  .b2{
 					  background-color: #ECECEC;
+				  }
+				  .b3{
+					  background-color: #01cca3;
 				  }
 				  &>span{
 					  display: flex;

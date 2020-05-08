@@ -24,14 +24,14 @@
 			</Content>
 		  </van-tab>
 		  <van-tab  title="扫码计费订单">
-			<Content :rate="totalOrdersRate">
+			<Content color="#01cca3" :rate="totalOrdersRate">
 				<span>
 					<span>订单总数</span>
 					<span class="money">{{formData.count}}</span>
 				</span>
 				<span>
 					<span>
-						<b class="b2"></b>
+						<b class="b3"></b>
 						<span>退款订单</span>
 					</span>
 					<span class="money">{{formData.refund_count}}</span>
@@ -75,7 +75,7 @@
 				return (Number(this.formData.music_amount_display) / Number(this.formData.amount)) * 100;
 			},
 			totalOrdersRate(){
-				return (1 - Number(this.formData.refund_count) / Number(this.formData.count)) * 100;
+				return (Number(this.formData.refund_count) / Number(this.formData.count)) * 100;
 			}
 		},
 		methods:{
