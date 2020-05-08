@@ -3,7 +3,7 @@
 		<span>
 			<van-circle
 			  v-model="currentRate"
-			  :rate="rate"
+			  :rate="rateNumber"
 			  :speed="100"
 			  color="#0082FF"
 			  layer-color="#ECECEC"
@@ -26,10 +26,21 @@
 				default:0
 			}
 		},
+		watch: {
+			rate(newValue, oldValue) {
+				if(!isNaN(newValue)){
+					this.rateNumber = newValue;
+				}
+			}
+		},
 		data(){
 			return{
-				currentRate:0
+				currentRate:0,
+				rateNumber:0,
 			}
+		},
+		mounted(){
+			this.rateNumber = this.rate;
 		}
 	}
 </script>
