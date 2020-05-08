@@ -61,21 +61,21 @@
 				active:0,
 				currentRate:0,
 				formData:{
-					amount_display: "00.0",
-					amount_music_display: "00.0",
+					amount: 1,
+					music_amount_display: 0,
+					count: 1,
+					refund_count: 0,
 					amount_package_display: "00.0",
-					count_total: "0",
-					count_refunded: "0",
 					amount_refunded_display:"00.0"
 				},
 			}
 		},
 		computed:{
 			scanCodeBillRate(){
-				return (this.formData.music_amount_display / this.formData.amount) * 100;
+				return (Number(this.formData.music_amount_display) / Number(this.formData.amount)) * 100;
 			},
 			totalOrdersRate(){
-				return (1 - this.formData.refund_count / this.formData.count) * 100;
+				return (1 - Number(this.formData.refund_count) / Number(this.formData.count)) * 100;
 			}
 		},
 		methods:{
