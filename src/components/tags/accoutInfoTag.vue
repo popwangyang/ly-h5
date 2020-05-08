@@ -48,8 +48,12 @@
 		},
 		methods:{
 			dialogBtn(){
-				let index = this.state - 2;
-				let accoutDialogInfo = AccoutDialog[index];
+				
+				let accoutDialogInfo = AccoutDialog.find(item => {
+					if(item.title == this.textValue){
+						return item;
+					}
+				});
 				this.$dialog.alert({
 				  title: accoutDialogInfo.title,
 				  message: accoutDialogInfo.content,
