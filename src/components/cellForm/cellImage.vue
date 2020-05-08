@@ -36,8 +36,13 @@
 			};
 		},
 		watch: {
-			dataList(newValue, oldValue) {
-				this.getInfo();
+			dataList:{
+				handler(newValue, oldValue) {
+					if(newValue.length != 0){
+						this.getInfo();
+					}
+			    },
+				immediate: true
 			}
 		},
 		methods: {
