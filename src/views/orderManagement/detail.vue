@@ -9,10 +9,10 @@
 			<span class="left circle"></span>
 			<span class="right circle"></span>
 		</span>
-		<van-cell title="音乐服务费" value-class="cellValue" :value="detail.music_amount_display" />
-		<van-cell title="开房套餐费用" value-class="cellValue" :value="detail.package_amount_display" />
-		<van-cell title="扫码订单金额" value-class="cellValue" :value="detail.amount_display" />
-		<van-cell title="实付金额" value-class="cellValue" :value="detail.real_amount_display" />
+		<van-cell title="音乐服务费" value-class="cellValue" :value="detail.music_amount_display | filterA" />
+		<van-cell title="开房套餐费用" value-class="cellValue" :value="detail.package_amount_display | filterA " />
+		<van-cell title="扫码订单金额" value-class="cellValue" :value="detail.amount_display | filterA" />
+		<van-cell title="实付金额" value-class="cellValue" :value="detail.real_amount_display | filterA" />
 		<van-cell title="订单编号" value-class="cellValue" :value="detail.platform_id" />
 		<van-cell title="支付方式" value-class="cellValue" :value="detail.platform_display" />
 		<van-cell title="交易时间" value-class="cellValue" :value="detail.pay_time" />
@@ -55,7 +55,7 @@
 		  <div class="dialogContent">
 			  <span>套餐内容</span>
 			  <span>
-				  <span class="dialogListItem" v-for="(item, index) in detail.goods" :key="index">
+				  <span class="dialogListItem" v-for="(item, index) in detail.package.goods" :key="index">
 					  <span>
 						  <span class="tradeName">{{item.name}}</span>
 						  <span class="tradeNum">X{{item.count}}</span>
@@ -78,11 +78,24 @@
 		data(){
 			return{
 				dialogFlage: false,
-				inActivity: false,
-				useCard: false,
 				detail: {
+					activities_display: [],
+					cards_id_list: [],
 					package:{}
 				}
+			}
+		},
+		filters:{
+			filterA(val){
+				return "￥"+val;
+			}
+		},
+		computed:{
+			inActivity(){
+				return this.detail.activities_display.length == 0 ? false:true;
+			},
+			useCard() {
+				return this.detail.cards_id_list.length == 0 ? false:true;
 			}
 		},
 		methods:{
@@ -93,7 +106,8 @@
 				return new Promise((resolve, reject) => {
 					let id = this.$route.query.id;
 					getOrderDetail(id).then(res => {
-						this.detailData = res.data;
+						this.detail = res.data;
+						console.log(this.detail);
 						resolve(res.data);
 					})
 				});

@@ -24,21 +24,24 @@
 		},
 		data(){
 			return{
-				accountType: 1, // 1为对公， 2为对私
+				accountType: 'b2b', // 1为对公， 2为对私
 				accountInfo: ''
 			}
 		},
 		computed:{
 			component(){
-				return this.accountType == 1 ? 'PublicAccout':'PrivateAccout';
+				// RIVATE_ACCOUNT = ('b2c','个人账号')
+				// PUBLIC_ACCOUNT = ('b2b','企业对公户')
+				return this.accountType == 'b2b' ? 'PublicAccout':'PrivateAccout';
 			}
 		},
 		methods:{
 			getData(){
 				return new Promise((resolve, reject) => {
 					getAccountInfo(this.$store.state.ktv.ktvID).then(res => {
-						this.accountInfo = res.data;
 						this.accountType = res.data.account_type
+						this.accountInfo = res.data;
+						console.log(this.accountInfo);
 						resolve(res.data);
 					})
 				})

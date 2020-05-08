@@ -22,7 +22,7 @@
 				<span>{{itemData.pay_time}}</span>
 				<span>
 					<van-button size="mini" class="btn" plain type="primary" @click="detailBtn">详情</van-button>
-					<van-button class="btn confirm_btn" @click="confirmBtn" size="mini" plain type="info" v-if="itemData.package_status == 2 ? true:false">
+					<van-button class="btn confirm_btn" @click="confirmBtn" size="mini" plain type="info" v-if="itemData.package_status_display == '未送达' ? true:false">
 						{{confirmText}}
 					</van-button>
 				</span>
