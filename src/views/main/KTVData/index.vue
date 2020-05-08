@@ -146,7 +146,6 @@ export default {
       balance: 0, // 账户余额
       totalMoney: 0, // 累计分成
       lastMonthMoney: "0.00", // 上月分成
-      withdrawalMoney: 0, // 可提现
       chartone: "chartone", // 图表id
       chartData: null, // 图表数据
       dateValue: [LDate, getDay(new Date())],
@@ -169,6 +168,18 @@ export default {
     };
   },
   computed: {
+    // 允许提现
+    allow_withdraw() {
+      return this.$store.state.withdrawal.allow_withdraw;
+    },
+    // 账户状态
+    financialState() {
+      return this.$store.state.withdrawal.financialState;
+    },
+    // 可提现
+    withdrawalMoney() {
+      return this.$store.state.withdrawal.withdrawalValue;
+    },
     // 用户类型
     userType() {
       if (
@@ -207,7 +218,7 @@ export default {
           );
           if (reduce > 31) {
             this.$toast.fail({
-              duration: 2500, // 持续展示 toast
+              duration: 1500, // 持续展示 toast
               forbidClick: true,
               overlay: true,
               className: "loadClass",
@@ -307,9 +318,19 @@ export default {
     getUserAmount() {
       userAmount({
         user_id: this.user_id
-      }).then(res => {
-        this.balance = res.amount;
-      });
+      })
+        .then(res => {
+          this.balance = res.amount;
+        })
+        .catch(e => {
+          this.$toast.fail({
+            duration: 2500, // 持续展示 toast
+            forbidClick: true,
+            overlay: true,
+            className: "loadClass",
+            message: e.data.user_id
+          });
+        });
     },
 
     getDate() {
@@ -405,6 +426,26 @@ export default {
 
     // 提现确认
     enterWithdrawal() {
+      if (!this.financialState) {
+        this.$toast.fail({
+          duration: 1500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "暂未绑定结算账户，请联系商务人员协助绑定。"
+        });
+        return;
+      }
+      if (!this.allow_withdraw) {
+        this.$toast.fail({
+          duration: 1500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "您的账户已冻结，请尽快联系商务人员处理。"
+        });
+        return;
+      }
       this.routerGo("withdrawal");
     },
 

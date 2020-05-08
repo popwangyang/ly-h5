@@ -119,6 +119,8 @@ export default {
   name: "manaCombo",
   data() {
     return {
+      old: null, // 旧数据
+      new: null, // 新数据
       cancelDialog: false, // 取消弹窗
       overlay: false, // 加载中
       showLoading: true, // 加载中
@@ -136,10 +138,20 @@ export default {
   methods: {
     // 取消确认
     cancelpop() {
-      this.cancelDialog = true;
+      let error = this.old !== JSON.stringify([...this.up, " ", ...this.down]);
+      if (this.clear.length || error) {
+        this.cancelDialog = true;
+        return;
+      }
+      this.$router.push({
+        name: "roomPackage"
+      });
     },
     beforeClose(action, done) {
       if (action === "confirm") {
+        this.up = [];
+        this.down = [];
+        this.clear = [];
         this.getList();
         done();
       } else {
@@ -187,6 +199,7 @@ export default {
                 }
                 this.down.push(e);
               });
+              this.old = JSON.stringify([...this.up, " ", ...this.down]);
               if (results.length) {
                 this.showLoading = true;
                 resolve({

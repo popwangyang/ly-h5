@@ -4,7 +4,7 @@
       <template>
         <div>
           <div class="combo-top">
-            <span class="combo-top-title">套餐列表（{{total}}/10）</span>
+            <span class="combo-top-title">套餐列表</span>
             <div class="combo-top-op">
               <button class="op-btn op-btn-man" @click="manaCombo">管理</button>
               <button class="op-btn op-btn-new" @click="newCombo">创建</button>
@@ -97,20 +97,6 @@ export default {
     },
     // 创建套餐
     newCombo() {
-      if (this.total === 0 && !this.isCreate) {
-        this.$toast({
-          message: "套餐列表加载中",
-          type: "fail"
-        });
-        return;
-      }
-      if (this.total === 10) {
-        this.$dialog.alert({
-          message: "套餐数量上限为10，请删除部分套餐后操作。",
-          confirmButtonText: "知道了"
-        });
-        return;
-      }
       this.$store.commit("set_comboItem", null);
       this.$router.push({
         name: "newcombo",

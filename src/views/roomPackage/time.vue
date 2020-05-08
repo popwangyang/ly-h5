@@ -13,12 +13,12 @@
     <div class="time">
       <div class="p p1">
         <p class="p11 selet">起始时间</p>
-        <p @click="show=!show" class="p11 sele">{{currentTime|| '请选择'}}</p>
+        <p @click="showStartPop" class="p11 sele">{{currentTime|| '请选择'}}</p>
         <img class="right" width="6" height="10" :src="comboright" alt />
       </div>
       <div class="p p2">
         <p class="p11 selet">结束时间</p>
-        <p @click="showEnd=!showEnd" class="p11 sele">{{currentEndTime|| '请选择'}}</p>
+        <p @click="showEndPop" class="p11 sele">{{currentEndTime|| '请选择'}}</p>
         <img class="right" width="6" height="10" :src="comboright" alt />
       </div>
       <van-popup :close-on-click-overlay="false" v-model="show" position="bottom">
@@ -62,8 +62,10 @@ export default {
   mixins: [cacheMixins],
   data() {
     return {
-      starInitVal: "00:00",
-      endInitVal: "00:00",
+      dateShow: false,
+      currentDate: new Date(),
+      starInitVal: 0,
+      endInitVal: 0,
       columns: [
         {
           values: ["当日", "次日"],
@@ -152,6 +154,22 @@ export default {
     };
   },
   methods: {
+    // 展示开始时间弹窗
+    showStartPop() {
+      this.show = true;
+      this.starInitVal = this.currentTime;
+    },
+    // 展示结束时间弹窗
+    showEndPop() {
+      this.showEnd = true;
+      this.endInitVal = this.currentEndTime;
+    },
+    //开始时间
+    handleEndDateConfirm() {
+      this.show = false;
+      console.log(this.currentDate);
+      this.currentTime = this.currentDate;
+    },
     // 保存
     save() {
       if (!this.result.length || !this.currentTime || !this.currentEndTime) {
@@ -217,13 +235,16 @@ export default {
     // 开始时间取消
     startCancel() {
       this.show = false;
+      this.starInitVal = this.currentTime;
     },
     // 结束时间取消
     endCancel() {
       this.showEnd = false;
+      this.endInitVal = this.currentEndTime;
     },
     // 起始时间
     selectStartTime(val) {
+      console.log(val);
       var arr = val.split(":");
       var a1 = parseInt(arr[0] * 60);
       var a2 = parseInt(arr[1] * 1);
@@ -248,6 +269,8 @@ export default {
       return options;
     },
     init() {
+      this.show = false;
+      this.showEnd = false;
       if (!this.comboItem) {
         this.result = [];
         this.startTime = "";
@@ -259,9 +282,6 @@ export default {
       this.result = this.comboItem.period_weekdays;
       this.startTime = this.comboItem.period_time_start;
       this.EndTime = this.comboItem.period_time_end;
-      console.log(this.startTime);
-      console.log(this.EndTime);
-
       this.currentTime = this.timeChange(this.startTime);
       this.currentEndTime = this.timeChange(this.EndTime);
     }
