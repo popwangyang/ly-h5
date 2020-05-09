@@ -1,7 +1,7 @@
 <template>
 	<div class="subTip">
 		<span class="name">{{subTipData.name}}</span>
-		<span class="box">
+		<span class="box" v-if="showCity">
 			<span>{{subTipData.city}}</span>
 			<span class="name">
 				城市开通数
@@ -36,6 +36,11 @@
 					}
 				}
 			}
+		},
+		computed:{
+			showCity(){
+				return this.$store.state.user.usertype != 'agentibus';
+			}
 		}
 	}
 </script>
@@ -66,7 +71,6 @@
 			padding: 0 10px;
 			align-items: center;
 			justify-content: center;
-			width: 60px;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
