@@ -96,7 +96,9 @@ export default {
       ktv_name: "",
       params: {
         pay_time_start: getDayTime(new Date()),
-        pay_time_end: getDayTime(new Date(), 1)
+        pay_time_end: getDayTime(new Date(), 1),
+        ordering: "-pay_time",
+        is_valid: 1
       },
       popupValue: {
         deal_status: 0,
@@ -212,7 +214,7 @@ export default {
       this.params = {
         pay_time_start: getDayTime(new Date()),
         pay_time_end: getDayTime(new Date(), 1),
-        user_id: this.$store.state.user.user_id,
+        // user_id: this.$store.state.user.user_id,
         ordering: "-pay_time",
         is_valid: 1
       };
@@ -246,7 +248,7 @@ export default {
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
           payment_platform: this.searchValue.pay_way,
-          user_id: this.$store.state.user.user_id,
+          // user_id: this.$store.state.user.user_id,
           ordering: "-pay_time",
           is_valid: 1
         };
@@ -258,7 +260,7 @@ export default {
           payment_platform: this.searchValue.pay_way,
           pay_time_start: this.dateValue[0] + " 00:00:00",
           pay_time_end: this.dateValue[1] + " 23:59:59",
-          user_id: this.$store.state.user.user_id,
+          // user_id: this.$store.state.user.user_id,
           ordering: "-pay_time",
           is_valid: 1
         };
