@@ -22,8 +22,12 @@
 		},
 		methods:{
 			getData(send_data){
+				let params = {
+					ktv: this.$store.state.ktv.ktvID
+				}
+				Object.assign(params, send_data);
 				return new Promise((resolve, reject) => {
-					billingLog(send_data).then(res => {
+					billingLog(params).then(res => {
 						console.log(res);
 						let results = {
 							data: res.data.results,
