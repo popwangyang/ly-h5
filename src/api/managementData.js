@@ -3,9 +3,10 @@ import {getMapData} from '@/libs/util';
 
 
 // 合同生效中的场所数量
-export const getAllContractingKtv = () => {
+export const getAllContractingKtv = (params) => {
 	return axios.request({
 	  url: '/ktv/place/contracting-ktv',
+	  params,
 	  method: 'get',
 	})
 }
@@ -40,7 +41,7 @@ const axiosRegion = (params) => {
 
 const goo = (params) => {
 	let p1 = axiosRegion(params);
-	let p2 = getAllContractingKtv();
+	let p2 = getAllContractingKtv(params);
 	return Promise.all([p1, p2]);
 }
 
