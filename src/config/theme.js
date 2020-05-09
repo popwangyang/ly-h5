@@ -92,5 +92,28 @@ export default {
         inactive: require('@/assets/bottomTabs/personB.png')
       }
     ]
-  }
+  },
+	theme_advance_party: {
+		color: '#0082FF',
+		tabBottoms: [{
+        text: '账户数据',
+        path: '/main',
+        active: require('@/assets/bottomTabs/mainA.png'),
+        inactive: require('@/assets/bottomTabs/mainB.png')
+      },
+		  {
+		    text: '订单分成',
+		    path: '/OrderSharing',
+		    active: require('@/assets/bottomTabs/OrderA.png'),
+		    inactive: require('@/assets/bottomTabs/OrderB.png')
+		  },
+		  {
+		    text: '个人中心',
+		    info: 0,
+		    path: '/personalCenter',
+		    active: require('@/assets/bottomTabs/personA.png'),
+		    inactive: require('@/assets/bottomTabs/personB.png')
+		  }
+		]
+	}
 }
