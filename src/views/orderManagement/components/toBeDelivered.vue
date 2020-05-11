@@ -70,6 +70,15 @@
 				Object.assign(send_data, params);
 				return new Promise((resolve, reject) => {
 					getOrderList(send_data).then(res => {
+						res.data.results.map(item => {
+							if(!item.package){
+								item.package = {
+									name: '',
+									goods: []
+								}
+							}
+						})
+						console.log(res.data.results);
 						let result = {
 							total: res.data.count,
 							data: res.data.results
