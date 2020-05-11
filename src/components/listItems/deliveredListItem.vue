@@ -9,7 +9,7 @@
 				</span>
 				<span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
 				<span v-else></span>
-			</span>			
+			</span>	
 			<span class="tcname">{{itemData.package.name}}</span>
 			<div class="spnameBox" ref="spnameBox" :style="{maxHeight: maxHeight}">
 				<span class="spname" v-for="(item, index) in meals" :key="index">
@@ -106,9 +106,6 @@
 					this.confirmLoading = false;
 				})
 			}
-		},
-		mounted() {
-			
 		}
 	}
 </script>
