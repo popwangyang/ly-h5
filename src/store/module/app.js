@@ -45,7 +45,7 @@ export default {
 		SET_THEME(state, themeType) {
 			switch (themeType) {
 				case 'advance_party':
-					state.theme = theme.advance_party;
+					state.theme = theme.theme_advance_party;
 					state.className = 'themea';
 					break;
 				case 'ktv':
