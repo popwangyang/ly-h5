@@ -340,8 +340,16 @@ export default {
         cyear = year - 1;
         cmonth = "12";
       } else {
-        cyear = year;
-        cmonth = month;
+        if (Number(year) < 10) {
+          cyear = `0${year}`;
+        } else {
+          cyear = year;
+        }
+        if (Number(month) < 10) {
+          cmonth = `0${month}`;
+        } else {
+          cmonth = month;
+        }
       }
       return {
         cyear,
