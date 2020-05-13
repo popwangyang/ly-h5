@@ -22,7 +22,12 @@
 			</span>
 			<span v-if="formData.type == 2">
 				<div class="divider"></div>
-				<van-cell title="有效年限" value-class="cellValue" :value="10000"/>
+				<van-cell title="有效年限" value-class="cellValue">
+					<span>
+						<span>{{Number(formData.effective_age)}}</span>
+						<span> 年</span>
+					</span>
+				</van-cell>
 				<van-cell title="接入日期" value-class="cellValue" :value="formData.begin_date"/>
 				<van-cell title="结束日期" value-class="cellValue" :value="formData.end_date" />
 				<div class="divider"></div>
