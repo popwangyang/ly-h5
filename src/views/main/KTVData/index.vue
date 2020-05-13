@@ -181,10 +181,6 @@ export default {
     };
   },
   computed: {
-    // 获取
-    dateType() {
-      let res = null;
-    },
     // 允许提现
     allow_withdraw() {
       return this.$store.state.withdrawal.allow_withdraw;
@@ -246,8 +242,6 @@ export default {
             return;
           }
         }
-
-        this.searChartByTime(val[0], val[1]);
       }, 20);
     },
 
@@ -406,10 +400,6 @@ export default {
 
     // Tab事件
     clickTab(val) {
-      console.log("tab事件的val");
-      console.log(val);
-      console.log("===");
-
       this.chartData = null;
       this.changeChartData(val);
     },

@@ -92,7 +92,7 @@
 
 <script>
 import { withdrawalApi, withdrawalRecord } from "@/api/withdrawal";
-
+import { mapActions } from "vuex";
 import { getPersonMidInfo } from "@/api/user";
 export default {
   data() {
@@ -134,6 +134,7 @@ export default {
   },
   mounted() {},
   methods: {
+    ...mapActions(["setPersonInfo"]),
     // 输入变化
     inputchange(val) {
       if (val > this.withdrawalMoney) {
@@ -156,6 +157,7 @@ export default {
       withdrawalRecord(this.id, "pending").then(res => {
         this.waited = true;
         this.createModal = false;
+        this.setPersonInfo();
         if (res.status === "pending") {
           this.$router.push({
             path: "/withdrawalResult",
