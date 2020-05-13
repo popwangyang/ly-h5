@@ -5,18 +5,20 @@
 		  <van-grid-item  text="到账状态" />
 		  <van-grid-item  text="到账金额" />
 		  <van-grid-item  text="到账时间" />
-		  <template>
+		  <template v-for="item in FKPZ">
 			  <van-grid-item>
-				  <a @click="imagePreview">曲库初装费</a>
+				  <FkpzBox :id="item.annex">
+					   <a>{{item.instructions | instructionsFilter}}</a>
+				  </FkpzBox>
 			  </van-grid-item>
 			  <van-grid-item>
-			  		待确认		  
+			  		{{item.state | stateFilter}}
 			  </van-grid-item>
 			  <van-grid-item>
-			  		1234.00		  
+			  		{{Number(item.amount_received)}}	  
 			  </van-grid-item>
 			  <van-grid-item>
-			  		20-01-01 ~ 20-01-31		  
+					{{item.payment_confirmed_datetime == null ? '暂无':item.payment_confirmed_datetime}}
 			  </van-grid-item>
 		  </template>
 		</van-grid>
@@ -25,25 +27,29 @@
 </template>
 
 <script>
-	import { ImagePreview } from "vant";
+	import FkpzBox from "@/components/fkpz";
 	export default{
-		data(){
-			return{
-				
+		components:{
+			FkpzBox
+		},
+		props:{
+			FKPZ:{
+				type:Array,
+				default: () => []
 			}
 		},
-		methods:{
-			imagePreview(url, name) {
-			  // let type = name.split(".")[name.split(".").length - 1];
-			  // if (type === "pdf") {
-			  //   this.$router.push({
-			  //     path: "/PdfPreview",
-			  //     query: { url, name: name }
-			  //   });
-			  // } else {
-			  //   ImagePreview([url]);
-			  // }
+		filters:{
+			stateFilter(state){
+				return state == "waiting_confirmed" ? '待确认':'已到账'
 			},
+			instructionsFilter(text){
+				let length = 0 || text.length;
+				if(length > 6){
+					return text.substring(0, 6) + '...';
+				}else{
+					return text;
+				}
+			}
 		}
 	}
 </script>

@@ -9,19 +9,33 @@
 			</van-grid-item>
 			<van-grid-item>计费时段</van-grid-item>
 			<van-grid-item>计费日期</van-grid-item>
+			<template v-for="item in trial_charging_duration">
+				<van-grid-item>
+					<span>
+						<span>
+							{{item.price}}元
+						</span>
+						<span>
+							<van-tag type="primary">试用</van-tag>
+						</span>
+					</span>
+				</van-grid-item>
+				<van-grid-item>{{item.begin_time}} - {{item.end_time}}</van-grid-item>
+				<van-grid-item>{{item.period_start_date}}</van-grid-item>
+			</template>
 			<template v-for="item in charging_duration">
 				<van-grid-item>
 					<span>
 						<span>
 							{{item.price}}元
 						</span>
-						<span :style="{visibility: false ? 'hidden':'inherit'}">
+						<span style="visibility:hidden">
 							<van-tag type="primary">试用</van-tag>
 						</span>
 					</span>
 				</van-grid-item>
 				<van-grid-item>{{item.begin_time}} - {{item.end_time}}</van-grid-item>
-				<van-grid-item>20-01-01 ~ 20-01-31</van-grid-item>
+				<van-grid-item>{{item.period_start_date}}</van-grid-item>
 			</template>
 		</van-grid>
 	</div>
@@ -31,6 +45,9 @@
 	export default{
 		props:{
 			charging_duration:{
+				type: Array,
+			},
+			trial_charging_duration:{
 				type: Array,
 			}
 		}

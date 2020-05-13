@@ -9,7 +9,7 @@
 				<div class="divider"></div>
 				<van-cell title="付款凭证" value-class="cellValue">
 					<span slot="label">
-						<paymentVoucher :charging_duration="formData.charging_duration"/>
+						<paymentVoucher :FKPZ="formData.FKPZ"/>
 					</span>
 				</van-cell>
 				<div class="divider"></div>
@@ -35,7 +35,7 @@
 				</span>
 				<van-cell title="音乐服务费" value-class="cellValue">
 					<span slot="label">
-						<sweepCodeBillDetail :charging_duration="formData.charging_duration"/>
+						<sweepCodeBillDetail :charging_duration="formData.charging_duration" :trial_charging_duration="formData.trial_charging_duration"/>
 					</span>
 				</van-cell>
 				<cell-image title="合同附件" :dataList="formData.annex"></cell-image>
@@ -188,13 +188,22 @@
 				return new Promise((resolve, reject) => {
 					getContractDetail(
 						this.$route.query.contractType,
-						this.$route.query.contractID
+						this.$route.query.contractID,
+						this.$route.query.itemID,
 					).then(res => {
 						this.$store.commit('setContractDetail', res.data);
 						this.formData = Delayering(res.data);
 						this.formData.annex = JSON.parse(res.data.annex); //合同附件
 						this.formData.replies = this.formData.replies ? JSON.parse(res.data.replies):[]; //合同附件
-						console.log(this.formData);
+						this.formData.charging_duration = res.data.charging_duration  ? res.data.charging_duration.map(item => {
+							item.period_start_date = res.data.official_period_start_date;
+							return item;
+						}):[]
+						this.formData.trial_charging_duration = res.data.trial_charging_duration  ?res.data.trial_charging_duration.map(item => {
+							item.period_start_date = res.data.trial_period_start_date;
+							return item;
+						}):[]
+						console.log(this.formData, res);
 						resolve(res);
 					}).catch(err => {
 						reject(err);
