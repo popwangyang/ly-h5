@@ -142,7 +142,6 @@ export default {
       chartTitle: "", // 图表标题
       dialogShow: false,
       explain: require("../../../assets/explain.png"),
-      showData: true, // 展示数据
       balance: 0, // 账户余额
       totalMoney: 0, // 累计分成
       lastMonthMoney: "0.00", // 上月分成
@@ -302,11 +301,8 @@ export default {
         this.chartData = null;
         if (res.results && res.results.length > 0) {
           this.chartData = res.results;
-          this.showData = false;
           return;
         }
-
-        this.showData = true;
       });
     },
 
@@ -386,7 +382,10 @@ export default {
 
     // Tab事件
     clickTab(val) {
-      this.showData = true;
+      console.log("tab事件的val");
+      console.log(val);
+      console.log("===");
+
       this.chartData = null;
       this.changeChartData(val);
     },

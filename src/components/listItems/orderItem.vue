@@ -85,11 +85,7 @@ export default {
   },
   methods: {
     btnClick() {
-      if (
-        this.userType === "copyright_party" ||
-        this.userType === "platform" ||
-        this.userType === "agentibus"
-      ) {
+      if (this.userType === "copyright_party" || this.userType === "platform") {
         this.$router.push({
           name: "orderSharingDetail",
           query: {
@@ -102,7 +98,7 @@ export default {
       }
 
       //平台管理
-      if (this.userType === "employee") {
+      if (this.userType === "employee" || this.userType === "agentibus") {
         this.$router.push({
           name: "ordeManaDetail",
           query: {
