@@ -5,8 +5,8 @@
 				<span>
 					<span class="title_top">包厢 {{itemData.room_id}}</span>
 					<span class="title_top">{{itemData.countNumber}}</span>
-					<span class="title_state">{{itemData.package_status | statuesFilter}}</span>
-					<span class="title_state">  {{itemData.status_display}}</span>
+					<span class="title_state">{{itemData.package_status_display | statuesFilter}}</span>
+					<!-- <span class="title_state">  {{itemData.status_display}}</span> -->
 				</span>
 				<span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
 				<span v-else></span>
@@ -19,14 +19,13 @@
 				</span>
 			</div>
 			<span class="ellipsis" v-show="itemData.package.goods.length > 3 && !openListStatues">...</span>
-			<span>
+			<!-- <span>
 				<span>
 					<span>实付金额 </span>
 					<span>  {{itemData.real_amount_display}} 元</span>
 					<span>  {{itemData.status_display}}</span>
 				</span>
-			</span>
-			<span></span>
+			</span> -->
 			<span class="bottom">
 				<span>{{itemData.pay_time}}</span>
 				<span>
@@ -97,7 +96,7 @@
 		},
 		filters:{
 			statuesFilter(state){
-				return state == 1 ? '已配送':'待配送';
+				return state == '未送达' ? '待配送':'已配送';
 			}
 		},
 		methods:{
