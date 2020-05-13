@@ -1,16 +1,41 @@
 <template>
 	<div class="sweepCodeBillBox">
-		<van-grid :column-num="2" style="border-left: 0.5px solid #ebedf0;">
+		<van-grid :column-num="3" style="border-left: 0.5px solid #ebedf0;">
 			<van-grid-item>
 				<span>
-					计费价格
+					<span>计费价格</span>
 					<span class="tipText">（元/次/终端）</span>
 				</span>
 			</van-grid-item>
 			<van-grid-item>计费时段</van-grid-item>
-			<template v-for="item in charging_duration">
-				<van-grid-item>{{item.price}}元</van-grid-item>
+			<van-grid-item>计费日期</van-grid-item>
+			<template v-for="item in trial_charging_duration">
+				<van-grid-item>
+					<span>
+						<span>
+							{{item.price}}元
+						</span>
+						<span>
+							<van-tag type="primary">试用</van-tag>
+						</span>
+					</span>
+				</van-grid-item>
 				<van-grid-item>{{item.begin_time}} - {{item.end_time}}</van-grid-item>
+				<van-grid-item>{{item.period_start_date}}</van-grid-item>
+			</template>
+			<template v-for="item in charging_duration">
+				<van-grid-item>
+					<span>
+						<span>
+							{{item.price}}元
+						</span>
+						<span style="visibility:hidden">
+							<van-tag type="primary">试用</van-tag>
+						</span>
+					</span>
+				</van-grid-item>
+				<van-grid-item>{{item.begin_time}} - {{item.end_time}}</van-grid-item>
+				<van-grid-item>{{item.period_start_date}}</van-grid-item>
 			</template>
 		</van-grid>
 	</div>
@@ -21,10 +46,25 @@
 		props:{
 			charging_duration:{
 				type: Array,
+			},
+			trial_charging_duration:{
+				type: Array,
 			}
 		}
 	}
 </script>
+<style lang="less">
+	.sweepCodeBillBox{
+		.van-grid-item:nth-child(1),.van-grid-item:nth-child(2),.van-grid-item:nth-child(3),{
+			.van-grid-item__content--center{
+				padding: 6px 10px;
+				font-weight: bold;
+				background-color: #F6F8F9;
+				border: none;
+			}
+		}
+	}
+</style>
 
 <style scoped="scoped" lang="less">
 	.sweepCodeBillBox{
@@ -32,9 +72,10 @@
 		background-color: white;
 		border-bottom: 0.5px solid #ebedf0;
 		.tipText{
-			font-size: 12px;
+			font-size: 10px;
 			color: gray;
 			display: inline-block;
+			font-weight: normal;
 		}
 	}
 </style>

@@ -74,6 +74,7 @@ export default {
       this.$router.push({
         name: "contractDetail",
         query: {
+		  itemID: data.id,
           contractID: type == 1 ? data.music_id : data.comprehensive_id,
           contractType: type,
           showPersonContract: this.showPersonContract
