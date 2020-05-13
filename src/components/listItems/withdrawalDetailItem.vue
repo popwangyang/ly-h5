@@ -3,29 +3,39 @@
     <van-collapse-item v-for="(item, index) in dataList" :key="index">
       <span class="flx" slot="title">
         <div class="flex-wrapper">
-          <span v-if="item.status_display === '已申请'" style="color: #353535;">{{item.status_display}}</span>
+          <span
+            v-if="item.status_display === '创建申请中'"
+            style="color: #353535;"
+          >{{item.status_display}}</span>
           <span v-if="item.status_display === '处理中'" style="color: #FFB04E;">{{item.status_display}}</span>
-          <span v-if="item.status_display === '完成'" style="color: #01CCA3;">{{item.status_display}}</span>
-          <span v-if="item.status_display === '失效'" style="color: #EE2B30;">{{item.status_display}}</span>
-          <span v-if="item.status_display === '取消'" style="color: #888888;">{{item.status_display}}</span>
+          <span
+            v-if="item.status_display === '提现成功'"
+            style="color: #01CCA3;"
+          >{{item.status_display}}</span>
+          <span
+            v-if="item.status_display === '提现失败'"
+            style="color: #EE2B30;"
+          >{{item.status_display}}</span>
+          <span
+            v-if="item.status_display === '取消提现'"
+            style="color: #888888;"
+          >{{item.status_display}}</span>
           <span class="create-time">{{item.create_time}}</span>
         </div>
         <div class="flex-wrapper flex-add or">
           <span>￥{{item.real_amount_display|toFixed2}}</span>
           <span>
             <span class="real_amount">实际到账：</span>
-            <span style="color: #E97557;">￥{{item.real_amount_display|toFixed2}}</span>
+            <span style="color: #E97557;">￥{{item|real_amount_display|toFixed2}}</span>
           </span>
         </div>
       </span>
       <span class="flx bggrey">
         <div class="flex-wrapper">
-          <span>支付通道费率</span>
           <span>提现手续费</span>
         </div>
         <div class="flex-wrapper flex-add tr">
-          <span class="color444">{{payrate || 0}}%</span>
-          <span class="color444">￥{{item.user_fee_display || 0}}</span>
+          <span class="color444">￥{{item|user_fee_display|toFixed2}}</span>
         </div>
       </span>
     </van-collapse-item>
@@ -44,6 +54,15 @@ export default {
   },
   watch: {},
   filters: {
+    // 实际到账
+    real_amount_display: val => {
+      let user_fee_display = parseInt(val.real_amount_display) <= 50000 ? 1 : 7;
+      return val.real_amount_display - user_fee_display;
+    },
+    // 手续费
+    user_fee_display: val => {
+      return parseInt(val.real_amount_display) <= 50000 ? 1 : 7;
+    },
     status: val => {
       let status;
       switch (val) {
@@ -70,7 +89,6 @@ export default {
       });
     }
   },
-  computed: {},
   mounted() {
     this.getPayment_channel_rateApi();
   }

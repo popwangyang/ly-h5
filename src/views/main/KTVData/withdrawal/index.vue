@@ -228,7 +228,6 @@ export default {
     },
     // 提交
     submit() {
-      this.createModal = true;
       if (this.inputnum <= 1) {
         this.$toast.fail({
           duration: 2500, // 持续展示 toast
@@ -249,6 +248,7 @@ export default {
         });
         return;
       }
+      this.createModal = true;
     }
   }
 };
