@@ -5,7 +5,7 @@
 		>
 		<span class="header">
 			<span><van-icon name="checked" /></span>
-			<span>已支付</span>
+			<span>{{detail.status_display}}</span>
 			<span class="left circle"></span>
 			<span class="right circle"></span>
 		</span>
@@ -17,7 +17,7 @@
 		<van-cell title="支付方式" value-class="cellValue" :value="detail.platform_display" />
 		<van-cell title="交易时间" value-class="cellValue" :value="detail.pay_time" />
 		<span class="title">购买套餐</span>
-		<van-cell title="套餐名称" value-class="cellValue">
+		<van-cell title="套餐名称" value-class="cellValue" v-if="detail.package.name">
 			<span class="vanValue">
 				<span>{{detail.package.name}}</span>
 				<van-icon name="warning-o" @click.native="iconBtn"/>
@@ -88,7 +88,7 @@
 		filters:{
 			filterA(val){
 				return "￥"+val;
-			}
+			},
 		},
 		computed:{
 			inActivity(){

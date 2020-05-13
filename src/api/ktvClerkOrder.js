@@ -14,7 +14,7 @@ export const putOrderDeliverStatues = (data) => {
 	let id = data.id;
 	delete data.id;
 	return axios.request({
-	  url: `/order/package/${id}`,
+	  url: `/order/package/info/${id}`,
 	  data,
 	  method: 'patch'
 	})

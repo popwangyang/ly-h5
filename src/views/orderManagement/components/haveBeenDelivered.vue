@@ -53,12 +53,21 @@
 			getData(params){
 				let send_data = {
 					ktv_id: this.$store.state.user.ktv_id,
-					package_status: 1
+					package_status: 1,
+					ordering: '-pay_time'
 				}
 				Object.assign(send_data, params);
 				Object.assign(send_data, this.params);
 				return new Promise((resolve, reject) => {
 					getOrderList(send_data).then(res => {
+						res.data.results.map(item => {
+							if(!item.package){
+								item.package = {
+									name: '',
+									goods: []
+								}
+							}
+						})
 						let result = {
 							total: res.data.count,
 							data: res.data.results

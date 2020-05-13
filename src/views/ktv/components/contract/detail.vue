@@ -7,7 +7,7 @@
 			<span v-if="formData.type == 1">
 				<openService :service="formData.service_list" />
 				<div class="divider"></div>
-				<van-cell title="付款凭证" value-class="cellValue">
+				<van-cell title="付款凭证" value-class="cellValue" v-if="formData.FKPZ.length != 0">
 					<span slot="label">
 						<paymentVoucher :FKPZ="formData.FKPZ"/>
 					</span>
