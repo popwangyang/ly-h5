@@ -7,7 +7,7 @@
         <p class="title">提现申请已成功提交</p>
         <p class="content">具体到账时间以银行为准</p>
       </div>
-      <p v-else class="content">请稍后再试</p>
+      <p v-else class="content">{{error}}</p>
     </div>
     <div v-if="f" class="content">
       <van-cell-group>
@@ -45,7 +45,12 @@ export default {
       this.$router.push({ path: "/withdrawal" });
     }
   },
-  computed: {}
+  computed: {
+    error() {
+      if (!this.$route.query.e) return "请稍后再试";
+      return this.$route.query.e;
+    }
+  }
 };
 </script>
 

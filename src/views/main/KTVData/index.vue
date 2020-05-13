@@ -97,6 +97,8 @@
 import dealCondition from "./components/dealCondition";
 import linechart from "@/components/linechart/index";
 import {
+  profitInquiry, // 分润统计
+  orderMainData, // 订单统计
   orderShareTotalAmount,
   userAmount,
   monthRoyalty,
@@ -104,13 +106,10 @@ import {
   dayRoyalty,
   orderDayStatistics,
   getPersonNumber,
-  orderMonthStatistics,
-  getMoney,
   getCityKTVIterm
 } from "@/api/mainPage";
 import Empty from "@/components/EmptyComponent";
 import datePick from "@/components/datePick";
-import { cacheMixins } from "@/libs/mixins";
 import { getDay } from "@/libs/util";
 
 const nowDate = new Date();
@@ -137,6 +136,21 @@ export default {
   },
   data() {
     return {
+      // 日期类型
+      chooseDateType: [
+        {
+          type: "day",
+          id: 0
+        },
+        {
+          type: "month",
+          id: 1
+        },
+        {
+          type: "year",
+          id: 2
+        }
+      ],
       unit: "", // 单位
       itemTitle: "", // 图表横纵坐标
       chartTitle: "", // 图表标题
@@ -203,6 +217,7 @@ export default {
   methods: {
     //是否是年
     isYear(val, year) {
+      console.log(year);
       val === 2 ? (this.isYearTime = year) : (this.isYearTime = []);
     },
 
@@ -227,7 +242,13 @@ export default {
             return;
           }
         }
-        this.searChartByTime(val[0], val[1]);
+        console.log("确认时间");
+        console.log(val);
+        console.log("===");
+        console.log("是否为年");
+        console.log(this.isYearTime);
+        console.log("===");
+        // this.searChartByTime(val[0], val[1]);
       }, 20);
     },
 
@@ -353,6 +374,10 @@ export default {
       };
     },
 
+    // 分润统计
+
+    // 订单统计
+
     //月分成
     getMonthRoyalty() {
       monthRoyalty({
@@ -382,10 +407,6 @@ export default {
 
     // Tab事件
     clickTab(val) {
-      console.log("tab事件的val");
-      console.log(val);
-      console.log("===");
-
       this.chartData = null;
       this.changeChartData(val);
     },
