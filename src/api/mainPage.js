@@ -52,7 +52,9 @@ export const profitInquiry = (params) => {
   return new Promise((resolve) => {
     return axios.request({
       url: `/order/user-royalty-statistics`,
-      params,
+      params: Object.assign(params, {
+        data_type: 'nation' // 与后台已确认均传入此标识
+      }),
       method: 'get'
     }).then(res => {
       resolve(res)
@@ -65,8 +67,10 @@ export const orderMainData = (params) => {
   return new Promise((resolve) => {
     return axios.request({
       url: `/order/order-statistics`,
-      params,
-      method: 'get'
+      method: 'get',
+      params: Object.assign(params, {
+        data_type: 'nation' // 与后台已确认均传入此标识
+      }),
     }).then(res => {
       resolve(res)
     })

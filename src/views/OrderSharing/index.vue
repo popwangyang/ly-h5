@@ -238,18 +238,13 @@ export default {
         this.initialValue();
         return;
       }
-
-      if (
-        this.dateValue.length === 0 ||
-        this.dateValue[0] === this.dateValue[1]
-      ) {
+      if (this.dateValue.length === 0) {
         this.params = {
           pay_time_start: getDayTime(new Date()),
           pay_time_end: getDayTime(new Date(), 1),
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
           payment_platform: this.searchValue.pay_way,
-          // user_id: this.$store.state.user.user_id,
           ordering: "-pay_time",
           is_valid: 1
         };
@@ -293,6 +288,8 @@ export default {
       return value;
     },
     returnBack(val) {
+      console.log(val);
+
       this.dateValue = val;
       if (val[0] && val[1]) {
         var nowTime = new Date(val[0]); //通过时间构造函数进行实例化

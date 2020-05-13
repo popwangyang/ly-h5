@@ -4,9 +4,9 @@
       <div class="time">
         <date-pick class="dataPick" @returnBack="returnBack" v-model="dateValue"></date-pick>
       </div>
-      <div class="icon" @click="showHelp">
+      <!-- <div class="icon" @click="showHelp">
         <i></i>
-      </div>
+      </div>-->
     </div>
     <div class="list">
       <PageList ref="pagelist" noListText="暂无提现信息" :params="params" :getData="getlist">
