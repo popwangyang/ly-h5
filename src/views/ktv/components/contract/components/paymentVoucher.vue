@@ -18,7 +18,7 @@
 			  		{{Number(item.amount_received)}}	  
 			  </van-grid-item>
 			  <van-grid-item>
-					{{item.payment_confirmed_datetime == null ? '暂无':item.payment_confirmed_datetime}}
+					{{item.payment_confirmed_datetime == null ? '暂无':item.payment_confirmed_datetime.replace(/T/i, " ")}}
 			  </van-grid-item>
 		  </template>
 		</van-grid>

@@ -7,7 +7,6 @@
 
 <script>
 	import echarts from 'echarts';
-	import Vue from 'vue'
 	import china from './components/map/china';
 	import mapData from '@/static/json/map.json';
 	import {

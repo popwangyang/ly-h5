@@ -54,7 +54,7 @@
 				return new Promise((resolve, reject) => {
 					let send_data = {
 						package_status: '1',
-						id: id
+						id: id,
 					}
 					putOrderDeliverStatues(send_data).then(res => {
 						this.$refs.pageList.deletedItem('id', id);
@@ -74,7 +74,8 @@
 			getData(params){
 				let send_data = {
 					ktv_id: this.$store.state.user.ktv_id,
-					package_status: 2
+					package_status: 2,
+					ordering: '-pay_time'
 				}
 				Object.assign(send_data, params);
 				Object.assign(send_data, this.params);
@@ -93,6 +94,7 @@
 							total: res.data.count,
 							data: res.data.results
 						};
+						this.total = res.data.count;
 						this.$store.commit('setUndelivered', res.data.count);
 						resolve(result);
 					})
