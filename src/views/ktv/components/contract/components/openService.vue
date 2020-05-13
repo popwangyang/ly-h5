@@ -37,8 +37,9 @@
 			},
 			chargeFileter(item){
 				let charge = item.charge;
+				console.log(item.service_type);
 				if(item.service_type == 2){
-					return charge + '元/包厢/年'
+					return charge + '元/包厢'
 				}else{
 					return charge + "元/包厢/年";
 				}
