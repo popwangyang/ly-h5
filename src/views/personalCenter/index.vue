@@ -221,7 +221,7 @@ export default {
             if (this.showPersonalInfo === 4) {
               this.comname = result1.name;
               this.address = result1.address;
-              this.name = result1.name;
+              this.name = result1.contact;
               this.phone = result1.telephone;
               return;
             }
