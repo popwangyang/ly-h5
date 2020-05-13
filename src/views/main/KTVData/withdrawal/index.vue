@@ -98,7 +98,6 @@ export default {
   data() {
     return {
       showLoading: false, // 加载中
-      waited: false, // 等待
       resultStatus: false, // 结果状态
       createModal: false, // 确认取消弹窗
       id: null, // 提现id
@@ -154,11 +153,13 @@ export default {
     },
     // 确认
     confirm() {
-      withdrawalRecord(this.id, "pending").then(res => {
-        this.waited = true;
-        this.createModal = false;
-        this.setPersonInfo();
-        if (res.status === "pending") {
+      this.showLoading = true;
+      withdrawalApi(Number(this.inputnum).toFixed(2) * 100, this.user_id)
+        .then(res => {
+          this.id = res.data.id;
+          this.showLoading = false;
+          this.createModal = true;
+          this.setPersonInfo();
           this.$router.push({
             path: "/withdrawalResult",
             query: {
@@ -169,27 +170,53 @@ export default {
               withdrawalMoney: this.withdrawalMoney
             }
           });
-          return;
-        }
-
-        this.$router.push({
-          path: "/withdrawalResult",
-          params: {
-            f: false
+        })
+        .catch(e => {
+          if (e.status === 400) {
+            this.showLoading = false;
+            this.$router.push({
+              path: "/withdrawalResult",
+              params: {
+                f: false,
+                e: e.data.ping
+              }
+            });
           }
         });
-      });
+      // withdrawalRecord(this.id, "pending").then(res => {
+      //   this.createModal = false;
+      //   this.setPersonInfo();
+      //   if (res.status === "pending") {
+      //     this.$router.push({
+      //       path: "/withdrawalResult",
+      //       query: {
+      //         f: true,
+      //         bank: `${this.financialObj.bank}(${String(
+      //           this.financialObj.cardNumber
+      //         ).slice(-4)})`,
+      //         withdrawalMoney: this.withdrawalMoney
+      //       }
+      //     });
+      //     return;
+      //   }
+
+      //   this.$router.push({
+      //     path: "/withdrawalResult",
+      //     params: {
+      //       f: false
+      //     }
+      //   });
+      // });
     },
     // 取消
     cancel() {
-      withdrawalRecord(this.id, "canceled").then(res => {
-        this.waited = true;
-        this.createModal = false;
-        if (res.status === "canceled") {
-          this.$toast("已取消");
-          return;
-        }
-      });
+      // withdrawalRecord(this.id, "canceled").then(res => {
+      this.createModal = false;
+      //   if (res.status === "canceled") {
+      //     this.$toast("已取消");
+      //     return;
+      //   }
+      // });
     },
     //说明
     showHelp() {
@@ -201,6 +228,7 @@ export default {
     },
     // 提交
     submit() {
+      this.createModal = true;
       if (this.inputnum <= 1) {
         this.$toast.fail({
           duration: 2500, // 持续展示 toast
@@ -221,19 +249,6 @@ export default {
         });
         return;
       }
-      this.showLoading = true;
-      withdrawalApi(parseInt(this.inputnum) * 100, this.user_id)
-        .then(res => {
-          this.id = res.data.id;
-          this.showLoading = false;
-          this.createModal = true;
-        })
-        .catch(e => {
-          if (e.status === 400) {
-            this.$toast(e.data.ping);
-            this.showLoading = false;
-          }
-        });
     }
   }
 };

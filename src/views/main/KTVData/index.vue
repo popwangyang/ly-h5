@@ -242,6 +242,13 @@ export default {
             return;
           }
         }
+        console.log("确认时间");
+        console.log(val);
+        console.log("===");
+        console.log("是否为年");
+        console.log(this.isYearTime);
+        console.log("===");
+        // this.searChartByTime(val[0], val[1]);
       }, 20);
     },
 
