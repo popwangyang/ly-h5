@@ -122,6 +122,7 @@ export default {
   },
   created() {
     this.getAtr(this.params);
+    console.log(this.params);
   },
   watch: {
     searchValue: {
@@ -280,6 +281,7 @@ export default {
       } else if (this.userType === "advance_party") {
         str = "advance_id";
       }
+      obj[str] = this.user_id;
     },
 
     formatter(type, value) {
