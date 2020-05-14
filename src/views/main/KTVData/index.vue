@@ -266,7 +266,7 @@ export default {
       this.getOrderShareTotalAmount();
       this.getUserAmount();
       this.getMonthRoyalty();
-      this.getTheCityKTVIterm();
+      // this.getTheCityKTVIterm();
       this.changeChartData(0);
     },
 
