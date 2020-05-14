@@ -217,7 +217,6 @@ export default {
   methods: {
     //是否是年
     isYear(val, year) {
-      console.log(year);
       val === 2 ? (this.isYearTime = year) : (this.isYearTime = []);
     },
 
@@ -242,12 +241,6 @@ export default {
             return;
           }
         }
-        console.log("确认时间");
-        console.log(val);
-        console.log("===");
-        console.log("是否为年");
-        console.log(this.isYearTime.length ? "按年查询" : "按日查询");
-        console.log("===");
         let isYear = this.isYearTime.length;
         let s = isYear ? this.isYearTime[0] : val[0];
         let e = isYear ? this.isYearTime[1].substring(-2, 8) + "01" : val[1];
@@ -322,14 +315,9 @@ export default {
       let params = {};
       params.date_type = this.isYearTime.length ? "year" : "day";
       if (!cal) return;
-      console.log("argus is: ");
-      console.log(this.params);
-
       let isYear = this.isYearTime.length;
       this.params.date_type = isYear ? "month" : "day";
       cal(this.params).then(res => {
-        console.log("响应为:");
-        console.log(res);
         this.chartData = null;
         if (res.data.results && res.data.results.length > 0) {
           this.chartData = res.data.results;
@@ -418,7 +406,10 @@ export default {
 
     // Tab事件
     clickTab(val) {
+      this.isYearTime = [];
       this.chartData = null;
+      this.setParamsValue(LDate, getDay(new Date()));
+      this.params.date_type = "day";
       this.changeChartData(val);
     },
 
@@ -504,9 +495,8 @@ export default {
       this.changeChartData(tab);
     },
 
-    setParamsValue(start, end, t) {
+    setParamsValue(start, end) {
       this.params = {};
-      this.params.date_type = t;
       this.params.date_start = start;
       this.params.date_end = end;
       this.setDataValue(start, end);
