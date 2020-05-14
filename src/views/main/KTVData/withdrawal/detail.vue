@@ -28,7 +28,12 @@ export default {
   data() {
     return {
       getlist: getlist,
-      dateValue: []
+      dateValue: [],
+      params: {
+        time_start: getDayTime(new Date()),
+        time_end: getDayTime(new Date(), 1),
+        user_id: this.$store.state.user.user_id
+      }
     };
   },
 
@@ -38,22 +43,23 @@ export default {
     datePick
   },
   computed: {
-    params() {
-      return {
-        time_start: getDayTime(new Date()),
-        time_end: getDayTime(new Date(), 1),
-        user_id: this.user_id
-      };
-    },
     // 用户Id
     user_id() {
       return this.$store.state.user.user_id;
     }
   },
-  mounted() {},
+  mounted() {
+    this.params = {
+      time_start: getDayTime(new Date()),
+      time_end: getDayTime(new Date(), 1),
+      user_id: this.user_id
+    };
+  },
   methods: {
     // 获取时间
     returnBack(val) {
+      console.log(val);
+      this.dateValue = val;
       this.params = {
         time_start: this.dateValue[0] + " 00:00:00",
         time_end: this.dateValue[1] + " 23:59:59",

@@ -217,7 +217,6 @@ export default {
   methods: {
     //是否是年
     isYear(val, year) {
-      console.log(year);
       val === 2 ? (this.isYearTime = year) : (this.isYearTime = []);
     },
 
@@ -242,13 +241,10 @@ export default {
             return;
           }
         }
-        console.log("确认时间");
-        console.log(val);
-        console.log("===");
-        console.log("是否为年");
-        console.log(this.isYearTime);
-        console.log("===");
-        // this.searChartByTime(val[0], val[1]);
+        let isYear = this.isYearTime.length;
+        let s = isYear ? this.isYearTime[0] : val[0];
+        let e = isYear ? this.isYearTime[1].substring(-2, 8) + "01" : val[1];
+        this.searChartByTime(s, e);
       }, 20);
     },
 
@@ -263,7 +259,7 @@ export default {
       this.getOrderShareTotalAmount();
       this.getUserAmount();
       this.getMonthRoyalty();
-      this.getTheCityKTVIterm();
+      // this.getTheCityKTVIterm();
       this.changeChartData(0);
     },
 
@@ -316,12 +312,15 @@ export default {
       this.itemTitle = xy;
       this.chartTitle = title;
       this.unit = unit;
-
+      let params = {};
+      params.date_type = this.isYearTime.length ? "year" : "day";
       if (!cal) return;
+      let isYear = this.isYearTime.length;
+      this.params.date_type = isYear ? "month" : "day";
       cal(this.params).then(res => {
         this.chartData = null;
-        if (res.results && res.results.length > 0) {
-          this.chartData = res.results;
+        if (res.data.results && res.data.results.length > 0) {
+          this.chartData = res.data.results;
           return;
         }
       });
@@ -407,7 +406,10 @@ export default {
 
     // Tab事件
     clickTab(val) {
+      this.isYearTime = [];
       this.chartData = null;
+      this.setParamsValue(LDate, getDay(new Date()));
+      this.params.date_type = "day";
       this.changeChartData(val);
     },
 
@@ -495,7 +497,6 @@ export default {
 
     setParamsValue(start, end) {
       this.params = {};
-      this.params.user_id = this.user_id;
       this.params.date_start = start;
       this.params.date_end = end;
       this.setDataValue(start, end);
@@ -516,29 +517,19 @@ export default {
               "date*amount_display"
             );
           } else {
-            this.chartHandler(dayRoyalty, "分成金额", "date*amount_display");
+            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
           }
           break;
         case 1:
           if (this.userType === 1) {
-            this.chartHandler(dayRoyalty, "分成金额", "date*amount_display");
+            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
           } else {
-            this.chartHandler(
-              orderDayStatistics,
-              "订单数",
-              "date*count_display",
-              "个"
-            );
+            this.chartHandler(orderMainData, "订单数", "date*count", "个");
           }
           break;
         case 2:
           if (this.userType === 1) {
-            this.chartHandler(
-              orderDayStatistics,
-              "订单数",
-              "date*count_display",
-              "个"
-            );
+            this.chartHandler(orderMainData, "订单数", "date*count", "个");
           }
           break;
         default:

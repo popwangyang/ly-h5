@@ -288,8 +288,6 @@ export default {
       return value;
     },
     returnBack(val) {
-      console.log(val);
-
       this.dateValue = val;
       if (val[0] && val[1]) {
         var nowTime = new Date(val[0]); //通过时间构造函数进行实例化
