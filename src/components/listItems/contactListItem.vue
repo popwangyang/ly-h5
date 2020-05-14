@@ -11,7 +11,7 @@
       </span>
       <span slot="label" class="van_cell_label">
 			<div>
-				CDN开通状态：{{CDN}}
+				曲库管理开通状态：{{CDN}}
 			</div>
 			<div>
 				创建时间：{{data.create_date}}
