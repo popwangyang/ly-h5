@@ -28,7 +28,7 @@
 			<cell-input 
 			    :rows="3"
 				title="备注" 
-				placeholder="备注文子" 
+				placeholder="请输入" 
 				type="textarea" 
 				inputAlign="left" 
 				:clearable="false" 
@@ -105,7 +105,7 @@
 				],
 				dataList2:[
 					{
-						label: 'VOD直连网云端',
+						label: 'VOD直连娱网云端',
 						value: '1'
 					},
 					{

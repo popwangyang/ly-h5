@@ -25,6 +25,12 @@
 	import TranstionsList from '@/components/transtionList'
 	import { getOrderList, putOrderDeliverStatues } from '@/api/ktvClerkOrder.js'
 	export default{
+		props:{
+			params:{
+				type: Object,
+				default: () =>{}
+			}
+		},
 		components:{
 			PageList,
 			DeliveredListItem,
@@ -48,7 +54,7 @@
 				return new Promise((resolve, reject) => {
 					let send_data = {
 						package_status: '1',
-						id: id
+						id: id,
 					}
 					putOrderDeliverStatues(send_data).then(res => {
 						this.$refs.pageList.deletedItem('id', id);
@@ -62,18 +68,33 @@
 				})
 				
 			},
+			search(){
+				this.$refs.pageList.onReload();
+			},
 			getData(params){
 				let send_data = {
-					ktv_id_list: this.$store.state.user.ktv_id,
-					package_status: 2
+					ktv_id: this.$store.state.user.ktv_id,
+					package_status: 2,
+					ordering: '-pay_time'
 				}
 				Object.assign(send_data, params);
+				Object.assign(send_data, this.params);
 				return new Promise((resolve, reject) => {
 					getOrderList(send_data).then(res => {
+						res.data.results.map(item => {
+							if(!item.package){
+								item.package = {
+									name: '',
+									goods: []
+								}
+							}
+						})
+						console.log(res.data.results);
 						let result = {
 							total: res.data.count,
 							data: res.data.results
 						};
+						this.total = res.data.count;
 						this.$store.commit('setUndelivered', res.data.count);
 						resolve(result);
 					})

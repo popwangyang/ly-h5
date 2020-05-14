@@ -18,7 +18,9 @@
 		},
 		computed:{
 			isKtv(){
-				return this.$store.state.user.usertype == 'ktv' ? true:false;
+				let type = this.$store.state.user.usertype;
+				let arrType = ['advance_party', 'ktv']
+				 return  arrType.indexOf(type) > -1 ? true:false;
 			}
 		},
 		data(){

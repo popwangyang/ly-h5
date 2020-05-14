@@ -56,7 +56,7 @@ Validator.prototype.add = function(value, rules, data){
 			}
 		}else if(rule.type){
 			if(rule.required == false){
-				if(value != ''){
+				if(value != '' && value != null){
 				  this.cache.push(function(){
 				  	return strategies[rule.type](value, rule.message)
 				  })	

@@ -10,34 +10,34 @@ province.keys().forEach(key => {
 export default modules;
 
 export const visualMapPieces = [{
-			gte: 81,
-			label: '> 81(%)'
+			gt: 80,
+			label: '> 80 单位: %'
 	    },
 		{
-			gte: 61,
+			gt: 60,
 			lte: 80,
-			label: '61~80'
+			label: '60~80'
 		},
 		{
-			gte: 46,
+			gt: 45,
 			lte: 60,
-			label: '46~60'
+			label: '45~60'
 		},
 		{
-			gte: 31,
+			gt: 30,
 			lte: 45,
-			label: '31~45'
+			label: '30~45'
 		},
 		{
-			gte: 16,
+			gt: 15,
 			lte: 30,
-			label: '16~30'
+			label: '15~30'
 		},
 		{
-			gt: 0,
+			gte: 0,
 			lte: 15,
 			label: '0~15'
-		},]
+		}]
 
 export const tooltip =  {
 		trigger: 'item',

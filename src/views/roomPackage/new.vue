@@ -230,14 +230,6 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    if (from.name === "comboTime") {
-      next(vm => {
-        vm.clearData();
-        vm.getDetail();
-      });
-      next();
-      return;
-    }
     if (from.name === "comboDetail") {
       next(vm => {
         vm.clearData();

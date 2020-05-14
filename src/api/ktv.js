@@ -68,28 +68,10 @@ export const createContract = (data) => {
 
 // 获取ktv合同列表
 export const getContractList = (params) => {
-	return new Promise((resolve, reject) => {
-		axios.request({
-		  url: `/ktv/place/contract`,
-		  params,
-		  method: 'get'
-		}).then(res => {
-			let priorityArr = [2, 1, 3, 4]; // 根据合同状态排序，合同已生效排在第一位
-			res.data.results.sort((a, b) => {
-				if(priorityArr.indexOf(a.state) > priorityArr.indexOf(b.state)){
-					return 1;
-				}else{
-					return -1;
-				}
-			})
-			let results = {
-				total: res.data.count,
-				data: res.data.results
-			}
-			resolve(results)
-		}).catch(err => {
-			reject(err)
-		})
+	return axios.request({
+	  url: `/ktv/place/contract`,
+	  params,
+	  method: 'get'
 	})
 }
 
@@ -97,8 +79,9 @@ export const getContractList = (params) => {
  * 获取合同详情
  * @params{Number} type 合同类型, 1为曲库服务合同, 2为商户星盟
  * @params{Number} ID 合同id
+ * @params{Number} itemID 基础合同id
  */
-export const getContractDetail = (type, ID) => {
+export const getContractDetail = (type, ID, itemID) => {
 	return new Promise((resolve, reject) => {
 		let ajax = null;
 		if(type == 1){
@@ -107,10 +90,28 @@ export const getContractDetail = (type, ID) => {
 			ajax = getZHcontractDetail;
 		}
 		ajax(ID).then(res => {
-			resolve(res)
+			let send_data = {
+				contract_id: itemID
+			}
+			getFKPZList(send_data).then(FKPZ => {
+				res.data.FKPZ = FKPZ.data.results;
+				resolve(res);
+			})
 		}).catch(err => {
 			reject(err)
 		})
+
+	})
+}
+
+/* 
+  获取付款凭证接口
+ */
+export const getFKPZList = (params) => {
+	return axios.request({
+	  url: `/ktv/place/payment_proofs`,
+	  params,
+	  method: 'get'
 	})
 }
 

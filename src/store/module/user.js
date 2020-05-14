@@ -122,6 +122,10 @@ export default {
         commit('setUserName', '');
         commit('setUserID', '')
         commit('setUserEmail', '')
+        commit('set_withdrawalValue', 0)
+        commit('set_allow_withdraw', false)
+        commit('set_financialObj', null)
+        commit('set_financialState', false)
         resolve()
       })
     }

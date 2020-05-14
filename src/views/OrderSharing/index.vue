@@ -96,7 +96,9 @@ export default {
       ktv_name: "",
       params: {
         pay_time_start: getDayTime(new Date()),
-        pay_time_end: getDayTime(new Date(), 1)
+        pay_time_end: getDayTime(new Date(), 1),
+        ordering: "-pay_time",
+        is_valid: 1
       },
       popupValue: {
         deal_status: 0,
@@ -120,6 +122,7 @@ export default {
   },
   created() {
     this.getAtr(this.params);
+    console.log(this.params);
   },
   watch: {
     searchValue: {
@@ -212,7 +215,7 @@ export default {
       this.params = {
         pay_time_start: getDayTime(new Date()),
         pay_time_end: getDayTime(new Date(), 1),
-        user_id: this.$store.state.user.user_id,
+        // user_id: this.$store.state.user.user_id,
         ordering: "-pay_time",
         is_valid: 1
       };
@@ -235,18 +238,13 @@ export default {
         this.initialValue();
         return;
       }
-
-      if (
-        this.dateValue.length === 0 ||
-        this.dateValue[0] === this.dateValue[1]
-      ) {
+      if (this.dateValue.length === 0) {
         this.params = {
           pay_time_start: getDayTime(new Date()),
           pay_time_end: getDayTime(new Date(), 1),
           ktv_name: this.ktv_name,
           status: this.searchValue.deal_status,
           payment_platform: this.searchValue.pay_way,
-          user_id: this.$store.state.user.user_id,
           ordering: "-pay_time",
           is_valid: 1
         };
@@ -258,7 +256,7 @@ export default {
           payment_platform: this.searchValue.pay_way,
           pay_time_start: this.dateValue[0] + " 00:00:00",
           pay_time_end: this.dateValue[1] + " 23:59:59",
-          user_id: this.$store.state.user.user_id,
+          // user_id: this.$store.state.user.user_id,
           ordering: "-pay_time",
           is_valid: 1
         };
@@ -271,6 +269,8 @@ export default {
       let str = "";
       if (this.userType === "ktv" || this.userType === "ktv_clerk") {
         str = "place_id";
+        obj[str] = this.user_id.substring(4);
+        return;
       } else if (this.userType === "agentibus") {
         str = "agent_id";
       } else if (this.userType === "advance_party") {

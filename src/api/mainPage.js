@@ -47,6 +47,36 @@ export const getPersonNumber = (date) => {
   })
 }
 
+// 分润数据查询
+export const profitInquiry = (params) => {
+  return new Promise((resolve) => {
+    return axios.request({
+      url: `/order/user-royalty-statistics`,
+      params: Object.assign(params, {
+        data_type: 'nation' // 与后台已确认均传入此标识
+      }),
+      method: 'get'
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
+// 订单统计查询
+export const orderMainData = (params) => {
+  return new Promise((resolve) => {
+    return axios.request({
+      url: `/order/order-statistics`,
+      method: 'get',
+      params: Object.assign(params, {
+        data_type: 'nation' // 与后台已确认均传入此标识
+      }),
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
 // 日分成金额;
 export const dayRoyalty = (params) => {
   return new Promise((resolve, reject) => {

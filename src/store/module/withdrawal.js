@@ -18,6 +18,9 @@ export default {
     set_allow_withdraw(state, allow_withdraw) {
       state.allow_withdraw = allow_withdraw;
     },
+    set_financialAccount(state, financialObj) {
+      state.financialObj = financialObj;
+    },
     set_financialObj(state, financialObj) {
       let obj = {
         bank: financialObj ? financialObj.bank_name : "",
