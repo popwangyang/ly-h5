@@ -4,9 +4,9 @@
       <div class="time">
         <date-pick class="dataPick" @returnBack="returnBack" v-model="dateValue"></date-pick>
       </div>
-      <div class="icon" @click="showHelp">
+      <!-- <div class="icon" @click="showHelp">
         <i></i>
-      </div>
+      </div>-->
     </div>
     <div class="list">
       <PageList ref="pagelist" noListText="暂无提现信息" :params="params" :getData="getlist">
@@ -32,7 +32,7 @@ export default {
       params: {
         time_start: getDayTime(new Date()),
         time_end: getDayTime(new Date(), 1),
-        user_id: this.user_id
+        user_id: this.$store.state.user.user_id
       }
     };
   },
@@ -48,10 +48,18 @@ export default {
       return this.$store.state.user.user_id;
     }
   },
-  mounted() {},
+  mounted() {
+    this.params = {
+      time_start: getDayTime(new Date()),
+      time_end: getDayTime(new Date(), 1),
+      user_id: this.user_id
+    };
+  },
   methods: {
     // 获取时间
     returnBack(val) {
+      console.log(val);
+      this.dateValue = val;
       this.params = {
         time_start: this.dateValue[0] + " 00:00:00",
         time_end: this.dateValue[1] + " 23:59:59",
@@ -126,6 +134,10 @@ export default {
 <style>
 .widthdrawalDetail .van-cell .van-cell__title {
   flex: 3;
+}
+.widthdrawalDetail .van-pull-refresh {
+  height: 100% !important;
+  overflow-y: auto !important;
 }
 .widthdrawalDetail .datePicker {
   width: auto !important;

@@ -97,6 +97,8 @@
 import dealCondition from "./components/dealCondition";
 import linechart from "@/components/linechart/index";
 import {
+  profitInquiry, // 分润统计
+  orderMainData, // 订单统计
   orderShareTotalAmount,
   userAmount,
   monthRoyalty,
@@ -104,13 +106,10 @@ import {
   dayRoyalty,
   orderDayStatistics,
   getPersonNumber,
-  orderMonthStatistics,
-  getMoney,
   getCityKTVIterm
 } from "@/api/mainPage";
 import Empty from "@/components/EmptyComponent";
 import datePick from "@/components/datePick";
-import { cacheMixins } from "@/libs/mixins";
 import { getDay } from "@/libs/util";
 
 const nowDate = new Date();
@@ -137,16 +136,29 @@ export default {
   },
   data() {
     return {
+      // 日期类型
+      chooseDateType: [
+        {
+          type: "day",
+          id: 0
+        },
+        {
+          type: "month",
+          id: 1
+        },
+        {
+          type: "year",
+          id: 2
+        }
+      ],
       unit: "", // 单位
       itemTitle: "", // 图表横纵坐标
       chartTitle: "", // 图表标题
       dialogShow: false,
       explain: require("../../../assets/explain.png"),
-      showData: true, // 展示数据
       balance: 0, // 账户余额
       totalMoney: 0, // 累计分成
       lastMonthMoney: "0.00", // 上月分成
-      withdrawalMoney: 0, // 可提现
       chartone: "chartone", // 图表id
       chartData: null, // 图表数据
       dateValue: [LDate, getDay(new Date())],
@@ -169,6 +181,18 @@ export default {
     };
   },
   computed: {
+    // 允许提现
+    allow_withdraw() {
+      return this.$store.state.withdrawal.allow_withdraw;
+    },
+    // 账户状态
+    financialState() {
+      return this.$store.state.withdrawal.financialState;
+    },
+    // 可提现
+    withdrawalMoney() {
+      return this.$store.state.withdrawal.withdrawalValue;
+    },
     // 用户类型
     userType() {
       if (
@@ -207,7 +231,7 @@ export default {
           );
           if (reduce > 31) {
             this.$toast.fail({
-              duration: 2500, // 持续展示 toast
+              duration: 1500, // 持续展示 toast
               forbidClick: true,
               overlay: true,
               className: "loadClass",
@@ -217,7 +241,10 @@ export default {
             return;
           }
         }
-        this.searChartByTime(val[0], val[1]);
+        let isYear = this.isYearTime.length;
+        let s = isYear ? this.isYearTime[0] : val[0];
+        let e = isYear ? this.isYearTime[1].substring(-2, 8) + "01" : val[1];
+        this.searChartByTime(s, e);
       }, 20);
     },
 
@@ -232,7 +259,7 @@ export default {
       this.getOrderShareTotalAmount();
       this.getUserAmount();
       this.getMonthRoyalty();
-      this.getTheCityKTVIterm();
+      // this.getTheCityKTVIterm();
       this.changeChartData(0);
     },
 
@@ -285,17 +312,17 @@ export default {
       this.itemTitle = xy;
       this.chartTitle = title;
       this.unit = unit;
-
+      let params = {};
+      params.date_type = this.isYearTime.length ? "year" : "day";
       if (!cal) return;
+      let isYear = this.isYearTime.length;
+      this.params.date_type = isYear ? "month" : "day";
       cal(this.params).then(res => {
         this.chartData = null;
-        if (res.results && res.results.length > 0) {
-          this.chartData = res.results;
-          this.showData = false;
+        if (res.data.results && res.data.results.length > 0) {
+          this.chartData = res.data.results;
           return;
         }
-
-        this.showData = true;
       });
     },
 
@@ -307,9 +334,19 @@ export default {
     getUserAmount() {
       userAmount({
         user_id: this.user_id
-      }).then(res => {
-        this.balance = res.amount;
-      });
+      })
+        .then(res => {
+          this.balance = res.amount;
+        })
+        .catch(e => {
+          this.$toast.fail({
+            duration: 2500, // 持续展示 toast
+            forbidClick: true,
+            overlay: true,
+            className: "loadClass",
+            message: e.data.user_id
+          });
+        });
     },
 
     getDate() {
@@ -319,14 +356,26 @@ export default {
         cyear = year - 1;
         cmonth = "12";
       } else {
-        cyear = year;
-        cmonth = month;
+        if (Number(year) < 10) {
+          cyear = `0${year}`;
+        } else {
+          cyear = year;
+        }
+        if (Number(month) < 10) {
+          cmonth = `0${month}`;
+        } else {
+          cmonth = month;
+        }
       }
       return {
         cyear,
         cmonth
       };
     },
+
+    // 分润统计
+
+    // 订单统计
 
     //月分成
     getMonthRoyalty() {
@@ -357,8 +406,10 @@ export default {
 
     // Tab事件
     clickTab(val) {
-      this.showData = true;
+      this.isYearTime = [];
       this.chartData = null;
+      this.setParamsValue(LDate, getDay(new Date()));
+      this.params.date_type = "day";
       this.changeChartData(val);
     },
 
@@ -405,6 +456,26 @@ export default {
 
     // 提现确认
     enterWithdrawal() {
+      if (!this.financialState) {
+        this.$toast.fail({
+          duration: 1500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "暂未绑定结算账户，请联系商务人员协助绑定。"
+        });
+        return;
+      }
+      if (!this.allow_withdraw) {
+        this.$toast.fail({
+          duration: 1500, // 持续展示 toast
+          forbidClick: true,
+          overlay: true,
+          className: "loadClass",
+          message: "您的账户已冻结，请尽快联系商务人员处理。"
+        });
+        return;
+      }
       this.routerGo("withdrawal");
     },
 
@@ -426,7 +497,6 @@ export default {
 
     setParamsValue(start, end) {
       this.params = {};
-      this.params.user_id = this.user_id;
       this.params.date_start = start;
       this.params.date_end = end;
       this.setDataValue(start, end);
@@ -447,29 +517,19 @@ export default {
               "date*amount_display"
             );
           } else {
-            this.chartHandler(dayRoyalty, "分成金额", "date*amount_display");
+            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
           }
           break;
         case 1:
           if (this.userType === 1) {
-            this.chartHandler(dayRoyalty, "分成金额", "date*amount_display");
+            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
           } else {
-            this.chartHandler(
-              orderDayStatistics,
-              "订单数",
-              "date*count_display",
-              "个"
-            );
+            this.chartHandler(orderMainData, "订单数", "date*count", "个");
           }
           break;
         case 2:
           if (this.userType === 1) {
-            this.chartHandler(
-              orderDayStatistics,
-              "订单数",
-              "date*count_display",
-              "个"
-            );
+            this.chartHandler(orderMainData, "订单数", "date*count", "个");
           }
           break;
         default:

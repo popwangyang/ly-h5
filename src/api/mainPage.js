@@ -9,6 +9,8 @@ export const userAmount = (params) => {
       method: 'get'
     }).then(res => {
       resolve(res.data)
+    }).catch(e => {
+      reject(e)
     })
   })
 }
@@ -41,6 +43,36 @@ export const getPersonNumber = (date) => {
       resolve(res.data)
     }).catch(err => {
       reject(err)
+    })
+  })
+}
+
+// 分润数据查询
+export const profitInquiry = (params) => {
+  return new Promise((resolve) => {
+    return axios.request({
+      url: `/order/user-royalty-statistics`,
+      params: Object.assign(params, {
+        data_type: 'nation' // 与后台已确认均传入此标识
+      }),
+      method: 'get'
+    }).then(res => {
+      resolve(res)
+    })
+  })
+}
+
+// 订单统计查询
+export const orderMainData = (params) => {
+  return new Promise((resolve) => {
+    return axios.request({
+      url: `/order/order-statistics`,
+      method: 'get',
+      params: Object.assign(params, {
+        data_type: 'nation' // 与后台已确认均传入此标识
+      }),
+    }).then(res => {
+      resolve(res)
     })
   })
 }

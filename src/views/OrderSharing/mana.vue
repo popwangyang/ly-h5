@@ -30,7 +30,7 @@
         <van-cell title="交易时间" :value="res.pay_time" />
       </van-cell-group>
 
-      <p class="active">购买套餐</p>
+      <p v-if="res.package" class="active">购买套餐</p>
       <van-cell-group class="group2">
         <div>
           <van-cell v-if="res.package" title="套餐名称" :value="`${res.package.name}`">
@@ -53,7 +53,10 @@
       </van-cell-group>
       <p class="active">商户开房套餐分成（支付通道费率{{res.payment_channel_rate_display}}）</p>
       <van-cell-group v-if="res.royalty_set" class="group2">
-        <van-cell title="分成费用" :value="`￥${toFixed2(res.share_amount)}`" />
+        <van-cell
+          title="分成费用"
+          :value="`￥${toFixed2(res.royalty_set.place_package_royalty_amount)}`"
+        />
       </van-cell-group>
 
       <p class="active">场所信息</p>
@@ -66,8 +69,8 @@
 
       <p class="active">付款人信息</p>
       <van-cell-group class="group2">
-        <van-cell title="付款人ID" :value="res.create" />
-        <van-cell title="付款人名称" :value="res.creater" />
+        <van-cell title="付款人ID" :value="res.kid" />
+        <van-cell title="付款人名称" :value="res.nike_name" />
       </van-cell-group>
 
       <div>

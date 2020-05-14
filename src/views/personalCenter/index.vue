@@ -166,7 +166,7 @@ export default {
     // 获取登录信息
     getInfo() {
       let str = "";
-      if (this.usertype === "ktv") {
+      if (this.usertype === "ktv" || this.usertype === "ktv_clerk") {
         getKTVPersonMidInfo(this.ktv_id).then(res => {
           if (res.status >= 200 && res.status < 400 && res.data) {
             this.resData = res.data;
@@ -217,6 +217,13 @@ export default {
               getVodPersonMidInfo(result1.id).then(vodres => {
                 if (vodres.data) this.brand = vodres.data.brand;
               });
+            }
+            if (this.showPersonalInfo === 4) {
+              this.comname = result1.name;
+              this.address = result1.address;
+              this.name = result1.contact;
+              this.phone = result1.telephone;
+              return;
             }
             let result2 = res.data;
             this.comname = result1.name;

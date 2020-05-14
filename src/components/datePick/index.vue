@@ -7,7 +7,12 @@
     <div class="icon">
       <van-icon name="arrow-down" />
     </div>
-    <van-popup get-container="body" v-model="show" position="bottom" :style="{ height: '300px', overflow: 'hidden' }">
+    <van-popup
+      get-container="body"
+      v-model="show"
+      position="bottom"
+      :style="{ height: '300px', overflow: 'hidden' }"
+    >
       <div class="popupBox">
         <div class="van-hairline--top-bottom van-picker__toolbar" style="align-items: center;">
           <button class="van-picker__cancel" style="color: #999999;" @click="cancelBtn">取消</button>
@@ -76,17 +81,18 @@ export default {
       this.show = true;
     },
     okBtn() {
-      this.$emit("isYear", this.state, this.yearValue);
       if (this.state == 1) {
         if (this.dayValue[0] != "" && this.dayValue[1] != "") {
           this.showValues = this.dayValue;
           this.$emit("returnBack", this.showValues);
           this.show = false;
+          this.$emit("isYear", this.state, []);
         }
       } else {
         this.showValues = this.yearValue;
         this.$emit("returnBack", this.yearValue);
         this.show = false;
+        this.$emit("isYear", this.state, this.yearValue);
       }
     },
     init() {
@@ -125,7 +131,7 @@ export default {
   font-size: 12px;
   background: rgba(255, 255, 255, 1);
   border-radius: 2px;
-  border: 1px solid #F3F5F7;
+  border: 1px solid #f3f5f7;
   padding: 2px 10px;
   .popupBox {
     display: flex;

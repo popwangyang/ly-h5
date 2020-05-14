@@ -153,6 +153,7 @@ export default {
           index: 7
         }
       ],
+      timeStr: "", // 可用时段
       overlay: false, // 加载中
       conti: false, // 返回套餐列表
       pkname: "优选套餐", // 套餐默认名称
@@ -248,33 +249,6 @@ export default {
     comboItem() {
       return this.$store.state.combo.comboItem;
     },
-    // 可用时段
-    timeStr() {
-      let a = [];
-      if (this.comboItem) {
-        this.comboItem.period_weekdays.forEach(i => {
-          this.week.forEach(e => {
-            if (e.id === i) {
-              a.push(e.label);
-            }
-          });
-        });
-        a.sort((a, b) => {
-          var aIndex = this.weekString.indexOf(a);
-          var bIndex = this.weekString.indexOf(b);
-          return aIndex - bIndex;
-        });
-        let atr = a.join("，");
-        return (
-          atr +
-          " " +
-          this.changeTime(this.comboItem.period_time_start) +
-          " - " +
-          this.changeTime(this.comboItem.period_time_end)
-        );
-      }
-      return "";
-    },
     // 套餐总价
     total() {
       let num = 0;
@@ -296,6 +270,35 @@ export default {
     }
   },
   methods: {
+    getTimeStr() {
+      let a = [];
+      if (this.comboItem) {
+        this.comboItem.period_weekdays.forEach(i => {
+          this.week.forEach(e => {
+            if (e.id === i) {
+              a.push(e.label);
+            }
+          });
+        });
+        a.sort((a, b) => {
+          var aIndex = this.weekString.indexOf(a);
+          var bIndex = this.weekString.indexOf(b);
+          return aIndex - bIndex;
+        });
+        let atr = a.join("，");
+        console.log(this.comboItem.period_time_start);
+        console.log(this.comboItem.period_time_end);
+
+        return (
+          atr +
+          " " +
+          this.changeTime(this.comboItem.period_time_start) +
+          " - " +
+          this.changeTime(this.comboItem.period_time_end)
+        );
+      }
+      return "";
+    },
     // 编辑是否数据变动
     isDataChangeModi() {
       this.old = this.totalData();
@@ -308,7 +311,8 @@ export default {
         pkname: this.pkname,
         listArr: this.listArr,
         actual_price: this.actual_price,
-        timeStr: this.timeStr
+        timeStr: this.timeStr,
+        upChecked: this.upChecked
       });
       return str;
     },
@@ -424,6 +428,7 @@ export default {
     },
     // 初始化
     initData() {
+      this.timeStr = this.getTimeStr();
       if (
         (typeof this.isAdd === "string" && this.isAdd === "false") ||
         (typeof this.isAdd === "boolean" && !this.isAdd)
@@ -565,7 +570,11 @@ export default {
       if (this.listArr.length > 1) {
         for (let i = 0; i < this.listArr.length; i++) {
           const el = this.listArr[i];
-          if (!el.name || !el.count) {
+          if (el.count === "0") {
+            this.toast("商品数量不能为0");
+            return;
+          }
+          if (!el.name || !Number(el.count)) {
             this.toast("商品信息请输入完整");
             go = false;
             break;
@@ -576,7 +585,14 @@ export default {
 
       if (this.listArr.length === 1) {
         let ell = this.listArr[0];
-        if ((ell.name && !ell.count) || (ell.count && !ell.name)) {
+        if (ell.count === "0") {
+          this.toast("商品数量不能为0");
+          return;
+        }
+        if (
+          (ell.name && !Number(ell.count)) ||
+          (Number(ell.count) && !ell.name)
+        ) {
           this.toast("商品信息请输入完整");
           return;
         }
