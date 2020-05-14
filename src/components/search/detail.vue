@@ -65,8 +65,8 @@
 				this.pIndex++;
 				let sendData = {
 					name: this.searchValue,
-					page_index: this.pIndex,
-					page_size: this.pSize
+					p_index: this.pIndex,
+					p_size: this.pSize
 				};
 				this.getData(sendData).then(res => {
 					let arr = res.data;
@@ -92,8 +92,8 @@
 				this.pIndex = 1;
 				let sendData = {
 					name: this.searchValue,
-					page_index: this.pIndex,
-					page_size: this.pSize
+					p_index: this.pIndex,
+					p_size: this.pSize
 				};
 				this.getData(sendData).then(res => {
 					this.total = res.total;

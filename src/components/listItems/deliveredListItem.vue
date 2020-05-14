@@ -6,10 +6,11 @@
 					<span class="title_top">包厢 {{itemData.room_id}}</span>
 					<span class="title_top">{{itemData.countNumber}}</span>
 					<span class="title_state">{{itemData.package_status_display | statuesFilter}}</span>
-					<!-- <span class="title_state">  {{itemData.status_display}}</span> -->
+					
 				</span>
-				<span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
-				<span v-else></span>
+				<span class="title_dingdan_state">  {{itemData.status_display}}</span>
+				<!-- <span class="btn title_btn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
+				<span v-else></span> -->
 			</span>	
 			<span class="tcname">{{itemData.package.name}}</span>
 			<div class="spnameBox" ref="spnameBox" :style="{maxHeight: maxHeight}">
@@ -19,13 +20,15 @@
 				</span>
 			</div>
 			<span class="ellipsis" v-show="itemData.package.goods.length > 3 && !openListStatues">...</span>
-			<!-- <span>
-				<span>
-					<span>实付金额 </span>
-					<span>  {{itemData.real_amount_display}} 元</span>
-					<span>  {{itemData.status_display}}</span>
-				</span>
-			</span> -->
+			<span class="listTextBtn" @click="openListBtn" v-if="openListText">{{openListText}}</span>
+			<div class="sfBox">
+				<span>实付金额</span>
+				<span>￥{{itemData.real_amount_display}}</span>
+				<!--<span>
+					
+					 <span>  {{itemData.status_display}}</span> 
+				</span>-->
+			</div>
 			<span class="bottom">
 				<span>{{itemData.pay_time}}</span>
 				<span>
@@ -160,6 +163,11 @@
 					border:1px solid rgba(252,136,101,1);
 					color: rgba(252,136,101,1);
 				}
+				.title_dingdan_state{
+					font-size:12px;
+					font-weight:400;
+					color:rgba(252,136,101,1);
+				}
 				
 			}
 		    .tcname{
@@ -187,6 +195,32 @@
 				display: block;
 				margin-bottom: 10px;
 			}
+			.listTextBtn{
+				font-size:12px;
+				font-weight:400;
+				color:rgba(153,153,153,1);
+				margin-top: 10px;
+				
+			}
+			.sfBox{
+				border-top: 1px solid #EEEEEE;
+				padding-top: 20px;
+				margin-top: 20px;
+				padding-bottom: 10px;
+				&>span:nth-child(1){
+					font-size:14px;
+					font-weight:400;
+					color:rgba(102,102,102,1);
+					margin-right: 10px;
+					display: inline-block;
+				}
+				&>span:nth-child(2){
+					font-size:14px;
+					font-weight:400;
+					color:rgba(254,96,66,1);
+				}
+				
+			}
 			.bottom{
 				display: flex;
 				align-items: center;
@@ -196,6 +230,7 @@
 					font-family:PingFangSC-Regular,PingFang SC;
 					font-weight:400;
 					color:rgba(204,204,204,1);
+					
 				}
 				.btn{
 					min-width: auto;
