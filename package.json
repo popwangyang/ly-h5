@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "centrifuge": "^1.5.0",
+    "register-service-worker": "^1.7.1",
     "@antv/f2": "^3.4.4",
     "axios": "^0.18.0",
     "core-js": "^3.3.2",
