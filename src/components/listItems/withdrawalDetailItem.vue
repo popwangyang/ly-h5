@@ -4,7 +4,7 @@
       <span class="flx" slot="title">
         <div class="flex-wrapper">
           <span
-            v-if="item.status_display === '创建申请中'"
+            v-if="item.status_display === '创建提现申请'"
             style="color: #353535;"
           >{{item.status_display}}</span>
           <span v-if="item.status_display === '处理中'" style="color: #FFB04E;">{{item.status_display}}</span>
