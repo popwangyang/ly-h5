@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import { filterArea } from "@/libs/util";
 import { mapActions } from "vuex";
 import { Dialog } from "vant";
 import {
@@ -143,10 +144,11 @@ export default {
     return {
       resData: {}, // ktv信息
       deviceInfo: "", //设备信息
+      ssq: "", //省市区
       business_periods: "", // 营业时间
       brand: "", //vod
       comname: "", // 机构名称
-      address: "", // 机构地址
+      detailAddress: "", // 机构地址
       name: "", // 联系人
       phone: "", // 联系方式
       email: "", //邮箱
@@ -194,7 +196,13 @@ export default {
             this.roomnum = this.resData.room_num;
             this.name = this.resData.contact_username;
             this.phone = this.resData.contact_phone;
-            this.address = this.resData.address;
+            this.detailAddress = this.resData.address;
+            this.ssq =
+              this.resData.province +
+              " " +
+              this.resData.city +
+              " " +
+              this.resData.county;
             this.deviceInfo = `${
               this.resData.vod_ktv_id ? this.resData.vod_ktv_id + "，" : ""
             }${this.resData.vod_brand ? this.resData.vod_brand : ""}`;
@@ -220,7 +228,8 @@ export default {
             }
             if (this.showPersonalInfo === 4) {
               this.comname = result1.name;
-              this.address = result1.address;
+              this.detailAddress = result1.address;
+              this.ssq = filterArea(result1.area_code_list);
               this.name = result1.contact;
               this.phone = result1.telephone;
               return;
@@ -228,7 +237,8 @@ export default {
             let result2 = res.data;
             this.comname = result1.name;
             this.email = res.data.email;
-            this.address = result1.address;
+            this.detailAddress = result1.address;
+            this.ssq = filterArea(result1.area_code_list);
             this.name = result2.nickname;
             this.phone = result2.phone;
           }
@@ -287,6 +297,9 @@ export default {
     }
   },
   computed: {
+    address() {
+      return this.ssq + " " + this.detailAddress;
+    },
     isHasWithdrawal() {
       return this.$store.state.user.isHasWithdrawal;
     },

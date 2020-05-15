@@ -104,6 +104,18 @@ export default {
       });
       this.getLogin(send_data)
         .then(res => {
+          if (res.data.data[0].belong_participant) {
+            if (
+              res.data.data[0].belong_participant.participant_type === "ktv" ||
+              res.data.data[0].belong_participant.participant_type ===
+                "ktv_clerk"
+            ) {
+              this.$store.commit(
+                "setKtvID",
+                res.data.data[0].belong_participant.ktv_id
+              );
+            }
+          }
           this.setPersonInfo();
           this.$toast.success({
             duration: 1000, // 持续展示 toast
