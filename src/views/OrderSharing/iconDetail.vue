@@ -26,17 +26,19 @@
           <van-cell title="支付通道费率" :value="payment_channel_rate_display" />
         </div>
         <div v-else>
-          <van-cell title="场所名称" :value="res.ktv_name" />
-          <van-cell title-class="detailaArea" title="地区" :value="res.area_display" />
           <van-cell title="扫码订单金额" :value="`￥${toFixed2(res.amount_display)}`" />
-          <van-cell title="曲库服务费" :value="`￥${toFixed2(res.song_service_fee_display)}`" />
-          <van-cell title="综合技术服务费" :value="`￥${toFixed2(res.technology_service_fee_display||0)}`" />
+          <van-cell title="音乐服务费（元）" :value="`￥${toFixed2(res.music_amount_display)}`" />
+          <van-cell title="开房套餐费用（元）" :value="`￥${toFixed2(res.package_amount_display)}`" />
           <van-cell title="支付通道费率" :value="payment_channel_rate_display || 0 " />
         </div>
       </van-cell-group>
       <van-cell-group class="group2" key="group1">
         <van-cell title="实付金额" :value="`￥${toFixed2(res.real_amount_display)}`" />
-        <van-cell title="分成金额" :value="`￥${toFixed2(share_amount)}`" />
+        <van-cell
+          title="分成金额"
+          v-if="res.royalty_set"
+          :value="`￥${toFixed2(res.royalty_set.advance_royalty_amount)}`"
+        />
       </van-cell-group>
 
       <van-cell title="交易时间" :value="res.pay_time" />
