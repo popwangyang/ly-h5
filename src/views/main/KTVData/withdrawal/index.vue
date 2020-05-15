@@ -167,7 +167,9 @@ export default {
               bank: `${this.financialObj.bank}(${String(
                 this.financialObj.cardNumber
               ).slice(-4)})`,
-              withdrawalMoney: this.withdrawalMoney
+              withdrawalMoney: this.withdrawalMoney,
+              arrivemo: this.arrivemo,
+              poundange: this.poundange
             }
           });
         })
@@ -221,8 +223,7 @@ export default {
     //说明
     showHelp() {
       this.$dialog.alert({
-        message:
-          "实际到账金额 = 可提现金额 - 可提现金额 * 支付通道费率 - 提现手续费",
+        message: "实际到账金额=提现金额-提现手续费",
         confirmButtonText: "知道了"
       });
     },

@@ -14,7 +14,7 @@
         <van-cell title="提现银行卡" :value="bank" />
         <van-cell title="提现金额" :value="inputnum|toFixed2|changeMoney" />
         <van-cell title="手续费" :value="poundange|toFixed2|changeMoney" />
-        <van-cell class="inMoney" title="实际到账金额" :value="inputnum|toFixed2|changeMoney" />
+        <van-cell class="inMoney" title="实际到账金额" :value="infa|toFixed2|changeMoney" />
       </van-cell-group>
     </div>
     <van-button @click="submit" class="confirm entityBtnDefault">完成</van-button>
@@ -28,6 +28,7 @@ export default {
       bank: "", //银行
       inputnum: 0, //提现金额
       poundange: 0, // 手续费
+      infa: 0, // 实际金额
       f: false // 提现结果
     };
   },
@@ -35,6 +36,8 @@ export default {
     this.f = this.$route.query.f;
     this.bank = this.$route.query.bank;
     this.inputnum = this.$route.query.withdrawalMoney;
+    this.poundange = this.$route.query.poundange;
+    this.infa = this.$route.query.arrivemo;
   },
   methods: {
     submit() {

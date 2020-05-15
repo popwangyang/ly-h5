@@ -499,6 +499,7 @@ export default {
       this.params = {};
       this.params.date_start = start;
       this.params.date_end = end;
+      this.params.user_id = this.user_id;
       this.setDataValue(start, end);
     },
 
