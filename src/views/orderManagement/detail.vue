@@ -16,7 +16,7 @@
 		<van-cell title="订单编号" value-class="cellValue" :value="detail.platform_id" />
 		<van-cell title="支付方式" value-class="cellValue" :value="detail.platform_display" />
 		<van-cell title="交易时间" value-class="cellValue" :value="detail.pay_time" />
-		<span class="title">购买套餐</span>
+		<span class="title" v-if="detail.package.name">购买套餐</span>
 		<van-cell title="套餐名称" value-class="cellValue" v-if="detail.package.name">
 			<span class="vanValue">
 				<span>{{detail.package.name}}</span>
