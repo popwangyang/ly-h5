@@ -191,7 +191,7 @@ export default {
             }
             this.business_periods = str + tempStr;
             this.comname = this.resData.ktv_name;
-            this.room_num = this.resData.room_num;
+            this.roomnum = this.resData.room_num;
             this.name = this.resData.contact_username;
             this.phone = this.resData.contact_phone;
             this.address = this.resData.address;
