@@ -229,7 +229,8 @@ export default {
     }
   },
 
-  mounted() {
+  mounted() {},
+  activated() {
     this.initial();
   }
 };
