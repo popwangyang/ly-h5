@@ -269,8 +269,8 @@ export default {
       let str = "";
       if (this.userType === "ktv" || this.userType === "ktv_clerk") {
         str = "ktv_id";
-        // obj[str] = this.user_id.substring(4);
-        // return;
+        obj[str] = this.user_id.substring(4);
+        return;
       } else if (this.userType === "agentibus") {
         str = "agent_id";
       } else if (this.userType === "advance_party") {
