@@ -320,7 +320,15 @@ export default {
       cal(this.params).then(res => {
         this.chartData = null;
         if (res.data.results && res.data.results.length > 0) {
-          this.chartData = res.data.results;
+          this.chartData = res.data.results.filter(r => {
+            if (r.hasOwnProperty("amount_display")) {
+              r.amount_display = Number(r.amount_display);
+            }
+            if (r.hasOwnProperty("count")) {
+              r.count = Number(r.count);
+            }
+            return r;
+          });
           return;
         }
       });
