@@ -68,9 +68,7 @@ export const orderMainData = (params) => {
     return axios.request({
       url: `/order/order-statistics`,
       method: 'get',
-      params: Object.assign(params, {
-        data_type: 'nation' // 与后台已确认均传入此标识
-      }),
+      params,
     }).then(res => {
       resolve(res)
     })

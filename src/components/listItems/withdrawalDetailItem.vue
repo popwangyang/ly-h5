@@ -23,7 +23,7 @@
           <span class="create-time">{{item.create_time}}</span>
         </div>
         <div class="flex-wrapper flex-add or">
-          <span>￥{{item.real_amount_display|toFixed2}}</span>
+          <span>￥{{item.amount_display|toFixed2}}</span>
           <span>
             <span class="real_amount">实际到账：</span>
             <span style="color: #E97557;">￥{{item.real_amount_display|toFixed2}}</span>

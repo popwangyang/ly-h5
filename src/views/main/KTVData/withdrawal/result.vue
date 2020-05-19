@@ -35,7 +35,7 @@ export default {
   mounted() {
     this.f = this.$route.query.f;
     this.bank = this.$route.query.bank;
-    this.inputnum = this.$route.query.withdrawalMoney;
+    this.inputnum = this.$route.query.inputnum;
     this.poundange = this.$route.query.poundange;
     this.infa = this.$route.query.arrivemo;
   },

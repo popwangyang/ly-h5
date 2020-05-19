@@ -7,32 +7,6 @@
         </template>
       </PageList>
     </div>
-    <van-popup
-      v-model="show"
-      position="right"
-      @close="popupCloseEvent"
-      :style="{ width: '280px', height: '100%' }"
-    >
-      <div class="popupRightBox">
-        <div class="content">
-          <div class="box" v-for="(item, index) in popupData" :key="index">
-            <span class="boxTitle">{{item.title}}</span>
-            <span class="boxList">
-              <span
-                :class="{isSelected: popupValue[item.key] == item1.id ? true: false }"
-                v-for="(item1, index1) in item.list"
-                :key="index1"
-                @click="selectedBtn(item.key, item1.id)"
-              >{{item1.text}}</span>
-            </span>
-          </div>
-        </div>
-        <div class="bottom">
-          <span @click="show = false">取消</span>
-          <span class="a" @click="searchBtn">确定</span>
-        </div>
-      </div>
-    </van-popup>
   </div>
 </template>
 
@@ -40,7 +14,7 @@
 import config from "@/config/index";
 import PageList from "@/components/pageList";
 import ContractListItem from "@/components/listItems/contactListItem";
-import { getContractList, billingSwitch } from "@/api/ktv";
+import { getContractList } from "@/api/ktv";
 import { cacheMixins } from "@/libs/mixins";
 export default {
   name: "contract",
@@ -49,33 +23,7 @@ export default {
     PageList,
     ContractListItem
   },
-  computed: {
-    color() {
-      return this.$store.state.app.theme.color;
-    },
-    checked() {
-      return this.$store.state.ktv.billingState == 1 ? true : false;
-    },
-    billingText() {
-      return this.$store.state.ktv.billingState == 1 ? "停止计费" : "开始计费";
-    },
-    message() {
-      let text = "是否停止计费?";
-      if (this.$store.state.ktv.billingState == 2) {
-        text = "是否开启计费?";
-      } else {
-        if (
-          this.dataList[0] &&
-          this.dataList[0].type == 2 &&
-          this.dataList[0].state == 2
-        ) {
-          text =
-            "当前合同还未过期，且商家已开通扫码，是否确定关闭商家的扫码功能？";
-        }
-      }
-      return text;
-    }
-  },
+  computed: {},
   data() {
     return {
       params: {
@@ -113,81 +61,6 @@ export default {
     }
   },
   methods: {
-    goAccountRecord() {
-      this.$router.push({
-        name: "accountRecord"
-      });
-    },
-    popupCloseEvent() {
-      Object.assign(this.popupValue, this.searchValue);
-    },
-    searchBtn() {
-      Object.assign(this.searchValue, this.popupValue);
-      console.log(this.searchValue);
-      this.show = false;
-      this.params = {
-        ktv: this.$store.state.ktv.ktvID,
-        type:
-          this.searchValue.contract_type == 0
-            ? ""
-            : this.searchValue.contract_type,
-        state:
-          this.searchValue.contract_statue == 0
-            ? ""
-            : this.searchValue.contract_statue,
-        approve_state:
-          this.searchValue.approval_statue == 0
-            ? ""
-            : this.searchValue.approval_statue
-      };
-      this.$nextTick(() => {
-        this.$refs.pageList.onReload();
-      });
-    },
-    selectedBtn(title, id) {
-      console.log(title, id);
-      this.popupValue[title] = id;
-    },
-    onInput(checked) {
-      let title = "计费开关";
-      this.$dialog.confirm({
-        title: title,
-        message: this.message,
-        confirmButtonColor: this.$store.state.app.theme.color,
-        beforeClose: this.startChargingBtn
-      });
-    },
-    startChargingBtn(action, done) {
-      let state = this.checked ? 2 : 1;
-      if (action === "confirm") {
-        let send_data = {
-          contract: {
-            billing_state: state // 1：开启计费 2：关闭计费
-          }
-        };
-        billingSwitch(send_data, this.$store.state.ktv.ktvID)
-          .then(res => {
-            console.log(state);
-            this.$store.commit("setBillingState", state);
-            done();
-            this.$toast("状态修改成功");
-          })
-          .catch(err => {
-            done();
-            console.log(err);
-            let toastTxt = "操作失败！！！";
-            if (err.status == 400) {
-              toastTxt = err.data[0];
-            }
-            this.$toast(toastTxt);
-          });
-      } else {
-        done();
-      }
-    },
-    popupBtn() {
-      this.show = true;
-    },
     getData(params) {
       return new Promise((resolve, reject) => {
         getContractList(params).then(res => {
@@ -217,26 +90,6 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-
-  .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background: white;
-    border: 1px solid #f6f6f6;
-
-    & > span {
-      display: flex;
-      align-items: center;
-
-      & > span {
-        display: block;
-        margin-right: 10px;
-      }
-    }
-  }
-
   .contentBox {
     flex: 1;
     overflow: auto;

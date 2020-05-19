@@ -167,7 +167,7 @@ export default {
               bank: `${this.financialObj.bank}(${String(
                 this.financialObj.cardNumber
               ).slice(-4)})`,
-              withdrawalMoney: this.withdrawalMoney,
+              inputnum: this.inputnum,
               arrivemo: this.arrivemo,
               poundange: this.poundange
             }
