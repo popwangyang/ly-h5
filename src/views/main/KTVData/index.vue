@@ -193,7 +193,11 @@ export default {
     withdrawalMoney() {
       return this.$store.state.withdrawal.withdrawalValue;
     },
-    // 用户类型
+    // 用户类型字符串
+    usertype() {
+      return this.$store.state.user.usertype;
+    },
+    // 用户类型数字
     userType() {
       if (
         this.$store.state.user.usertype === "platform" ||
@@ -317,6 +321,9 @@ export default {
       if (!cal) return;
       let isYear = this.isYearTime.length;
       this.params.date_type = isYear ? "month" : "day";
+      if (cal.name === "orderMainData") {
+        this.getAtr(this.params);
+      }
       cal(this.params).then(res => {
         this.chartData = null;
         if (res.data.results && res.data.results.length > 0) {
@@ -437,6 +444,22 @@ export default {
       );
     },
 
+    getAtr(obj) {
+      let str = "";
+      if (this.usertype === "ktv" || this.usertype === "ktv_clerk") {
+        str = "ktv_id";
+        obj.data_type = "ktv";
+        obj[str] = this.user_id.substring(4);
+        return;
+      } else if (this.usertype === "agentibus") {
+        obj.agent_id = "agent";
+        str = "agent_id";
+      } else if (this.usertype === "advance_party") {
+        obj.data_type = "advance";
+        str = "advance_id";
+      }
+      obj[str] = this.user_id;
+    },
     // 展示图表信息
     async changeChartData(val) {
       setTimeout(() => {
