@@ -493,7 +493,8 @@ export default {
           forbidClick: true,
           overlay: true,
           className: "loadClass",
-          message: "暂未绑定结算账户，请联系商务人员协助绑定。"
+          message:
+            "暂未绑定或正在变更银行账户信息，请尽快联系商务人员完成绑定或等待银行审核通过后方可提现"
         });
         return;
       }

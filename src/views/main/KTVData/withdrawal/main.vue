@@ -200,7 +200,8 @@ export default {
           forbidClick: true,
           overlay: true,
           className: "loadClass",
-          message: "暂未绑定结算账户，请联系商务人员协助绑定。"
+          message:
+            "暂未绑定银行账户信息，请在'财务管理-平台扫码支付分成查询—账户信息'绑定。"
         });
         return;
       }
