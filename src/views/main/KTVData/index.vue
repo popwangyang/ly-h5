@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import dealCondition from "./components/dealCondition";
 import linechart from "@/components/linechart/index";
 import {
@@ -219,6 +220,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setPersonInfo"]),
     //是否是年
     isYear(val, year) {
       val === 2 ? (this.isYearTime = year) : (this.isYearTime = []);
@@ -254,6 +256,9 @@ export default {
 
     // 初始化
     initial() {
+      console.log("mainInit");
+
+      this.setPersonInfo();
       if (this.isUserShow) {
         this.getPersonCount();
       }
@@ -319,6 +324,8 @@ export default {
       if (!cal) return;
       if (getAtr) {
         this.getAtr(this.params);
+      } else {
+        this.getAtr(this.params, 1);
       }
       cal(this.params).then(res => {
         this.chartData = null;
@@ -440,10 +447,21 @@ export default {
       );
     },
 
-    getAtr(obj) {
+    getAtr(obj, f) {
       let isYear = this.isYearTime.length;
       this.params.date_type = isYear ? "month" : "day";
       let str = "";
+      if (f) {
+        if (this.usertype === "agentibus") {
+          obj.agent_id = "agent";
+          str = "agent_id";
+        } else {
+          obj.data_type = "nation";
+          return;
+        }
+        obj[str] = this.user_id;
+        return;
+      }
       if (this.usertype === "ktv" || this.usertype === "ktv_clerk") {
         str = "ktv_id";
         obj.data_type = "ktv";
