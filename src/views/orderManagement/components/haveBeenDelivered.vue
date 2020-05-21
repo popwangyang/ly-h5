@@ -38,9 +38,11 @@
 		},
 		methods:{
 			showDetail(id){
-				console.log(id);
 				this.$router.push({
-					name: 'managementDetail'
+					name: 'managementDetail',
+					query:{
+						id: id
+					}
 				})
 			},
 			haveBeDeliver(id){

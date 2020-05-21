@@ -30,7 +30,7 @@
 					  result = '曲库初装服务';
 					  break;
 					case 3:
-					  result = 'CDN曲库管理服务';
+					  result = '曲库管理服务';
 					  break;
 				}
 				return result;
