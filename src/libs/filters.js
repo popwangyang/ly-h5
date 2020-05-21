@@ -6,7 +6,7 @@ const changeMoney = val => {
 // 保留两位小数
 const toFixed2 = val => {
   if (val) return parseFloat(val).toFixed(2);
-  return val
+  return val.toFixed(2)
 }
 
 // 姓名脱敏

@@ -58,7 +58,7 @@ export default {
       this.chart.source(data, {
         date: {
           range: [0, 1],
-          type: "timeCat",
+          type: "cat",
           tickCount: 4
         }
       });
