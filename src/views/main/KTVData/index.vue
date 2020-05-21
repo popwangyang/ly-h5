@@ -5,7 +5,7 @@
       <div class="balance">
         <p
           :class="['title', userType === 2 ? '' : 'manatitle']"
-        >{{ userType === 2 ? "账户余额" : "平台分成情况" }}</p>
+        >{{ userType === 2 ? "账户余额1" : "平台分成情况" }}</p>
         <p v-if="userType === 2" class="num">￥{{ balance | toFixed2 }}</p>
       </div>
       <div v-if="userType === 2" class="help" @click="enterWithdrawalHelp">
