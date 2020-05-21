@@ -256,8 +256,6 @@ export default {
 
     // 初始化
     initial() {
-      console.log("mainInit");
-
       this.setPersonInfo();
       if (this.isUserShow) {
         this.getPersonCount();
@@ -598,7 +596,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     this.initial();
   }
 };

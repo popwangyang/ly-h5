@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import {
   orderShareTotalAmount,
   userAmount,
@@ -124,8 +125,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setPersonInfo"]),
     // 初始化
     initial() {
+      this.setPersonInfo();
       this.getOrderShareTotalAmount();
       this.getUserAmount();
       this.getMonthRoyalty();
