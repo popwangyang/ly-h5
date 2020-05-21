@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import dealCondition from "./components/dealCondition";
 import linechart from "@/components/linechart/index";
 import {
@@ -219,6 +220,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["setPersonInfo"]),
     //是否是年
     isYear(val, year) {
       val === 2 ? (this.isYearTime = year) : (this.isYearTime = []);
@@ -254,6 +256,7 @@ export default {
 
     // 初始化
     initial() {
+      this.setPersonInfo();
       if (this.isUserShow) {
         this.getPersonCount();
       }
@@ -312,17 +315,15 @@ export default {
     },
 
     // 获取图表数据
-    chartHandler(cal, title, xy, unit = "￥") {
+    chartHandler(getAtr, cal, title, xy, unit = "￥") {
       this.itemTitle = xy;
       this.chartTitle = title;
       this.unit = unit;
-      let params = {};
-      params.date_type = this.isYearTime.length ? "year" : "day";
       if (!cal) return;
-      let isYear = this.isYearTime.length;
-      this.params.date_type = isYear ? "month" : "day";
-      if (cal.name === "orderMainData") {
+      if (getAtr) {
         this.getAtr(this.params);
+      } else {
+        this.getAtr(this.params, 1);
       }
       cal(this.params).then(res => {
         this.chartData = null;
@@ -444,8 +445,21 @@ export default {
       );
     },
 
-    getAtr(obj) {
+    getAtr(obj, f) {
+      let isYear = this.isYearTime.length;
+      this.params.date_type = isYear ? "month" : "day";
       let str = "";
+      if (f) {
+        if (this.usertype === "agentibus") {
+          obj.agent_id = "agent";
+          str = "agent_id";
+        } else {
+          obj.data_type = "nation";
+          return;
+        }
+        obj[str] = this.user_id;
+        return;
+      }
       if (this.usertype === "ktv" || this.usertype === "ktv_clerk") {
         str = "ktv_id";
         obj.data_type = "ktv";
@@ -545,24 +559,35 @@ export default {
         case 0:
           if (this.userType === 1) {
             this.chartHandler(
+              0,
               orderDayStatistics,
               "订单金额",
               "date*amount_display"
             );
           } else {
-            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
+            this.chartHandler(
+              0,
+              profitInquiry,
+              "分成金额",
+              "date*amount_display"
+            );
           }
           break;
         case 1:
           if (this.userType === 1) {
-            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
+            this.chartHandler(
+              0,
+              profitInquiry,
+              "分成金额",
+              "date*amount_display"
+            );
           } else {
-            this.chartHandler(orderMainData, "订单数", "date*count", "个");
+            this.chartHandler(1, orderMainData, "订单数", "date*count", "个");
           }
           break;
         case 2:
           if (this.userType === 1) {
-            this.chartHandler(orderMainData, "订单数", "date*count", "个");
+            this.chartHandler(1, orderMainData, "订单数", "date*count", "个");
           }
           break;
         default:
@@ -571,7 +596,7 @@ export default {
     }
   },
 
-  mounted() {
+  activated() {
     this.initial();
   }
 };
