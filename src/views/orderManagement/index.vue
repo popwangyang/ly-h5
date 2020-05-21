@@ -104,6 +104,13 @@
 			   return this.$store.state.app.undeliveredNum;
 		   }	
 		},
+		watch: {
+			currentTabComponent(newValue, oldValue) {
+				if(newValue == 'haveBeenDelivered'){
+					this.$refs.haveBeenDelivered.search();
+				}
+			}
+		},
 		methods:{
 			popupBtn(){
 				this.show = true;
