@@ -5,7 +5,7 @@
       <div class="balance">
         <p
           :class="['title', userType === 2 ? '' : 'manatitle']"
-        >{{ userType === 2 ? "账户余额1" : "平台分成情况" }}</p>
+        >{{ userType === 2 ? "账户余额" : "平台分成情况" }}</p>
         <p v-if="userType === 2" class="num">￥{{ balance | toFixed2 }}</p>
       </div>
       <div v-if="userType === 2" class="help" @click="enterWithdrawalHelp">
@@ -312,16 +312,12 @@ export default {
     },
 
     // 获取图表数据
-    chartHandler(cal, title, xy, unit = "￥") {
+    chartHandler(getAtr, cal, title, xy, unit = "￥") {
       this.itemTitle = xy;
       this.chartTitle = title;
       this.unit = unit;
-      let params = {};
-      params.date_type = this.isYearTime.length ? "year" : "day";
       if (!cal) return;
-      let isYear = this.isYearTime.length;
-      this.params.date_type = isYear ? "month" : "day";
-      if (cal.name === "orderMainData") {
+      if (getAtr) {
         this.getAtr(this.params);
       }
       cal(this.params).then(res => {
@@ -445,6 +441,8 @@ export default {
     },
 
     getAtr(obj) {
+      let isYear = this.isYearTime.length;
+      this.params.date_type = isYear ? "month" : "day";
       let str = "";
       if (this.usertype === "ktv" || this.usertype === "ktv_clerk") {
         str = "ktv_id";
@@ -545,24 +543,35 @@ export default {
         case 0:
           if (this.userType === 1) {
             this.chartHandler(
+              0,
               orderDayStatistics,
               "订单金额",
               "date*amount_display"
             );
           } else {
-            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
+            this.chartHandler(
+              0,
+              profitInquiry,
+              "分成金额",
+              "date*amount_display"
+            );
           }
           break;
         case 1:
           if (this.userType === 1) {
-            this.chartHandler(profitInquiry, "分成金额", "date*amount_display");
+            this.chartHandler(
+              0,
+              profitInquiry,
+              "分成金额",
+              "date*amount_display"
+            );
           } else {
-            this.chartHandler(orderMainData, "订单数", "date*count", "个");
+            this.chartHandler(1, orderMainData, "订单数", "date*count", "个");
           }
           break;
         case 2:
           if (this.userType === 1) {
-            this.chartHandler(orderMainData, "订单数", "date*count", "个");
+            this.chartHandler(1, orderMainData, "订单数", "date*count", "个");
           }
           break;
         default:
