@@ -204,7 +204,9 @@ export default {
           overlay: true,
           className: "loadClass",
           message:
-            "暂未绑定银行账户信息，请在'财务管理-平台扫码支付分成查询—账户信息'绑定。"
+            this.$store.state.user.usertype === "agentibus"
+              ? "暂未绑定或正在变更银行账户信息，请尽快联系商务人员完成绑定或等待银行审核通过后方可提现"
+              : "暂未绑定银行账户信息，请在'财务管理-平台扫码支付分成查询—账户信息'绑定。"
         });
         return;
       }

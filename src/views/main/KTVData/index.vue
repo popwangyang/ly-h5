@@ -53,7 +53,7 @@
     <div class="chart-wrapper">
       <div class="tab-wrapper">
         <div class="tab">
-          <van-tabs @click="clickTab">
+          <van-tabs v-model="active" @click="clickTab">
             <van-tab v-if="userType === 1" title="订单金额"></van-tab>
             <van-tab title="分成金额"></van-tab>
             <van-tab title="订单数"></van-tab>
@@ -104,7 +104,6 @@ import {
   userAmount,
   monthRoyalty,
   orderStatistics,
-  dayRoyalty,
   orderDayStatistics,
   getPersonNumber,
   getCityKTVIterm
@@ -137,6 +136,7 @@ export default {
   },
   data() {
     return {
+      active: 0, // 标签页
       // 日期类型
       chooseDateType: [
         {
@@ -256,6 +256,7 @@ export default {
 
     // 初始化
     initial() {
+      this.active = 0;
       this.setPersonInfo();
       if (this.isUserShow) {
         this.getPersonCount();
@@ -545,6 +546,7 @@ export default {
       this.params = {};
       this.params.date_start = start;
       this.params.date_end = end;
+      this.params.ordering = "date";
       this.params.user_id = this.user_id;
       this.setDataValue(start, end);
     },
