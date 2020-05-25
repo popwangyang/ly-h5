@@ -44,6 +44,30 @@ export const removeUser = () => {
 
 
 /* 
+  权限控制 
+ */
+const contains = function(arr, obj) {
+	if(arr==''|| arr==null){ return false}
+	var i = arr.length;
+	while (i--) {
+		if (arr[i] === obj) {
+			return true;
+		}
+	}
+	return false;
+};
+
+export const menusAuthority = function(code) {
+	return contains(store.state.user.menus, code);
+}
+
+export const actionsAuthority =  function(code) {
+	return contains(store.state.user.actions, code);
+}
+
+
+
+/* 
  * 设置token;
  * @params{String} token token值
  * 
@@ -463,3 +487,4 @@ export const filterArea = (list) => {
 	}, '').substr(1);
 	return result;
 }
+
