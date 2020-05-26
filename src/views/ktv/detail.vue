@@ -9,13 +9,13 @@
 					<span>{{detailData.ktv_name}}</span>
                     <ktvTag :value="detailData.cate"/>
 				</div>
-				<van-cell>
+				<van-cell v-if="detailData.vod_ktv_id">
 					<span slot="title">VOD场所ID</span>
 					<span>
 						{{detailData.vod_ktv_id}}
 					</span>
 				</van-cell>
-				<van-cell>
+				<van-cell v-if="detailData.vod_ktv_id">
 					<span slot="title">VOD品牌</span>
 					<span>
 						{{detailData.vod_brand}}
@@ -40,7 +40,7 @@
 					</span>
 				</van-cell>
 				<div class="divider"></div>
-				<van-cell>
+				<van-cell v-if="detailData.opening_hours">
 					<span slot="title">开业时间</span>
 					<span>
 						{{detailData.opening_hours}}
@@ -71,7 +71,7 @@
 					</span>
 				</van-cell>
 				<div class="divider"></div>
-				<van-cell value-class="YYLabel"  v-if="detailData.remark != null">
+				<van-cell value-class="YYLabel"  v-if="detailData.remark != null && detailData.remark != ''">
 					<span slot="title">备注</span>
 					<span class="remark">
 						<TextOverflow
