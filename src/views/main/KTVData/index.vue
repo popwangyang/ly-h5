@@ -70,6 +70,7 @@
       </div>
       <div v-show="chartData" class="chartDiv">
         <linechart
+          ref="lineChart"
           :xUnit="xUnit"
           :unit="unit"
           :itemTitle="itemTitle"
@@ -274,6 +275,7 @@ export default {
     // 初始化
     initial() {
       this.isYearTime = [];
+      this.chartData = null;
       this.active = 0;
       this.setPersonInfo();
       if (this.isUserShow) {
@@ -577,6 +579,7 @@ export default {
 
     // Tab事件
     clickTab(val) {
+      this.active = val;
       this.isYearTime = [];
       this.chartData = null;
       this.setParamsValue(LDate, getDay(new Date()));

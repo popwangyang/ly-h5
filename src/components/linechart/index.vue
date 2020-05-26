@@ -31,25 +31,17 @@ export default {
   },
   data() {
     return {
-      myChart: null // 图表绑定
+      chart: null // 图表绑定
     };
   },
   watch: {
-    $route: {
-      handler: function() {
-        this.clearChart();
-        this.initChart(this.id, this.chartData);
-      }
-    },
     chartData: {
       handler: function(n) {
-        if (n) {
-          this.initChart(this.id, this.chartData);
-          this.chart.changeData(n);
-          this.chart.repaint();
-          return;
+        if (this.chart) {
+          this.chart.clear();
         }
-        this.chart.clear();
+        this.initChart(this.id, this.chartData);
+        this.chart.changeData(n);
       }
     }
   },
@@ -81,8 +73,8 @@ export default {
         crosshairsStyle: {
           lineDash: [2]
         },
-        showCrosshairs: true,
-        showItemMarker: true,
+        // showCrosshairs: true,
+        // showItemMarker: true,
         onShow: ev => {
           const items = ev.items;
           items[0].name = null;
@@ -112,13 +104,18 @@ export default {
       this.chart
         .line()
         .position(this.itemTitle)
+        .adjust("stack")
         .color("medalType", function() {
           return color;
         });
       this.chart.render();
     },
     clearChart() {
-      if (this.myChart) this.myChart.clear();
+      if (this.chart) {
+        this.chart.clear();
+        this.chart.destroy();
+        this.chart = null;
+      }
     }
   },
   beforeDestroy() {
