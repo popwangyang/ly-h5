@@ -230,7 +230,7 @@ export default {
     returnBack(val) {
       setTimeout(() => {
         if (val[0] && val[1] && this.isYearTime.length === 0) {
-          var nowTime = new Date(val[0]); //通过时间构造函数进行实例化
+          var nowTime = new Date(val[0]);
           var orderTime = new Date(val[1]);
           var reduce = Math.ceil(
             (orderTime.getTime() - nowTime.getTime()) / 86400000
@@ -266,7 +266,7 @@ export default {
       }
       this.getOrderShareTotalAmount();
       this.getUserAmount();
-      this.getMonthRoyalty();
+      this.lastMonthProfitInquiry();
       // this.getTheCityKTVIterm();
       this.changeChartData(0);
     },
@@ -329,15 +329,20 @@ export default {
       cal(this.params).then(res => {
         this.chartData = null;
         if (res.data.results && res.data.results.length > 0) {
-          this.chartData = res.data.results.filter(r => {
-            if (r.hasOwnProperty("amount_display")) {
-              r.amount_display = Number(r.amount_display);
-            }
-            if (r.hasOwnProperty("count")) {
-              r.count = Number(r.count);
-            }
-            return r;
-          });
+          // this.chartData = res.data.results.filter(r => {
+          //   if (r.hasOwnProperty("amount_display")) {
+          //     r.amount_display = Number(r.amount_display);
+          //   }
+          //   if (r.hasOwnProperty("count")) {
+          //     r.count = Number(r.count);
+          //   }
+          //   return r;
+          // });
+          this.datehandler_e(
+            res.data.results,
+            res.data.results[0].date,
+            res.data.results[res.data.results.length - 1].date
+          );
           return;
         }
       });
@@ -346,7 +351,90 @@ export default {
     explainFunction() {
       this.dialogShow = true;
     },
-
+    // 时间处理
+    datehandler_e(data, a1, a2) {
+      let dateArr = this.getBetweenStartAndEndDate(a1, a2);
+      let dateArr1 = [];
+      let a = data;
+      for (let i = 0; i < dateArr.length; i++) {
+        let obj = {};
+        const e1 = dateArr[i];
+        obj.date = e1;
+        obj.amount_display = "0";
+        if (obj.hasOwnProperty("amount_display")) {
+          obj.amount_display = 0;
+        }
+        if (obj.hasOwnProperty("count")) {
+          obj.count = 0;
+        }
+        dateArr1.push(obj);
+      }
+      for (let j = 0; j < dateArr1.length; j++) {
+        const e2 = dateArr1[j];
+        for (let k = 0; k < a.length; k++) {
+          const e3 = a[k];
+          if (e2.date === e3.date) {
+            dateArr1[j] = a[k];
+          }
+        }
+      }
+      for (let o = 0; o < dateArr1.length; o++) {
+        if (dateArr1[o].hasOwnProperty("amount_display")) {
+          dateArr1[o].amount_display = Number(dateArr1[o].amount_display);
+        }
+        if (dateArr1[o].hasOwnProperty("count")) {
+          dateArr1[o].count = Number(dateArr1[o].count);
+        }
+      }
+      this.chartData = dateArr1;
+      console.log(dateArr1);
+    },
+    // 获取时间
+    getBetweenStartAndEndDate(day1, day2) {
+      var getDate = function(str) {
+        var tempDate = new Date();
+        var list = str.split("-");
+        tempDate.setFullYear(list[0]);
+        tempDate.setMonth(list[1] - 1);
+        tempDate.setDate(list[2]);
+        return tempDate;
+      };
+      var date1 = getDate(day1);
+      var date2 = getDate(day2);
+      if (date1 > date2) {
+        var tempDate = date1;
+        date1 = date2;
+        date2 = tempDate;
+      }
+      date1.setDate(date1.getDate() + 1);
+      var dateArr = [];
+      var i = 0;
+      while (
+        !(
+          date1.getFullYear() == date2.getFullYear() &&
+          date1.getMonth() == date2.getMonth() &&
+          date1.getDate() == date2.getDate()
+        )
+      ) {
+        var dayStr = date1.getDate().toString();
+        if (dayStr.length == 1) {
+          dayStr = "0" + dayStr;
+        }
+        dateArr[i] =
+          date1.getFullYear() +
+          "-" +
+          (Number(date1.getMonth() + 1) > 10
+            ? date1.getMonth() + 1
+            : `0${date1.getMonth() + 1}`) +
+          "-" +
+          dayStr;
+        i++;
+        date1.setDate(date1.getDate() + 1);
+      }
+      dateArr.splice(0, 0, day1);
+      dateArr.push(day2);
+      return dateArr;
+    },
     //账户余额
     getUserAmount() {
       userAmount({
@@ -394,6 +482,30 @@ export default {
 
     // 订单统计
 
+    // 上月分成
+    lastMonthProfitInquiry() {
+      console.log(this.getDate().cmonth);
+
+      let monthVal =
+        Number(this.getDate().cmonth) < 10
+          ? `0${Number(this.getDate().cmonth)}`
+          : this.getDate().cmonth;
+      let params = {
+        ordering: "date",
+        date: `${this.getDate().cyear}-${monthVal}-01`,
+        user_id: this.user_id,
+        date_type: "month"
+      };
+      console.log(params);
+      this.getAtrForLastMonth(params);
+      console.log(params);
+
+      profitInquiry(params).then(res => {
+        if (res.status === 200) {
+          this.lastMonthMoney = res.data.results[0].amount_display;
+        }
+      });
+    },
     //月分成
     getMonthRoyalty() {
       monthRoyalty({
@@ -429,7 +541,7 @@ export default {
       this.params.date_type = "day";
       this.changeChartData(val);
     },
-
+    // 设置参数
     changeParams(val) {
       if (val) {
         this.setParamsValue(LDate, getDay(new Date()));
@@ -445,14 +557,14 @@ export default {
         this.dateValue[1] || getDay(new Date())
       );
     },
-
+    // 后台新增接口
     getAtr(obj, f) {
       let isYear = this.isYearTime.length;
       this.params.date_type = isYear ? "month" : "day";
       let str = "";
       if (f) {
         if (this.usertype === "agentibus") {
-          obj.agent_id = "agent";
+          obj.data_type = "agent";
           str = "agent_id";
         } else {
           obj.data_type = "nation";
@@ -526,6 +638,18 @@ export default {
       this.routerGo("withdrawal");
     },
 
+    // 获取上月参数属性值
+    getAtrForLastMonth(obj) {
+      let str = "";
+      if (this.usertype === "agentibus") {
+        obj.data_type = "agent";
+        str = "agent_id";
+      } else {
+        obj.data_type = "nation";
+        return;
+      }
+      obj[str] = this.user_id;
+    },
     // 路由跳转通用
     routerGo(pathname) {
       this.$router.push({
@@ -536,12 +660,13 @@ export default {
     enterOrder() {
       this.routerGo("OrderSharing");
     },
-
+    // 根据时间搜索图表
     searChartByTime(start, end, tab = this.currentTab) {
       this.setDataValue(start, end);
       this.changeChartData(tab);
     },
 
+    // 设置参数值
     setParamsValue(start, end) {
       this.params = {};
       this.params.date_start = start;
@@ -550,12 +675,13 @@ export default {
       this.params.user_id = this.user_id;
       this.setDataValue(start, end);
     },
-
+    //  设置时间
     setDataValue(start, end) {
       this.$set(this.dateValue, 0, start);
       this.$set(this.dateValue, 1, end);
     },
 
+    //图表设置数据
     handleChart(val) {
       switch (val) {
         case 0:
