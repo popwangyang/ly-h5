@@ -15,6 +15,11 @@ export default {
     },
     // 图表数据
     chartData: {},
+    // 横坐标值
+    xUnit: {
+      type: Boolean,
+      default: true
+    },
     // 轴标题
     itemTitle: {
       type: String
@@ -55,13 +60,18 @@ export default {
         id,
         pixelRatio: window.devicePixelRatio
       });
-      this.chart.source(data, {
-        date: {
-          range: [0, 1],
-          type: "timeCat",
-          tickCount: 4
-        }
-      });
+      this.chart.source(
+        data,
+        this.xUnit
+          ? {
+              date: {
+                range: [0, 1],
+                type: "timeCat",
+                tickCount: 4
+              }
+            }
+          : {}
+      );
       this.chart.tooltip({
         custom: true,
         showXTip: true,

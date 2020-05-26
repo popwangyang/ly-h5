@@ -69,7 +69,13 @@
         </div>
       </div>
       <div v-show="chartData" class="chartDiv">
-        <linechart :unit="unit" :itemTitle="itemTitle" :id="chartone" :chartData="chartData"></linechart>
+        <linechart
+          :xUnit="xUnit"
+          :unit="unit"
+          :itemTitle="itemTitle"
+          :id="chartone"
+          :chartData="chartData"
+        ></linechart>
       </div>
       <div v-show="!chartData" class="loading">
         <Empty text="暂无数据" />
@@ -182,6 +188,13 @@ export default {
     };
   },
   computed: {
+    // 时间类型
+    isYearComputed() {
+      if (Array.isArray(this.isYearTime)) {
+        if (this.isYearTime.length) return true;
+      }
+      return false;
+    },
     // 允许提现
     allow_withdraw() {
       return this.$store.state.withdrawal.allow_withdraw;
@@ -193,6 +206,10 @@ export default {
     // 可提现
     withdrawalMoney() {
       return this.$store.state.withdrawal.withdrawalValue;
+    },
+    // 横坐标显示
+    xUnit() {
+      return !this.isYearComputed;
     },
     // 用户类型字符串
     usertype() {
@@ -256,6 +273,7 @@ export default {
 
     // 初始化
     initial() {
+      this.isYearTime = [];
       this.active = 0;
       this.setPersonInfo();
       if (this.isUserShow) {
@@ -317,6 +335,7 @@ export default {
 
     // 获取图表数据
     chartHandler(getAtr, cal, title, xy, unit = "￥") {
+      // let isYear = this.isYearTime.length;
       this.itemTitle = xy;
       this.chartTitle = title;
       this.unit = unit;
@@ -329,19 +348,12 @@ export default {
       cal(this.params).then(res => {
         this.chartData = null;
         if (res.data.results && res.data.results.length > 0) {
-          // this.chartData = res.data.results.filter(r => {
-          //   if (r.hasOwnProperty("amount_display")) {
-          //     r.amount_display = Number(r.amount_display);
-          //   }
-          //   if (r.hasOwnProperty("count")) {
-          //     r.count = Number(r.count);
-          //   }
-          //   return r;
-          // });
           this.datehandler_e(
             res.data.results,
             res.data.results[0].date,
-            res.data.results[res.data.results.length - 1].date
+            res.data.results[res.data.results.length - 1].date,
+            getAtr,
+            this.isYearComputed
           );
           return;
         }
@@ -352,8 +364,10 @@ export default {
       this.dialogShow = true;
     },
     // 时间处理
-    datehandler_e(data, a1, a2) {
-      let dateArr = this.getBetweenStartAndEndDate(a1, a2);
+    datehandler_e(data, a1, a2, isOrder, isYear) {
+      let dateArr = isYear
+        ? this.getBetweenStartAndEndYear(a1, a2)
+        : this.getBetweenStartAndEndDate(a1, a2);
       let dateArr1 = [];
       let a = data;
       for (let i = 0; i < dateArr.length; i++) {
@@ -361,10 +375,9 @@ export default {
         const e1 = dateArr[i];
         obj.date = e1;
         obj.amount_display = "0";
-        if (obj.hasOwnProperty("amount_display")) {
+        if (!isOrder) {
           obj.amount_display = 0;
-        }
-        if (obj.hasOwnProperty("count")) {
+        } else {
           obj.count = 0;
         }
         dateArr1.push(obj);
@@ -387,7 +400,6 @@ export default {
         }
       }
       this.chartData = dateArr1;
-      console.log(dateArr1);
     },
     // 获取时间
     getBetweenStartAndEndDate(day1, day2) {
@@ -477,15 +489,44 @@ export default {
         cmonth
       };
     },
-
-    // 分润统计
-
-    // 订单统计
-
+    // 获取年列表
+    getBetweenStartAndEndYear(start, end) {
+      return this.getDateList(start, end);
+    },
+    // 获取日期列表
+    getDateList(start, end, type = "month") {
+      const startTime = this.getYearDate(start, type);
+      const endTime = this.getYearDate(end, type);
+      const arr = [];
+      do {
+        const year = startTime.getFullYear();
+        const month =
+          startTime.getMonth() + 1 < 10
+            ? "0" + (startTime.getMonth() + 1)
+            : startTime.getMonth() + 1;
+        const day =
+          startTime.getDate() < 10
+            ? "0" + startTime.getDate()
+            : startTime.getDate();
+        type === "date"
+          ? startTime.setDate(startTime.getDate() + 1) &&
+            arr.push(year + "-" + month + "-" + day)
+          : startTime.setMonth(startTime.getMonth() + 1) &&
+            arr.push(year + "-" + month);
+      } while (endTime.getTime() - startTime.getTime() >= 0);
+      return arr;
+    },
+    // 获取日期
+    getYearDate(datestr, type) {
+      const temp = datestr.split("-");
+      const date =
+        type === "date"
+          ? new Date(temp[0], parseInt(temp[1]) - 1, temp[2])
+          : new Date(temp[0], parseInt(temp[1]) - 1);
+      return date;
+    },
     // 上月分成
     lastMonthProfitInquiry() {
-      console.log(this.getDate().cmonth);
-
       let monthVal =
         Number(this.getDate().cmonth) < 10
           ? `0${Number(this.getDate().cmonth)}`
@@ -496,13 +537,14 @@ export default {
         user_id: this.user_id,
         date_type: "month"
       };
-      console.log(params);
       this.getAtrForLastMonth(params);
-      console.log(params);
-
       profitInquiry(params).then(res => {
         if (res.status === 200) {
-          this.lastMonthMoney = res.data.results[0].amount_display;
+          if (res.data.results.length) {
+            this.lastMonthMoney = res.data.results[0].amount_display;
+            return;
+          }
+          this.lastMonthMoney = 0;
         }
       });
     },
