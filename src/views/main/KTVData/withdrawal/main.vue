@@ -68,7 +68,8 @@ import { mapActions } from "vuex";
 import {
   orderShareTotalAmount,
   userAmount,
-  monthRoyalty
+  monthRoyalty,
+  profitInquiry
 } from "@/api/mainPage";
 import { cacheMixins } from "@/libs/mixins";
 
@@ -131,9 +132,59 @@ export default {
       this.setPersonInfo();
       this.getOrderShareTotalAmount();
       this.getUserAmount();
-      this.getMonthRoyalty();
+      this.lastMonthProfitInquiry();
     },
-
+    // 获取参数属性值
+    getAtr(obj) {
+      let str = "";
+      if (
+        this.$store.state.user.usertype === "ktv" ||
+        this.$store.state.user.usertype === "ktv_clerk"
+      ) {
+        str = "ktv_id";
+        obj.data_type = "ktv";
+        obj[str] = this.user_id.substring(4);
+        return;
+      } else if (this.$store.state.user.usertype === "agentibus") {
+        obj.agent_id = "agent";
+        str = "agent_id";
+      } else if (this.$store.state.user.usertype === "advance_party") {
+        obj.data_type = "advance";
+        str = "advance_id";
+      }
+      obj[str] = this.user_id;
+    },
+    // 上月分成
+    lastMonthProfitInquiry() {
+      let monthVal =
+        this.getDate().cmonth < 10
+          ? `0${this.getDate().cmonth}`
+          : this.getDate().cmonth;
+      let params = {
+        ordering: "date",
+        date: `${this.getDate().cyear}-${monthVal}-01`,
+        user_id: this.user_id,
+        date_type: "month"
+      };
+      this.getAtrForLastMonth(params);
+      profitInquiry(params).then(res => {
+        if (res.status === 200) {
+          this.lastMonthMoney = res.data.results[0].amount_display;
+        }
+      });
+    },
+    // 获取上月参数属性值
+    getAtrForLastMonth(obj) {
+      let str = "";
+      if (this.usertype === "agentibus") {
+        obj.data_type = "agent";
+        str = "agent_id";
+      } else {
+        obj.data_type = "nation";
+        return;
+      }
+      obj[str] = this.user_id;
+    },
     //累计分成金额
     getOrderShareTotalAmount() {
       orderShareTotalAmount({
@@ -158,8 +209,12 @@ export default {
 
     //月分成
     getMonthRoyalty() {
+      let monthVal =
+        this.getDate().cmonth < 10
+          ? `0${this.getDate().cmonth}`
+          : this.getDate().cmonth;
       monthRoyalty({
-        date: `${this.getDate().cyear}-${this.getDate().cmonth}-01`,
+        date: `${this.getDate().cyear}-${monthVal}-01`,
         user_id: this.user_id
       }).then(res => {
         if (res.results && res.results.length === 0) {
