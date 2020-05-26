@@ -14,7 +14,7 @@
 				</van-cell>
 				<div class="divider"></div>
 				<cell-image title="合同附件" :dataList="formData.annex"></cell-image>
-				<van-cell title="其他约定" value-class="cellValue">
+				<van-cell title="其他约定" value-class="cellValue" v-if="formData.other_conventions != null && formData.other_conventions != ''">
 					<span slot="label">
 						<TextOverflow :maxLength="50" :text="formData.other_conventions" />
 					</span>

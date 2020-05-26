@@ -71,7 +71,7 @@
 					</span>
 				</van-cell>
 				<div class="divider"></div>
-				<van-cell value-class="YYLabel"  v-if="detailData.remark != null">
+				<van-cell value-class="YYLabel"  v-if="detailData.remark != null && detailData.remark != ''">
 					<span slot="title">备注</span>
 					<span class="remark">
 						<TextOverflow
