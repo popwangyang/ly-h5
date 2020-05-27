@@ -16,6 +16,7 @@ const {
 } = config
 export const TOKEN_KEY = 'token'
 export const USER_KEY = 'user'
+const TOKEN_EXPIRATION_TIME = 60;  //token 过期时间 (单位: 分钟)
 
 export const getUser = () => {
 	const user = Cookies.get(USER_KEY)
@@ -73,8 +74,10 @@ export const actionsAuthority =  function(code) {
  * 
  */
 export const setToken = (token) => {
+	let nowTime = new Date();
+		nowTime.setMinutes(nowTime.getMinutes() + TOKEN_EXPIRATION_TIME)
 	Cookies.set(TOKEN_KEY, token, {
-		expires: cookieExpires || 1
+		expires: nowTime
 	})
 }
 
@@ -84,10 +87,19 @@ export const setToken = (token) => {
  * 
  */
 export const getToken = () => {
-	const token = Cookies.get(TOKEN_KEY)
-	if (token) return token
+	const token = Cookies.get(TOKEN_KEY);
+	if (token){
+		setToken(token);
+		return token
+	} 
 	else return false
 }
+
+// export const updateToken = (token) => {
+// 	let nowTime = new Date();
+// 	    nowTime.setHours(nowTime.getHours() + TOKEN_EXPIRATION_TIME);
+// 	setToken(token, nowTime);
+// }
 
 /* 
  * 请求token缓冲器;
