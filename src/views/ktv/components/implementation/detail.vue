@@ -41,7 +41,7 @@
 			  	  <span>未同步</span>
 			  </span>
 		  </van-cell>
-		  <div class="button">
+		  <div class="button" v-if="ktv_implementation_info_edit">
 		  	<van-button class="buttonDefault" size="large" @click="editedClick">编辑</van-button>
 		  </div>
 		</ContentLoad>
@@ -62,7 +62,7 @@
 		},
 		data(){
 			return{
-				ktv_implementation_info_edit: actionsAuthority('ktv_implementation_info_edit'), // 合同信息查询包含列表和详情
+				ktv_implementation_info_edit: !actionsAuthority('ktv_implementation_info_edit'), // 合同信息查询包含列表和详情
 				formData:{
 					vod:''
 				}
@@ -119,6 +119,10 @@
 				})
 			},
 			goSetting(pageName){
+				if(!this.ktv_implementation_info_edit){
+					this.$toast('您无编辑实施信息权限！！')
+					return
+				}
 				if(!this.hasFR && pageName == 'QRCode'){
 				  this.$toast('请先填写格式及分辨率信息')	
 				  return;
