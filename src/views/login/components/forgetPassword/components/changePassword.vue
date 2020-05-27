@@ -124,7 +124,7 @@ export default {
   },
   computed: {
     username() {
-      return this.$store.state.user.userEmail;
+      return this.$store.state.user.userEmail || this.$store.state.user.phone;
     },
     isDisButton() {
       return (
