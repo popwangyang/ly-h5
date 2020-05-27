@@ -75,6 +75,7 @@ export const actionsAuthority =  function(code) {
 export const setToken = (token) => {
 	let nowTime = new Date();
 		nowTime.setMinutes(nowTime.getMinutes() + cookieExpires)
+		console.log(nowTime);
 	Cookies.set(TOKEN_KEY, token, {
 		expires: nowTime
 	})
@@ -82,13 +83,16 @@ export const setToken = (token) => {
 
 /* 
  * 获取token;
+ * @params {Boolon | true} skipUpdateToken 是否跳过更新token有效时间
  * @return {String | false} 没有token时返回false。
  * 
  */
-export const getToken = () => {
+export const getToken = (skipUpdateToken) => {
 	const token = Cookies.get(TOKEN_KEY);
 	if (token){
-		setToken(token);
+		if(!skipUpdateToken){
+			setToken(token);
+		}
 		return token
 	} 
 	else return false

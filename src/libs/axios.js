@@ -26,12 +26,15 @@ class HttpRequest {
 		return config
 	}
 
-	interceptors(instance, url) {
+	interceptors(instance, skipUpdateToken) {
 		// 请求拦截
+		
 		instance.interceptors.request.use(config => {
 			// 动态添加token
-			if (getToken()) {
-				config.headers.Authorization = getToken();
+			console.log(skipUpdateToken);
+			let token = getToken(skipUpdateToken)
+			if (token) {
+				config.headers.Authorization = token;
 			}
 
 			return config
@@ -74,7 +77,7 @@ class HttpRequest {
 	request(options) {
 		const instance = axios.create()
 		options = Object.assign(this.getInsideConfig(), options)
-		this.interceptors(instance, options.url)
+		this.interceptors(instance, options.skipUpdateToken)
 		return instance(options)
 	}
 }
