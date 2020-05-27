@@ -10,7 +10,7 @@ export default {
   /**
    * @description token在Cookie中存储的分钟，默认60天
    */
-  cookieExpires: 60,
+  cookieExpires: 1,
   /**
    * @description api请求基础路径
    */
