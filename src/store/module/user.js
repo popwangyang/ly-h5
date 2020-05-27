@@ -14,6 +14,7 @@ export default {
   state: {
     usertype: '',
     username: '',
+    phone: '',
     userID: '',
     userEmail: '',
     isHasWithdrawal: true, // 是否有提现资格
@@ -21,8 +22,8 @@ export default {
     ktv_id: '', // ktv角色的专属Id
     forgetPasswordKey: 'phone', // phone 为手机验证，email 为邮箱验证
     area: {}, // 用户所属地区
-	menus: []  ,// 菜单权限
-	actions: [],  // 按钮权限
+    menus: [], // 菜单权限
+    actions: [], // 按钮权限
   },
   mutations: {
     set_hasWithdrawal(state, isHasWithdrawal) {
@@ -40,6 +41,9 @@ export default {
     setUserName(state, username) {
       state.username = username;
     },
+    setUserPhone(state, phone) {
+      state.phone = phone;
+    },
     setUserID(state, id) {
       state.userID = id;
     },
@@ -52,12 +56,12 @@ export default {
     setUserArea(state, data) {
       state.area = data;
     },
-	setMenus(state, menus) {
-		 state.menus = menus;
-	},
-	setActions(state, actions){
-		 state.actions = actions;
-	}
+    setMenus(state, menus) {
+      state.menus = menus;
+    },
+    setActions(state, actions) {
+      state.actions = actions;
+    }
   },
   actions: {
     getLogin({
@@ -93,13 +97,14 @@ export default {
             } else {
               commit('set_hasWithdrawal', false);
             }
-			commit("setMenus", res.data.data[0].menus);
-			commit("setActions", res.data.data[0].actions);
+            commit("setMenus", res.data.data[0].menus);
+            commit("setActions", res.data.data[0].actions);
             commit("SET_THEME", res.data.data[0].user_type);
             commit('setUserType', res.data.data[0].user_type);
             commit('setUserName', res.data.data[0].username);
             commit('setUserID', res.data.data[0].user);
             commit('setUserEmail', res.data.data[0].email);
+            commit('setUserPhone', res.data.data[0].phone);
             commit('setUserArea', res.data.data[0].areas[0] || {
               name: '全国',
               number: ''
@@ -108,6 +113,8 @@ export default {
               commit('setUser_id', res.data.data[0].belong_participant.unique_key || '');
               if (res.data.data[0].belong_participant.participant_type === 'ktv' || res.data.data[0].belong_participant.participant_type === "ktv_clerk") {
                 commit('setKTVId', res.data.data[0].belong_participant.ktv_id);
+                commit('setUserEmail', res.data.data[0].email);
+                commit('setUserPhone', res.data.data[0].phone);
               }
             } else {
               getEmployee_user_id().then(resid => {
