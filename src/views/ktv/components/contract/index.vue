@@ -1,7 +1,7 @@
 <template>
 	<div class="contractBox">
 		<div class="title">
-			<span>
+			<span :style="{visibility: ktv_biling_switch_operation ? 'inherit' : 'hidden'}">
 				<span>{{billingText}}</span>
 				<span>
 					<van-switch :value="checked" @input="onInput" size="20px" :active-color="color" />
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+	import { actionsAuthority } from '@/libs/util'
 	import config from "@/config/index";
 	import PageList from "@/components/pageList";
 	import ContractListItem from "@/components/listItems/contactListItem";
@@ -84,6 +85,7 @@
 		},
 		data() {
 			return {
+				ktv_biling_switch_operation: actionsAuthority('ktv_biling_switch_operation'), // 开始计费和暂停计费
 				params: {
 					ktv: this.$store.state.ktv.ktvID
 				},

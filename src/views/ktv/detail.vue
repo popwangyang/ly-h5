@@ -55,7 +55,7 @@
 				<van-cell>
 					<span slot="title">允许退单时间</span>
 					<span>
-						20分钟
+						{{detailData.allow_refund_minute}}分钟
 					</span>
 				</van-cell>
 				<van-cell>
@@ -201,40 +201,13 @@
 			   ktv_contract_query: actionsAuthority('ktv_contract_query'), // 合同信息查询包含列表和详情
 			   ktv_implementation_info_query:  actionsAuthority('ktv_implementation_info_query'), // 实施信息查询
 			   ktv_financial_account_query: actionsAuthority('ktv_financial_account_query'), // 账户信息查询
-			   ktv_user_info_query: actionsAuthority('ktv_financial_account_query'),  // 账号信息查询
-			   ktv_activity_query: actionsAuthority('ktv_financial_account_query'),  // 活动信息查询
+			   ktv_user_info_query: actionsAuthority('ktv_user_info_query'),  // 账号信息查询
+			   ktv_activity_query: actionsAuthority('ktv_activity_query'),  // 活动信息查询
 			   detailData: {
 				   business_periods: '',
 				   business_workdays: '',
 			   },
-			   remark:"",
-			   // cardList:[
-				  //  {
-					 //   id: 0,
-					 //   imgUrl: require('@/assets/ktvTbas/tab1.png'),
-					 //   title: '合同信息'
-				  //  },
-				  //  {
-					 //   id: 1,
-					 //   imgUrl:require('@/assets/ktvTbas/tab2.png'),
-					 //   title: '实施信息'
-				  //  },
-				  //  {
-					 //   id: 2,
-					 //   imgUrl:require('@/assets/ktvTbas/tab3.png'),
-					 //   title: '账户信息'
-				  //  },
-				  //  {
-					 //   id: 3,
-					 //   imgUrl:require('@/assets/ktvTbas/tab4.png'),
-					 //   title: '账号信息'
-				  //  },
-				  //  {
-					 //   id: 4,
-					 //   imgUrl:require('@/assets/ktvTbas/tab5.png'),
-					 //   title: '活动信息'
-				  //  },
-			   // ]
+			   remark:""
 			}
 		},
 		methods:{
