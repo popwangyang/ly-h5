@@ -16,7 +16,6 @@ const {
 } = config
 export const TOKEN_KEY = 'token'
 export const USER_KEY = 'user'
-const TOKEN_EXPIRATION_TIME = 60;  //token 过期时间 (单位: 分钟)
 
 export const getUser = () => {
 	const user = Cookies.get(USER_KEY)
@@ -75,7 +74,7 @@ export const actionsAuthority =  function(code) {
  */
 export const setToken = (token) => {
 	let nowTime = new Date();
-		nowTime.setMinutes(nowTime.getMinutes() + TOKEN_EXPIRATION_TIME)
+		nowTime.setMinutes(nowTime.getMinutes() + cookieExpires)
 	Cookies.set(TOKEN_KEY, token, {
 		expires: nowTime
 	})
