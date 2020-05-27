@@ -62,7 +62,7 @@
 		},
 		data(){
 			return{
-				ktv_implementation_info_edit: !actionsAuthority('ktv_implementation_info_edit'), // 合同信息查询包含列表和详情
+				ktv_implementation_info_edit: actionsAuthority('ktv_implementation_info_edit'), // 合同信息查询包含列表和详情
 				formData:{
 					vod:''
 				}
