@@ -37,7 +37,7 @@ const LOGIN_PAGE_NAME = 'login'
 const HOME_PAGE_NAME = 'mainPage'
 
 router.beforeEach((to, from, next) => {
-	const token = getToken();
+	const token = getToken(true);
 	console.log(to, from);
 	if (!token && to.name != LOGIN_PAGE_NAME ) { // 未登录且要跳转的页面不是登录页
 	    console.log(1);

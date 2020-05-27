@@ -8,9 +8,9 @@ import {
 export default {
   homeName: 'home',
   /**
-   * @description token在Cookie中存储的分钟，默认60天
+   * @description token在Cookie中存储的分钟，默认60分钟
    */
-  cookieExpires: 1,
+  cookieExpires: 60,
   /**
    * @description api请求基础路径
    */
