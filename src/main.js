@@ -7,7 +7,7 @@ import './static/style/index.scss';
 import 'vant/lib/index.css';
 import './config/rem.js'
 import * as filters from './libs/filters'
-import './registerServiceWorker'
+// import './registerServiceWorker'
 
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
