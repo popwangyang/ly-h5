@@ -77,7 +77,7 @@ export default {
 
     // 获取消息列表
     getInfoList() {
-      infoList(this.currentSize, this.pageSize)
+      infoList(this.currentSize, this.pageSize, "LOGIN,PASSWORD_CHANGE")
         .then(res => {
           this.isLoading = false;
           if (res.status >= 200 && res.status < 400) {
