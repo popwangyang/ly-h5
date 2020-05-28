@@ -9,7 +9,7 @@
 			<span class="left circle"></span>
 			<span class="right circle"></span>
 		</span>
-		<van-cell title="音乐服务费" value-class="cellValue" :value="detail.music_amount_display | filterA" />
+		<van-cell title="综合服务费" value-class="cellValue" :value="detail.music_amount_display | filterA" />
 		<van-cell title="开房套餐费用" value-class="cellValue" :value="detail.package_amount_display | filterA " />
 		<van-cell title="扫码订单金额" value-class="cellValue" :value="detail.amount_display | filterA" />
 		<van-cell title="实付金额" value-class="cellValue" :value="detail.real_amount_display | filterA" />

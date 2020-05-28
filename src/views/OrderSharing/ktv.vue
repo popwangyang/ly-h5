@@ -8,7 +8,7 @@
       <van-cell-group class="group1" key="group1">
         <span class="circle c1"></span>
         <span class="circle c2"></span>
-        <van-cell title="音乐服务费" :value="`￥${toFixed2(res.music_amount_display)}`" />
+        <van-cell title="综合服务费" :value="`￥${toFixed2(res.music_amount_display)}`" />
         <van-cell title="开房套餐费用" :value="`￥${toFixed2(res.package_amount_display)}`" />
         <van-cell title="扫码订单金额" :value="`￥${toFixed2(res.amount_display)}`" />
         <van-cell

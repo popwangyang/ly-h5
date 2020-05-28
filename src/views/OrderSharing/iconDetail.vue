@@ -27,7 +27,7 @@
         </div>
         <div v-else>
           <van-cell title="扫码订单金额" :value="`￥${toFixed2(res.amount_display)}`" />
-          <van-cell title="音乐服务费（元）" :value="`￥${toFixed2(res.music_amount_display)}`" />
+          <van-cell title="综合服务费（元）" :value="`￥${toFixed2(res.music_amount_display)}`" />
           <van-cell title="开房套餐费用（元）" :value="`￥${toFixed2(res.package_amount_display)}`" />
           <van-cell title="支付通道费率" :value="payment_channel_rate_display || 0 " />
         </div>

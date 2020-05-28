@@ -9,7 +9,7 @@
       </van-cell-group>
       <van-cell-group class="group1">
         <span class="circle c2"></span>
-        <van-cell title="音乐服务费" :value="`￥${toFixed2(res.music_amount_display)}`" />
+        <van-cell title="综合服务费" :value="`￥${toFixed2(res.music_amount_display)}`" />
         <van-cell title="开房套餐费用" :value="`￥${toFixed2(res.package_amount_display)}`" />
         <van-cell title="扫码订单金额" :value="`￥${toFixed2(res.amount_display)}`" />
         <van-cell
@@ -44,7 +44,7 @@
           </van-cell>
         </div>
       </van-cell-group>
-      <p class="active">音乐服务费分成（支付通道费率{{res.payment_channel_rate_display}}）</p>
+      <p class="active">综合服务费分成（支付通道费率{{res.payment_channel_rate_display}}）</p>
       <van-cell-group v-if="res.royalty_set" class="group2">
         <van-cell title="场所" :value="`￥${toFixed2(res.royalty_set.place_base_royalty_amount)}`" />
         <van-cell title="平台" :value="`￥${toFixed2(res.royalty_set.platform_royalty_amount)}`" />
