@@ -39,7 +39,7 @@
 					<van-cell title="代垫方分润比例" value-class="cellValue" :value="formData.proportion_of_substitute | filterUnitA" />
 					<van-cell title="场所分润比例" value-class="cellValue" :value="formData.proportion_of_places | filterUnitA" />
 				</span>
-				<van-cell title="音乐服务费" value-class="cellValue">
+				<van-cell title="综合服务费" value-class="cellValue">
 					<span slot="label">
 						<sweepCodeBillDetail :charging_duration="formData.charging_duration" :trial_charging_duration="formData.trial_charging_duration" />
 					</span>
