@@ -122,7 +122,10 @@ export default {
   },
   created() {
     this.getAtr(this.params);
-    console.log(this.params);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit("set_params", this.params);
+    next();
   },
   watch: {
     searchValue: {

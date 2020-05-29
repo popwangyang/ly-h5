@@ -14,7 +14,14 @@
         immediate-check
         @load="onLoad"
       >
-        <ItemWidget :hasPay="hasPay" v-for="(item, index) in results" :key="index" :data="item" />
+        <ItemWidget
+          :isKtv="userType==='ktv'"
+          :isMana="userType==='employee'"
+          :hasPay="hasPay"
+          v-for="(item, index) in results"
+          :key="index"
+          :data="item"
+        />
       </van-list>
     </div>
     <div class="loading" v-if="pageStatues == 0">
@@ -47,6 +54,13 @@ export default {
     };
   },
   computed: {
+    params() {
+      return this.$store.state.order.params;
+    },
+    // 用户类型
+    userType() {
+      return this.$store.state.user.usertype;
+    },
     finishedText() {
       if (this.searchValue == "") {
         return "";
@@ -59,11 +73,9 @@ export default {
     onLoad() {
       this.results = [];
       let sendData = {
-        platform_id: this.searchValue,
-        page_index: this.pIndex,
-        page_size: this.pSize
+        platform_id: this.searchValue
       };
-      this.getData(sendData).then(res => {
+      this.getData(Object.assign(sendData, this.params)).then(res => {
         let arr = res.data;
         this.results.push(...arr);
         this.loading = false;
@@ -87,11 +99,9 @@ export default {
       this.results = [];
       this.pIndex = 1;
       let sendData = {
-        platform_id: this.searchValue,
-        p_index: this.pIndex,
-        p_size: this.pSize
+        platform_id: this.searchValue
       };
-      this.getData(sendData).then(res => {
+      this.getData(Object.assign(sendData, this.params)).then(res => {
         this.total = res.total;
         this.results = this.searchValue == "" ? [] : res.data;
         this.pageStatues = 1;
