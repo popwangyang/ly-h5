@@ -43,7 +43,7 @@
         />
       </van-cell-group>
 
-      <p class="active">购买套餐</p>
+      <p v-if="res.package" class="active">购买套餐</p>
       <van-cell-group class="group2">
         <div>
           <van-cell v-if="res.package" title="套餐名称" :value="`${res.package.name}`">
