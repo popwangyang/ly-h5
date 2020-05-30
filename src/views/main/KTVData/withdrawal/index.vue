@@ -109,7 +109,7 @@ export default {
     // 手续费
     poundange() {
       let num = this.inputnum ? this.inputnum : 0;
-      return parseInt(num) <= 50000 ? 1 : 7;
+      return Number(num) <= 50000 ? 1 : 7;
     },
     // 用户Id
     user_id() {
