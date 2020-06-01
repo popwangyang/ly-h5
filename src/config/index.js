@@ -17,13 +17,13 @@ export default {
   baseUrl: {
     dev: 'https://dev.bjywkd.com',
     test: 'https://test.bjywkd.com',
-    pre: 'https://pre.bjywkd.com',
+    pre: 'https://pro.bjywkd.com',
     info: 'https://info.bjywkd.com'
   },
   socketUrl: {
     dev: 'wkdev.bjywkd.com',
     test: 'wkceshi.bjywkd.com',
-    pre: 'wkpre.bjywkd.com',
+    pre: 'wkpro.bjywkd.com',
     info: 'wkinfo.bjywkd.com',
   },
   ktv_contract_data, // ktv合同
