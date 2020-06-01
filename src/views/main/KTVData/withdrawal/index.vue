@@ -109,7 +109,7 @@ export default {
     // 手续费
     poundange() {
       let num = this.inputnum ? this.inputnum : 0;
-      return parseInt(num) <= 50000 ? 1 : 7;
+      return Number(num) <= 50000 ? 1 : 7;
     },
     // 用户Id
     user_id() {
@@ -154,7 +154,7 @@ export default {
     // 确认
     confirm() {
       this.showLoading = true;
-      withdrawalApi(Number(this.inputnum).toFixed(2) * 100, this.user_id)
+      withdrawalApi(Math.ceil(Number(this.inputnum) * 100), this.user_id)
         .then(res => {
           this.id = res.data.id;
           this.showLoading = false;

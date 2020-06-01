@@ -122,7 +122,10 @@ export default {
   },
   created() {
     this.getAtr(this.params);
-    console.log(this.params);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit("set_params", this.params);
+    next();
   },
   watch: {
     searchValue: {
@@ -324,7 +327,11 @@ export default {
 @import "../../static/style/mixin.scss";
 .orderSharing {
   background-color: #f4f4f4;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 50px;
+  right: 0;
   overflow: auto;
   display: flex;
   flex-direction: column;

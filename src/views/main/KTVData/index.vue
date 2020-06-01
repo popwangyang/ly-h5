@@ -287,7 +287,6 @@ export default {
       this.getOrderShareTotalAmount();
       this.getUserAmount();
       this.lastMonthProfitInquiry();
-      // this.getTheCityKTVIterm();
       this.changeChartData(0);
     },
 
@@ -401,10 +400,15 @@ export default {
           dateArr1[o].count = Number(dateArr1[o].count);
         }
       }
+      console.log(dateArr1);
+
       this.chartData = dateArr1;
     },
     // 获取时间
     getBetweenStartAndEndDate(day1, day2) {
+      if (day1 === day2) {
+        return [day1];
+      }
       var getDate = function(str) {
         var tempDate = new Date();
         var list = str.split("-");
@@ -501,8 +505,8 @@ export default {
       const endTime = this.getYearDate(end, type);
       const arr = [];
       do {
-        const year = startTime.getFullYear();
-        const month =
+        const yeara = startTime.getFullYear();
+        const montha =
           startTime.getMonth() + 1 < 10
             ? "0" + (startTime.getMonth() + 1)
             : startTime.getMonth() + 1;
@@ -512,9 +516,9 @@ export default {
             : startTime.getDate();
         type === "date"
           ? startTime.setDate(startTime.getDate() + 1) &&
-            arr.push(year + "-" + month + "-" + day)
+            arr.push(yeara + "-" + montha + "-" + day)
           : startTime.setMonth(startTime.getMonth() + 1) &&
-            arr.push(year + "-" + month);
+            arr.push(yeara + "-" + montha);
       } while (endTime.getTime() - startTime.getTime() >= 0);
       return arr;
     },
