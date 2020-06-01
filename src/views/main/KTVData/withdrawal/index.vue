@@ -153,8 +153,11 @@ export default {
     },
     // 确认
     confirm() {
+      console.log(this.inputnum);
+      console.log(Number(this.inputnum) * 100);
+      console.log(Number(this.inputnum).toFixed(2) * 100);
       this.showLoading = true;
-      withdrawalApi(Number(this.inputnum).toFixed(2) * 100, this.user_id)
+      withdrawalApi(Number(this.inputnum) * 100, this.user_id)
         .then(res => {
           this.id = res.data.id;
           this.showLoading = false;
