@@ -12,10 +12,7 @@ let socketUrl = null;
 
 
 const url = window.location.href
-if (url.indexOf('info.bjywkd.com') > -1) {
-  baseUrl = config.baseUrl.info
-  socketUrl = config.socketUrl.info
-} else if (url.indexOf('pro.bjywkd.com') > -1) {
+if (url.indexOf('pro.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.pre
   socketUrl = config.socketUrl.pre
 } else if (url.indexOf('test.bjywkd.com') > -1) {
