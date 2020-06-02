@@ -13,8 +13,8 @@ let socketUrl = null;
 
 const url = window.location.href
 if (url.indexOf('pro.bjywkd.com') > -1) {
-  baseUrl = config.baseUrl.pre
-  socketUrl = config.socketUrl.pre
+  baseUrl = config.baseUrl.pro
+  socketUrl = config.socketUrl.pro
 } else if (url.indexOf('test.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.test
   socketUrl = config.socketUrl.test
