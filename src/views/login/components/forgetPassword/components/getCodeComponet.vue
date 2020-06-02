@@ -122,36 +122,43 @@
 					if (val) {
 						this.loadState = 1;
 						const { username } = this.fromData;
-						let resData = await getUserType({ username });
-						if(resData.status == 200){
-							let userType = resData.data.user_type;
-							let data = validPlatform(userType, true);
-							if(!data.flag){
-								this.loadState = 0;
-								this.$toast(data.msg);
-							}else{
-								let send_data = {
-									[this.state]: this.fromData.username
-								}
-								getIdentifyungCode(send_data).then((res) => {
-									this.$toast(this.textData.codeToast);
-									this.loadState = 2;
-									this.time = 60;
-									this.setInterval = setInterval(() => {
-										if (this.time <= 0) {
-											clearInterval(this.setInterval);
-											this.loadState = 0;
-											this.time = 60;
-										}
-										this.time--;
-									}, 1000)
-								}).catch(err => {
+						try{
+							let resData = await getUserType({ username });
+							console.log(resData);
+							if(resData.status == 200){
+								let userType = resData.data.user_type;
+								let data = validPlatform(userType, true);
+								if(!data.flag){
 									this.loadState = 0;
-								})
+									this.$toast(data.msg);
+								}else{
+									let send_data = {
+										[this.state]: this.fromData.username
+									}
+									getIdentifyungCode(send_data).then((res) => {
+										this.$toast(this.textData.codeToast);
+										this.loadState = 2;
+										this.time = 60;
+										this.setInterval = setInterval(() => {
+											if (this.time <= 0) {
+												clearInterval(this.setInterval);
+												this.loadState = 0;
+												this.time = 60;
+											}
+											this.time--;
+										}, 1000)
+									}).catch(err => {
+										this.loadState = 0;
+									})
+								}
 							}
-						}else{
+						}catch(e){
+							let errorMsg = "获取验证码失败，请稍后重试！"
+							if(e.data.error){
+								errorMsg = e.data.error;
+							}
 							this.loadState = 0;
-							this.$toast('获取验证码失败，请稍后重试！');
+							this.$toast(errorMsg);
 						}
 					}
 				})

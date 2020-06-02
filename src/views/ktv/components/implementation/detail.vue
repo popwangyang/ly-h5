@@ -4,7 +4,7 @@
 		:getInfo='getData'
 		>
 		<span slot="empty">
-			<Empty text="暂无实施信息" title="创建实施信息" @eventBtn="createBtn"/>
+			<Empty text="暂无实施信息" :title="emptyTitle" @eventBtn="createBtn"/>
 		</span>
 		  <van-cell title="实施方式" value-class="cellValue" :value="formData.mode | modeFilter"/> 
 		  <van-cell title="VOD品牌" value-class="cellValue" :value="vod"/> 
@@ -41,7 +41,7 @@
 			  	  <span>未同步</span>
 			  </span>
 		  </van-cell>
-		  <div class="button">
+		  <div class="button" v-if="ktv_implementation_info_edit">
 		  	<van-button class="buttonDefault" size="large" @click="editedClick">编辑</van-button>
 		  </div>
 		</ContentLoad>
@@ -50,6 +50,7 @@
 
 <script>
 	import { mapActions } from 'vuex'
+	import { actionsAuthority } from '@/libs/util'
 	import Empty from '@/components/EmptyComponent'
 	import ContentLoad from '@/components/contentLoad'
 	import TextOverflow from '@/components/textOverflow'
@@ -61,6 +62,7 @@
 		},
 		data(){
 			return{
+				ktv_implementation_info_edit: actionsAuthority('ktv_implementation_info_edit'), // 合同信息查询包含列表和详情
 				formData:{
 					vod:''
 				}
@@ -78,6 +80,9 @@
 			}
 		},
 		computed:{
+			emptyTitle(){
+				return this.ktv_implementation_info_edit ? '创建实施信息':'';
+			},
 			hasSync(){
 				return this.$store.state.ktv.firstSet == 0 ? false:true;
 			},
@@ -114,6 +119,10 @@
 				})
 			},
 			goSetting(pageName){
+				if(!this.ktv_implementation_info_edit){
+					this.$toast('您无编辑实施信息权限！！')
+					return
+				}
 				if(!this.hasFR && pageName == 'QRCode'){
 				  this.$toast('请先填写格式及分辨率信息')	
 				  return;

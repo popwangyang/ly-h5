@@ -44,26 +44,65 @@ export const removeUser = () => {
 
 
 /* 
+  权限控制 
+ */
+const contains = function(arr, obj) {
+	if(arr==''|| arr==null){ return false}
+	var i = arr.length;
+	while (i--) {
+		if (arr[i] === obj) {
+			return true;
+		}
+	}
+	return false;
+};
+
+export const menusAuthority = function(code) {
+	return contains(store.state.user.menus, code);
+}
+
+export const actionsAuthority =  function(code) {
+	return contains(store.state.user.actions, code);
+}
+
+
+
+/* 
  * 设置token;
  * @params{String} token token值
  * 
  */
 export const setToken = (token) => {
+	let nowTime = new Date();
+		nowTime.setMinutes(nowTime.getMinutes() + cookieExpires)
+		console.log(nowTime);
 	Cookies.set(TOKEN_KEY, token, {
-		expires: cookieExpires || 1
+		expires: nowTime
 	})
 }
 
 /* 
  * 获取token;
+ * @params {Boolon | true} skipUpdateToken 是否跳过更新token有效时间
  * @return {String | false} 没有token时返回false。
  * 
  */
-export const getToken = () => {
-	const token = Cookies.get(TOKEN_KEY)
-	if (token) return token
+export const getToken = (skipUpdateToken) => {
+	const token = Cookies.get(TOKEN_KEY);
+	if (token){
+		if(!skipUpdateToken){
+			setToken(token);
+		}
+		return token
+	} 
 	else return false
 }
+
+// export const updateToken = (token) => {
+// 	let nowTime = new Date();
+// 	    nowTime.setHours(nowTime.getHours() + TOKEN_EXPIRATION_TIME);
+// 	setToken(token, nowTime);
+// }
 
 /* 
  * 请求token缓冲器;
@@ -463,3 +502,4 @@ export const filterArea = (list) => {
 	}, '').substr(1);
 	return result;
 }
+

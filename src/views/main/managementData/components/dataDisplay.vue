@@ -48,7 +48,7 @@
 						add: '0'
 					},
 					{
-						title: 'CDN开通情况',
+						title: '曲库管理开通情况',
 						key: 'cdn',
 						ktv: '0',
 						box: '0',

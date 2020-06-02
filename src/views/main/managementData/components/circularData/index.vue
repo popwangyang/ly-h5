@@ -10,7 +10,7 @@
 				<span>
 					<span>
 						<b class="b1"></b>
-						<span>音乐服务费</span>
+						<span>综合服务费</span>
 					</span>
 					<span class="money">¥{{formData.music_amount_display}}</span>
 				</span>

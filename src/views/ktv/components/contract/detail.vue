@@ -14,7 +14,7 @@
 				</van-cell>
 				<div class="divider"></div>
 				<cell-image title="合同附件" :dataList="formData.annex"></cell-image>
-				<van-cell title="其他约定" value-class="cellValue">
+				<van-cell title="其他约定" value-class="cellValue" v-if="formData.other_conventions != null && formData.other_conventions != ''">
 					<span slot="label">
 						<TextOverflow :maxLength="50" :text="formData.other_conventions" />
 					</span>
@@ -39,7 +39,7 @@
 					<van-cell title="代垫方分润比例" value-class="cellValue" :value="formData.proportion_of_substitute | filterUnitA" />
 				    <van-cell title="场所分润比例" value-class="cellValue" :value="formData.proportion_of_places | filterUnitA"/>
 				</span>
-				<van-cell title="音乐服务费" value-class="cellValue">
+				<van-cell title="综合服务费" value-class="cellValue">
 					<span slot="label">
 						<sweepCodeBillDetail :charging_duration="formData.charging_duration" :trial_charging_duration="formData.trial_charging_duration"/>
 					</span>

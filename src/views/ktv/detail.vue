@@ -9,13 +9,13 @@
 					<span>{{detailData.ktv_name}}</span>
                     <ktvTag :value="detailData.cate"/>
 				</div>
-				<van-cell>
+				<van-cell v-if="detailData.vod_ktv_id">
 					<span slot="title">VOD场所ID</span>
 					<span>
 						{{detailData.vod_ktv_id}}
 					</span>
 				</van-cell>
-				<van-cell>
+				<van-cell v-if="detailData.vod_ktv_id">
 					<span slot="title">VOD品牌</span>
 					<span>
 						{{detailData.vod_brand}}
@@ -40,7 +40,7 @@
 					</span>
 				</van-cell>
 				<div class="divider"></div>
-				<van-cell>
+				<van-cell v-if="detailData.opening_hours">
 					<span slot="title">开业时间</span>
 					<span>
 						{{detailData.opening_hours}}
@@ -55,7 +55,7 @@
 				<van-cell>
 					<span slot="title">允许退单时间</span>
 					<span>
-						20分钟
+						{{detailData.allow_refund_minute}}分钟
 					</span>
 				</van-cell>
 				<van-cell>
@@ -71,7 +71,7 @@
 					</span>
 				</van-cell>
 				<div class="divider"></div>
-				<van-cell value-class="YYLabel"  v-if="detailData.remark != null">
+				<van-cell value-class="YYLabel"  v-if="detailData.remark != null && detailData.remark != ''">
 					<span slot="title">备注</span>
 					<span class="remark">
 						<TextOverflow
@@ -112,7 +112,7 @@
 	import { mapActions } from 'vuex'
 	import ContentLoad from '@/components/contentLoad'
 	import { cacheMixins } from '@/libs/mixins'
-	import { getWeeks, getTime } from '@/libs/util'
+	import { getWeeks, getTime, actionsAuthority } from '@/libs/util'
 	import ktvTag from '@/components/tags/ktvTags'
 	import TextOverflow from '@/components/textOverflow'
 	export default{
@@ -152,41 +152,62 @@
 				day = getWeeks(arr);
 				return day+" "+time;
 			},
+			cardList(){
+				let results = [];
+				if(this.ktv_contract_query){
+					results.push({
+					   id: 0,
+					   imgUrl: require('@/assets/ktvTbas/tab1.png'),
+					   title: '合同信息'
+				   })
+				}
+				
+				if(this.ktv_implementation_info_query){
+					results.push( {
+					   id: 1,
+					   imgUrl:require('@/assets/ktvTbas/tab2.png'),
+					   title: '实施信息'
+				   })
+				}
+				
+				if(this.ktv_financial_account_query){
+					results.push({
+					   id: 2,
+					   imgUrl:require('@/assets/ktvTbas/tab3.png'),
+					   title: '账户信息'
+				   })
+				}
+				
+				if(this.ktv_user_info_query){
+					results.push({
+					   id: 3,
+					   imgUrl:require('@/assets/ktvTbas/tab4.png'),
+					   title: '账号信息'
+				   })
+				}
+				
+				if(this.ktv_activity_query){
+					results.push( {
+					   id: 4,
+					   imgUrl:require('@/assets/ktvTbas/tab5.png'),
+					   title: '活动信息'
+				   })
+				}
+				return results;
+			}
 		},
 		data(){
 			return{
+			   ktv_contract_query: actionsAuthority('ktv_contract_query'), // 合同信息查询包含列表和详情
+			   ktv_implementation_info_query:  actionsAuthority('ktv_implementation_info_query'), // 实施信息查询
+			   ktv_financial_account_query: actionsAuthority('ktv_financial_account_query'), // 账户信息查询
+			   ktv_user_info_query: actionsAuthority('ktv_user_info_query'),  // 账号信息查询
+			   ktv_activity_query: actionsAuthority('ktv_activity_query'),  // 活动信息查询
 			   detailData: {
 				   business_periods: '',
 				   business_workdays: '',
 			   },
-			   remark:"",
-			   cardList:[
-				   {
-					   id: 0,
-					   imgUrl: require('@/assets/ktvTbas/tab1.png'),
-					   title: '合同信息'
-				   },
-				   {
-					   id: 1,
-					   imgUrl:require('@/assets/ktvTbas/tab2.png'),
-					   title: '实施信息'
-				   },
-				   {
-					   id: 2,
-					   imgUrl:require('@/assets/ktvTbas/tab3.png'),
-					   title: '账户信息'
-				   },
-				   {
-					   id: 3,
-					   imgUrl:require('@/assets/ktvTbas/tab4.png'),
-					   title: '账号信息'
-				   },
-				   {
-					   id: 4,
-					   imgUrl:require('@/assets/ktvTbas/tab5.png'),
-					   title: '活动信息'
-				   },
-			   ]
+			   remark:""
 			}
 		},
 		methods:{
@@ -233,7 +254,8 @@
 			}
 		},
 		mounted() {
-			console.log('mounted');
+			
+			
 		}
 	}
 </script>
@@ -280,6 +302,7 @@
 		.cardList{
 			display: flex;
 			flex-wrap: wrap;
+			background-color: white;
 			.cardListBox{
 				display: flex;
 				width: 20%;
