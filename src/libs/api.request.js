@@ -27,7 +27,7 @@ if (url.indexOf('pro.bjywkd.com') > -1) {
 }
 
 export const URL = baseUrl
-export const wsk = 'wss://' + socketUrl + ':9112/connection/websocket';
+export const wsk = 'wss://' + socketUrl + '/connection/websocket';
 const Ajax = new HttpRequest(baseUrl)
 const axios = {
   request: (option) => {
