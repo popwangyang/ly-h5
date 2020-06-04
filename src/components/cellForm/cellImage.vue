@@ -37,12 +37,12 @@
 			};
 		},
 		watch: {
-			dataList:{
+			dataList: {
 				handler(newValue, oldValue) {
-					if(newValue.length != 0){
+					if (newValue.length != 0) {
 						this.getInfo();
 					}
-			    },
+				},
 				immediate: true
 			}
 		},
@@ -58,7 +58,12 @@
 						}
 					});
 				} else {
-					this.instance = ImagePreview([url]);
+					this.instance = instance = ImagePreview({
+						images: [
+							url
+						],
+						asyncClose: true,
+					});
 				}
 			},
 			getInfo() {
@@ -82,11 +87,11 @@
 			}
 		},
 		activated() {
-			if(this.instance == null) return;
+			if (this.instance == null) return;
 			this.instance.close();
 		},
 		destroyed() {
-			if(this.instance == null) return;
+			if (this.instance == null) return;
 			this.instance.close();
 		}
 	};
