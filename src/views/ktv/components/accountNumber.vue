@@ -4,21 +4,23 @@
 		:getInfo="getData"
 		emptyText="尚未创建账号，请至PC端处理"
 		>
-		    <span class="title">管理员账号</span>
-			<!-- <div class="divider"></div> -->
-			<van-cell title="账号ID" :value="ktvAccount.username"/>
-			<van-cell title="手机号" :value="ktvAccount.phone"/>
-			<van-cell title="邮箱地址" v-if="ktvAccount.email && ktvAccount.email != null" :value="ktvAccount.email"/>
-			<van-cell title="创建日期" :value="ktvAccount.create_date"/>
-			<div class="divider"></div>
-			<van-cell title="状态">
-			  <span v-if="ktvAccount.is_active" style="color: #2BC8D6;">
-				  已启用
-			  </span>
-			  <span v-else>
-				  已禁用
-			  </span>
-			</van-cell>
+		    <span v-if="hasKtvAccount">
+				<span class="title">管理员账号</span>
+				<van-cell title="账号ID" :value="ktvAccount.username"/>
+				<van-cell title="手机号" :value="ktvAccount.phone"/>
+				<van-cell title="邮箱地址" v-if="ktvAccount.email && ktvAccount.email != null" :value="ktvAccount.email"/>
+				<van-cell title="创建日期" :value="ktvAccount.create_date"/>
+				<div class="divider"></div>
+				<van-cell title="状态">
+				  <span v-if="ktvAccount.is_active" style="color: #2BC8D6;">
+					  已启用
+				  </span>
+				  <span v-else>
+					  已禁用
+				  </span>
+				</van-cell>
+			</span>
+		   
 			<span v-for="item in clerksInfo" :key="item.id">
 				<span class="title">服务员账号</span>
 				<van-cell title="账号ID" :value="item.username"/>
@@ -57,10 +59,8 @@
 					is_active: '',
 					username: ''
 				},
-				
 				clerksInfo:[],
-				
-				hasKtvClerk: false,
+				hasKtvAccount: false,
 			}
 		},
 		methods:{
@@ -70,6 +70,7 @@
 						let ktvInfo = res[0].data;
 						this.clerksInfo = res[1].data.results;
 						if(ktvInfo != ""){
+							this.hasKtvAccount = true;
 							Object.keys(this.ktvAccount).map(item => {
 								this.ktvAccount[item] = ktvInfo[item]
 							})
