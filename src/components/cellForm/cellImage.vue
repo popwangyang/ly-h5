@@ -32,7 +32,8 @@
 		},
 		data() {
 			return {
-				data: []
+				data: [],
+				instance: null
 			};
 		},
 		watch: {
@@ -57,7 +58,7 @@
 						}
 					});
 				} else {
-					ImagePreview([url]);
+					this.instance = ImagePreview([url]);
 				}
 			},
 			getInfo() {
@@ -79,6 +80,14 @@
 					}, []);
 				});
 			}
+		},
+		activated() {
+			if(this.instance == null) return;
+			this.instance.close();
+		},
+		destroyed() {
+			if(this.instance == null) return;
+			this.instance.close();
 		}
 	};
 </script>
