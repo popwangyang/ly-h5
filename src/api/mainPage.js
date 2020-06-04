@@ -6,7 +6,8 @@ export const userAmount = (params) => {
     return axios.request({
       url: `/order/user-amount`,
       params,
-      method: 'get'
+      method: 'get',
+      skipThrowError: true,
     }).then(res => {
       resolve(res.data)
     }).catch(e => {

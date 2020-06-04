@@ -400,8 +400,6 @@ export default {
           dateArr1[o].count = Number(dateArr1[o].count);
         }
       }
-      console.log(dateArr1);
-
       this.chartData = dateArr1;
     },
     // 获取时间
@@ -456,20 +454,16 @@ export default {
     //账户余额
     getUserAmount() {
       userAmount({
-        user_id: this.user_id
-      })
-        .then(res => {
-          this.balance = res.amount;
-        })
-        .catch(e => {
-          this.$toast.fail({
-            duration: 2500, // 持续展示 toast
-            forbidClick: true,
-            overlay: true,
-            className: "loadClass",
-            message: e.data.user_id
-          });
-        });
+        user_id: this.user_id,
+        skipThrowError: true
+      }).then(res => {
+        this.balance = res.amount;
+      });
+      // .catch(e => {
+      //   this.$dialog.alert({
+      //     message: e.data.user_id
+      //   });
+      // });
     },
 
     getDate() {
@@ -664,22 +658,14 @@ export default {
     // 提现确认
     enterWithdrawal() {
       if (!this.financialState) {
-        this.$toast.fail({
-          duration: 1500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$dialog.alert({
           message:
             "暂未绑定或正在变更银行账户信息，请尽快联系商务人员完成绑定或等待银行审核通过后方可提现"
         });
         return;
       }
       if (!this.allow_withdraw) {
-        this.$toast.fail({
-          duration: 1500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$dialog.alert({
           message: "您的账户已冻结，请尽快联系商务人员处理。"
         });
         return;
