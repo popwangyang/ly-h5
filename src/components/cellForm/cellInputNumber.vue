@@ -103,13 +103,10 @@
 		display: flex;
 		justify-content: flex-end;
 		height: 100%;
-
 		.value {
 			flex: 1;
 			position: relative;
 			color: #323233;
-
-			.placeholder {}
 		}
 
 		.clear {
