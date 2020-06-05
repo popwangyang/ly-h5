@@ -2,7 +2,7 @@
 	<div class="activityBox">
 		<PageList
 		:getData="getData"
-		noListText="暂无参加活动"
+		noListText="暂未参加活动"
 		>
 		<template v-slot:default="slotProps">
 			<div>
