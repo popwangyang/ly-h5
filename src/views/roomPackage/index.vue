@@ -85,15 +85,16 @@ export default {
               this.isCreate = true;
               this.total = r.data.results.length;
               this.results = r.data.results;
-              console.log(this.total);
-              console.log(this.results);
-
               if (this.results.length) {
                 this.showLoading = true;
                 resolve({
                   total: this.total,
                   data: this.results
                 });
+                // resolve({
+                //   total: 0,
+                //   data: []
+                // });
                 return;
               }
               this.showLoading = false;
@@ -141,6 +142,7 @@ export default {
   flex-direction: column;
   overflow-y: auto;
   .combo-top {
+    flex-shrink: 0;
     width: 100%;
     padding: 6px 15px;
     display: flex;
