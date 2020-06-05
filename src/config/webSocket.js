@@ -24,15 +24,15 @@ class WebSocket extends Centrifuge {
     };
 
     this.on("connect", context => {
-      // console.log("连接成功", context);
+      console.log("连接成功", context);
     });
 
     this.on("disconnect", context => {
-      // console.log("断开连接", context);
+      console.log("断开连接", context);
     });
 
     this.on("error", error => {
-      // console.log("错误连接", error);
+      console.log("错误连接", error);
     });
 
     this.connect();
