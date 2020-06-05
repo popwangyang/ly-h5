@@ -1,6 +1,6 @@
 <template>
 	<span>
-		<van-cell :title="title" @touchstart.native.stop="show = true">
+		<van-cell :title="title" @touchstart.native="showClick">
 			<div class="cellValue">
 				<span class="value">
 					<span class="van-cell__value" v-show="value.length == 0">{{placeholder}}</span>
@@ -8,101 +8,108 @@
 					<span class="password-input__cursor" v-show="show"></span>
 				</span>
 				<span class="clear" v-show="showClear">
-					<van-icon  name="clear" @click="clearBtn"/>
+					<van-icon name="clear" @click="clearBtn" />
 				</span>
 			</div>
 		</van-cell>
-		<van-number-keyboard 
-		:show="show" 
-		:extra-key="extraKey"
-		:close-button-text="closeButtonText"
-		@blur="show = false" 
-		@input="onInput" 
-		@delete="onDelete" />
+		<van-number-keyboard :show="show" :extra-key="extraKey" :close-button-text="closeButtonText" @blur="blurEvent" @input="onInput"
+		 @delete="onDelete" />
 	</span>
 </template>
 
 <script>
 	export default {
-		props:{
-			title:{
-				type:String,
-				default: '标题'
-			},
-			closeButtonText:{
+		props: {
+			title: {
 				type: String,
+				default: "标题"
 			},
-			extraKey:{
+			closeButtonText: {
+				type: String
+			},
+			extraKey: {
 				type: String,
-				default: '',
+				default: ""
 			},
-			placeholder:{
+			placeholder: {
 				type: String,
-				default: '请输入'
+				default: "请输入"
 			},
-			modelValue:{
-				type: [String, Number],
+			modelValue: {
+				type: [String, Number]
 			}
 		},
-		model:{
-			prop:'modelValue',
-			event: 'returnBack'
+		model: {
+			prop: "modelValue",
+			event: "returnBack"
 		},
-		watch:{
-			modelValue(newValue){
-				if(this.value) return;
+		watch: {
+			modelValue(newValue) {
+				if (this.value) return;
 				this.value = newValue;
 			}
 		},
 		data() {
 			return {
 				show: false,
-				value: '',
-			}
+				value: "",
+				flag: false
+			};
 		},
-		computed:{
-			showClear(){
-				if(this.show && this.value.length != 0){
+		computed: {
+			showClear() {
+				if (this.show && this.value.length != 0) {
 					return true;
-				}else{
+				} else {
 					return false;
 				}
 			}
 		},
 		methods: {
+			blurEvent() {
+				if (!this.flag) {
+					if(this.show){
+						this.$emit("blur", this.value);
+					}
+					this.show = false;
+				}
+			},
+			showClick() {
+				this.show = true;
+				this.flag = true;
+				setTimeout(() => {
+					this.flag = false;
+				}, 0);
+			},
 			onInput(value) {
-				this.value = this.value+value;
-				this.$emit('returnBack', this.value);
+				this.value = this.value + value;
+				this.$emit("returnBack", this.value);
 			},
 			onDelete() {
-				if(this.value.length <= 0)
-				return;
+				if (this.value.length <= 0) return;
 				this.value = this.value.substr(0, this.value.length - 1);
-				this.$emit('returnBack', this.value);
+				this.$emit("returnBack", this.value);
 			},
-			clearBtn(){
-				this.value = '';
-				this.$emit('returnBack', this.value);
+			clearBtn() {
+				this.value = "";
+				this.$emit("returnBack", this.value);
 			}
 		}
-	}
+	};
 </script>
 
 <style scoped="scoped" lang="less">
-	.cellValue{
+	.cellValue {
 		display: flex;
 		justify-content: flex-end;
 		height: 100%;
-		
-		.value{
+		.value {
 			flex: 1;
 			position: relative;
 			color: #323233;
-			.placeholder{
-				
-			}
 		}
-		.clear{
+
+		.clear {
 			display: flex;
 			height: 100%;
 			width: 24px;
@@ -111,8 +118,8 @@
 			font-size: 16px;
 			color: gainsboro;
 		}
-		
-		.password-input__cursor{
+
+		.password-input__cursor {
 			position: absolute;
 			right: 0;
 			height: 18px;
@@ -124,5 +131,4 @@
 			animation: 1s van-cursor-flicker infinite;
 		}
 	}
-	
 </style>
