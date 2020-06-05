@@ -239,7 +239,7 @@ export default {
         return;
       }
       this.$dialog.confirm({
-        closeOnPopstate: true,
+        // closeOnPopstate: true,
         title: "提示",
         message: "是否保存修改的信息",
         beforeClose
@@ -709,8 +709,5 @@ export default {
 }
 .field-center .van-field__label {
   flex: 6;
-}
-.newCombo .van-cell__value {
-  /* text-align: center !important; */
 }
 </style>
