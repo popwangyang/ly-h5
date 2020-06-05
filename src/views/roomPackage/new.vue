@@ -290,9 +290,13 @@ export default {
   },
   methods: {
     countSigPrice(val, v1) {
-      this.$nextTick(() => {
+      if (val) {
+        console.log(Number(val));
+        console.log(Number(val).toFixed(2));
         this.listArr[v1].original_price = Number(val).toFixed(2);
-      });
+        return;
+      }
+      this.listArr[v1].original_price = 0;
     },
     countSigactual_price(val) {
       this.actual_price = Number(val).toFixed(2);
