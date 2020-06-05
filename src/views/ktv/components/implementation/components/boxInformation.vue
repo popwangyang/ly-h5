@@ -29,6 +29,7 @@
 </template>
 
 <script>
+	import { actionsAuthority } from '@/libs/util'
 	import Replay from './replay'
 	import ContentLoad from '@/components/contentLoad'
 	import { getBoxInfoList, patchBoxInfoList, syncBoxInfoList } from '@/api/ktv'
@@ -41,6 +42,7 @@
 		},
 		data(){
 			return{
+				ktv_implementation_info_edit: actionsAuthority('ktv_implementation_info_edit'),
 				dataList: [],
 				isEdited: false,
 			}
@@ -62,6 +64,10 @@
 				})
 			},
 			editedBtn(){
+				if(!this.ktv_implementation_info_edit){
+					this.$toast('您无编辑实施信息权限！！')
+					return
+				}
 				this.isEdited = !this.isEdited;
 				console.log(this.dataList)
 				if(this.isEdited) return;
