@@ -5,7 +5,8 @@
 		>
 		    <cell-selected title="实施方式" :dataList="methodList" v-model="formData.mode"/>
 			<cell-selected title="VOD品牌" :dataList="vodBandsList" v-model="formData.vod"/>
-			<cell-input title="实际包厢数" v-model="formData.box"/>
+			<!-- <cell-input title="实际包厢数" v-model="formData.box"/> -->
+			<cell-inputNumber title="实际包厢数" v-model="formData.box"></cell-inputNumber>
 			<cell-input title="软件系统版本号" :maxlength="50" v-model="formData.version"/>
 			<cell-input title="VOD场所ID" v-model="formData.vod_ktv_id"/>
 			<van-cell title="是否使用版权盒">
@@ -46,6 +47,7 @@
 <script>
 	import ContentLoad from '@/components/contentLoad'
 	import cellInput from '@/components/cellForm/cellInput'
+	import cellInputNumber from '@/components/cellForm/cellInputNumber'
 	import cellSelected from '@/components/cellForm/cellSelected'
 	import formValidate from '@/libs/validator'
 	import { getImplementationDetail, addImplementation, editedImplementation } from '@/api/ktv'
@@ -53,7 +55,8 @@
 		components:{
 			cellInput,
 			cellSelected,
-			ContentLoad
+			ContentLoad,
+			cellInputNumber
 		},
 		data(){
 			const boxValidate = (value) => {
