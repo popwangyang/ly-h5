@@ -119,10 +119,6 @@
 				})
 			},
 			goSetting(pageName){
-				if(!this.ktv_implementation_info_edit){
-					this.$toast('您无编辑实施信息权限！！')
-					return
-				}
 				if(!this.hasFR && pageName == 'QRCode'){
 				  this.$toast('请先填写格式及分辨率信息')	
 				  return;

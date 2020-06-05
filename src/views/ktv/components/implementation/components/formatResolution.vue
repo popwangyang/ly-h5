@@ -21,6 +21,7 @@
 
 <script>
 	import { mapActions } from 'vuex'
+	import { actionsAuthority } from '@/libs/util'
 	import cellSelected from '@/components/cellForm/cellSelected'
 	import ktvConfig from '@/config/ktvImplateData'
 	import formValidate from '@/libs/validator'
@@ -35,6 +36,7 @@
 		},
 		data(){
 			return{
+				ktv_implementation_info_edit: actionsAuthority('ktv_implementation_info_edit'),
 				dataList1: ktvConfig.tv_resolvingPower,
 				dataList2: ktvConfig.video,
 				dataList3: ktvConfig.tv_picture,
@@ -83,6 +85,10 @@
 				'handlerAddResolutionFormat'
 			]),
 			btnClick(){
+				if(!this.ktv_implementation_info_edit){
+					this.$toast('您无编辑实施信息权限！！')
+					return
+				}
 				formValidate(this.formData, this.rules).then(res => {
 					if(res){
 						let text = "修改";
