@@ -41,6 +41,12 @@
 							data: res.data.data
 						}
 						resolve(results);
+					}).catch(err => {
+						let results = {
+							total: 0,
+							data: []
+						}
+						resolve(results);
 					})
 				})
 			}

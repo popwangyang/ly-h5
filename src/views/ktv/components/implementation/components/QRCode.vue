@@ -25,6 +25,7 @@
 
 <script>
 	import { mapActions } from 'vuex'
+	import { actionsAuthority } from '@/libs/util'
 	import ktvConfig from '@/config/ktvImplateData'
 	import cellSelected from '@/components/cellForm/cellSelected'
 	import cellInput from '@/components/cellForm/cellInput'
@@ -92,6 +93,7 @@
 			}
 			
 			return{
+				ktv_implementation_info_edit: actionsAuthority('ktv_implementation_info_edit'),
 				VODfbl: this.$store.state.ktv.QRCode.vod_resolution, // vod分辨率
 				TVfbl: this.$store.state.ktv.QRCode.tv_resolution,  // TV分辨率
 				formData: {
@@ -211,6 +213,10 @@
 				console.log(data)
 			},
 			btnClick(){
+				if(!this.ktv_implementation_info_edit){
+					this.$toast('您无编辑实施信息权限！！')
+					return
+				}
 				formValidate(this.formData, this.rules).then(res => {
 					if(res){
 						let sendData = {

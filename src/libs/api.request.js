@@ -16,12 +16,12 @@ if (url.indexOf('pro.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.dev
   socketUrl = config.socketUrl.dev
 } else {
-  baseUrl = config.baseUrl.test
-  socketUrl = config.socketUrl.test
+  baseUrl = config.baseUrl.pro
+  socketUrl = config.socketUrl.pro
 }
 
 export const URL = baseUrl
-export const wsk = 'wss://' + socketUrl + ':9112/connection/websocket';
+export const wsk = 'wss://' + socketUrl + '/connection/websocket';
 const Ajax = new HttpRequest(baseUrl)
 const axios = {
   request: (option) => {
