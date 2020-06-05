@@ -137,11 +137,7 @@ export default {
     // 输入变化
     inputchange(val) {
       if (val > this.withdrawalMoney) {
-        this.$toast.fail({
-          duration: 2500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$toast({
           message: "提现金额超限"
         });
         return true;
@@ -230,21 +226,13 @@ export default {
     // 提交
     submit() {
       if (this.inputnum <= 1) {
-        this.$toast.fail({
-          duration: 2500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$toast({
           message: "提现金额应大于1元"
         });
         return;
       }
       if (this.inputnum > this.withdrawalMoney) {
-        this.$toast.fail({
-          duration: 2500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$toast({
           message: "提现金额超限"
         });
         return;

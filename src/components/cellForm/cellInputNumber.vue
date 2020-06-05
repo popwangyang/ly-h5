@@ -50,8 +50,11 @@ export default {
     event: "returnBack"
   },
   watch: {
-    modelValue(newValue) {
-      this.value = newValue;
+    modelValue: {
+      handler(n) {
+        this.value = n;
+      },
+      immediate: true
     }
   },
   data() {

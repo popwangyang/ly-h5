@@ -167,7 +167,6 @@ export default {
     //开始时间
     handleEndDateConfirm() {
       this.show = false;
-      console.log(this.currentDate);
       this.currentTime = this.currentDate;
     },
     // 保存
@@ -275,7 +274,9 @@ export default {
       this.startTime = this.comboItem.period_time_start;
       this.EndTime = this.comboItem.period_time_end;
       this.currentTime = this.timeChange(this.startTime);
-      this.currentEndTime = this.timeChange(this.EndTime);
+      this.currentEndTime = this.timeChange(
+        this.EndTime === 2880 ? 0 : this.EndTime
+      );
     }
   },
   activated() {
