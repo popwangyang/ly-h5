@@ -1,6 +1,11 @@
 <template>
   <div class="pageListBox">
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh" v-show="pageStatues == 1">
+    <van-pull-refresh
+      :disabled="disRefresh"
+      v-model="isLoading"
+      @refresh="onRefresh"
+      v-show="pageStatues == 1"
+    >
       <van-list
         v-model="loading"
         :finished="finished"
@@ -33,6 +38,10 @@ export default {
     Error
   },
   props: {
+    disRefresh: {
+      type: Boolean,
+      default: false
+    },
     noListText: {
       type: String,
       default: "暂无信息"

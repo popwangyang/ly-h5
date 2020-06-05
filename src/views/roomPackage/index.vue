@@ -7,7 +7,13 @@
         <button class="op-btn op-btn-new" @click="newCombo">创建</button>
       </div>
     </div>
-    <PageList noListText="暂无套餐" :getData="getData" ref="pageList" :params="params">
+    <PageList
+      :disRefresh="true"
+      noListText="暂无套餐"
+      :getData="getData"
+      ref="pageList"
+      :params="params"
+    >
       <template>
         <div>
           <div class="combo-ul">
@@ -124,7 +130,7 @@ export default {
 
 <style lang="scss" scoped>
 .combo {
-  padding: 10px 20px;
+  padding: 10px 16px;
   width: 100%;
   position: absolute;
   top: 0;
@@ -136,8 +142,7 @@ export default {
   overflow-y: auto;
   .combo-top {
     width: 100%;
-    height: 40px;
-    padding: 12px 15px;
+    padding: 22px;
     display: flex;
     background-color: #fff;
     justify-content: space-between;
@@ -150,6 +155,7 @@ export default {
       color: rgba(68, 68, 68, 1);
     }
     .combo-top-op {
+      margin: 5px 0;
       .op-btn {
         border-radius: 4px;
         height: 24px;
@@ -252,7 +258,6 @@ export default {
 </style>
 <style>
 .combo .pageListBox {
-  display: flex;
 }
 .combo .van-pull-refresh {
   width: 100% !important;

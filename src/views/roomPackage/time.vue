@@ -173,22 +173,14 @@ export default {
     // 保存
     save() {
       if (!this.result.length || !this.currentTime || !this.currentEndTime) {
-        this.$toast.fail({
-          duration: 2500,
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$toast({
           message: "可用时间段及起止时间填写完整后提交"
         });
         return;
       }
       // 起始时间不能小于结束时间
       if (this.EndTime < this.startTime) {
-        this.$toast.fail({
-          duration: 2500,
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$toast({
           message: "起始时间不能晚于结束时间"
         });
         return;

@@ -23,15 +23,22 @@
             v-model="item.name"
             placeholder="请输入"
           />
-          <van-field
+          <!-- <van-field
             input-align="right"
             type="digit"
             label="数量"
             clearable
             v-model="item.count"
             placeholder="请输入"
-          />
-          <van-field
+          />-->
+          <cell-inputNumber title="数量" v-model="item.count"></cell-inputNumber>
+          <cell-inputNumber
+            title="单价"
+            @blur="countSigPrice($event, index)"
+            extraKey="."
+            v-model="item.original_price"
+          ></cell-inputNumber>
+          <!-- <van-field
             type="number"
             input-align="right"
             label="单价"
@@ -39,7 +46,7 @@
             v-model="item.original_price"
             @blur="formatter($event, index)"
             placeholder="0"
-          />
+          />-->
           <van-field
             disabled
             class="field-center"
@@ -55,7 +62,7 @@
       </div>
       <van-cell-group>
         <van-field disabled input-align="right" label="套餐原价(元)" :value="total" />
-        <van-field
+        <!-- <van-field
           required
           type="number"
           label-width="120"
@@ -64,8 +71,14 @@
           label="套餐 优惠价(元)"
           @blur="actual_priceFormat($event)"
           v-model="actual_price"
+        />-->
+        <cell-inputNumber
           placeholder="将计入到开房扫码的价格中"
-        />
+          title="套餐 优惠价(元)"
+          @blur="countSigactual_price($event)"
+          extraKey="."
+          v-model="actual_price"
+        ></cell-inputNumber>
       </van-cell-group>
 
       <van-cell
@@ -83,7 +96,7 @@
       <van-switch v-model="signChecked" size="24px" />
       </van-cell>-->
 
-      <div style="width:100%;text-align: center;">
+      <div style="width:100%;text-align: center;padding-bottom: 200px">
         <van-button class="savebtn" @click="save" type="info">保存</van-button>
       </div>
       <!-- 推荐 -->
@@ -95,11 +108,11 @@
           </div>
         </div>
       </van-action-sheet>
-      <van-overlay :show="overlay">
+      <!-- <van-overlay :show="overlay">
         <div class="overlay">
           <van-loading />
         </div>
-      </van-overlay>
+      </van-overlay>-->
     </ContentLoad>
   </div>
 </template>
@@ -107,6 +120,7 @@
 <script>
 import { cacheMixins } from "@/libs/mixins";
 import ContentLoad from "@/components/contentLoad";
+import cellInputNumber from "@/components/cellForm/cellInputNumber";
 import { createContract, getPackageDetail, modiInfoCombo } from "@/api/combo";
 export default {
   mixins: [cacheMixins],
@@ -175,7 +189,8 @@ export default {
     };
   },
   components: {
-    ContentLoad
+    ContentLoad,
+    cellInputNumber
   },
   watch: {},
   created() {},
@@ -207,6 +222,7 @@ export default {
       next(false);
       this.$dialog.confirm({
         title: "提示",
+        closeOnPopstate: true,
         message: "是否保存修改的信息",
         beforeClose
       });
@@ -223,6 +239,7 @@ export default {
         return;
       }
       this.$dialog.confirm({
+        closeOnPopstate: true,
         title: "提示",
         message: "是否保存修改的信息",
         beforeClose
@@ -272,6 +289,14 @@ export default {
     }
   },
   methods: {
+    countSigPrice(val, v1) {
+      this.$nextTick(() => {
+        this.listArr[v1].original_price = Number(val).toFixed(2);
+      });
+    },
+    countSigactual_price(val) {
+      this.actual_price = Number(val).toFixed(2);
+    },
     getTimeStr() {
       let a = [];
       if (this.comboItem) {
@@ -288,9 +313,6 @@ export default {
           return aIndex - bIndex;
         });
         let atr = a.join("，");
-        console.log(this.comboItem.period_time_start);
-        console.log(this.comboItem.period_time_end);
-
         return (
           atr +
           " " +
@@ -465,8 +487,7 @@ export default {
       ).then(r => {
         if (r) {
           this.$toast({
-            message: "套餐修改成功",
-            type: "success"
+            message: "套餐修改成功"
           });
           this.$router.push({
             name: "roomPackage"
@@ -494,8 +515,7 @@ export default {
         this.overlay = false;
         if (res.status === 200 || res.status < 400) {
           this.$toast({
-            message: "套餐新增成功",
-            type: "success"
+            message: "套餐新增成功"
           });
           this.intercept = false;
           this.$router.push({
@@ -624,13 +644,7 @@ export default {
     },
     // 提示
     toast(message) {
-      this.$toast.fail({
-        duration: 2500,
-        forbidClick: true,
-        overlay: true,
-        className: "loadClass",
-        message
-      });
+      this.$toast(message);
     }
   }
 };
