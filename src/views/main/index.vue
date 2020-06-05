@@ -35,6 +35,6 @@
 	.mainPageBox{
 		height: 100%;
 		overflow: auto;
-		-webkit-overflow-scrolling: touch;
+		// -webkit-overflow-scrolling: touch;
 	}
 </style>
