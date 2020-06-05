@@ -299,11 +299,7 @@ export default {
           (orderTime.getTime() - nowTime.getTime()) / 86400000
         );
         if (reduce > 31) {
-          this.$toast.fail({
-            duration: 2500, // 持续展示 toast
-            forbidClick: true,
-            overlay: true,
-            className: "loadClass",
+          this.$toast({
             message: "日期跨度不得超过31天"
           });
           this.setDateValue(getDay(new Date()), getDay(new Date()));

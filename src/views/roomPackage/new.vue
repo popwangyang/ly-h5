@@ -318,7 +318,11 @@ export default {
           " " +
           this.changeTime(this.comboItem.period_time_start) +
           " - " +
-          this.changeTime(this.comboItem.period_time_end)
+          this.changeTime(
+            this.comboItem.period_time_end === 2880
+              ? 0
+              : this.comboItem.period_time_end
+          )
         );
       }
       return "";
@@ -405,6 +409,7 @@ export default {
                   this.listArr = _data.goods;
                 }
                 this.new = this.totalData();
+                console.log(this.listArr);
                 resolve(r);
               }
             })
