@@ -82,7 +82,8 @@
 				}, 0);
 			},
 			onInput(value) {
-				this.value = this.value + value;
+				// console.log(val)
+				this.value = "" +this.value + value ;
 				this.$emit("returnBack", this.value);
 			},
 			onDelete() {
