@@ -7,6 +7,7 @@
         required
         maxlength="20"
         input-align="right"
+        placeholder="请输入"
         label="套餐名称"
         v-model="pkname"
       />
@@ -112,6 +113,7 @@ export default {
   name: "newcombo",
   data() {
     return {
+      ads: 0,
       old: "", // 旧数据
       new: "", // 新数据
       weekString: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], // 周数据
@@ -158,7 +160,7 @@ export default {
       conti: false, // 返回套餐列表
       pkname: "优选套餐", // 套餐默认名称
       show: false,
-      actual_price: 0, // 优惠价
+      actual_price: "0", // 优惠价
       intercept: true, // 拦截
       upChecked: true, // 上架状态
       listArr: [
@@ -510,7 +512,13 @@ export default {
       }
       let value = 0;
       if (typeof Number(e.target.value) === "number") {
-        value = Number(e.target.value).toFixed(2);
+        if (String(parseInt(e.target.value)).length > 16) {
+          value = Number(
+            String(parseInt(e.target.value)).substring(0, 16)
+          ).toFixed(2);
+        } else {
+          value = Number(e.target.value).toFixed(2);
+        }
       }
       this.actual_price = value;
     },
@@ -689,6 +697,6 @@ export default {
   flex: 6;
 }
 .newCombo .van-cell__value {
-  text-align: center !important;
+  /* text-align: center !important; */
 }
 </style>

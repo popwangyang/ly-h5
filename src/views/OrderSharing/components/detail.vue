@@ -65,7 +65,7 @@ export default {
       if (this.searchValue == "") {
         return "";
       } else {
-        return "没有更多了";
+        return "暂未查询到相关订单";
       }
     }
   },

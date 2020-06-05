@@ -1,12 +1,13 @@
 import axios from '@/libs/api.request'
 
 // 获取套餐列表
-export const getPackageList = (ktv_id) => {
+export const getPackageList = (ktv_id, params) => {
   return axios.request({
     url: `/ktv/pkg/ktvs/${ktv_id}/packages`,
     params: {
       is_delete: false,
-      ordering: '-weight'
+      ordering: '-weight',
+      ...params
     },
     method: 'get'
   })

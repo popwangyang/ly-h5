@@ -228,6 +228,11 @@ export default {
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       color: rgba(153, 153, 153, 1);
+      span {
+        width: 30%;
+        display: inline-block;
+        line-height: 1.2;
+      }
     }
     .detailcont {
       background: rgba(248, 248, 248, 1);
@@ -236,6 +241,9 @@ export default {
       padding: 15px 0;
       margin: 10px 0;
       span {
+        width: 30%;
+        line-height: 1.2;
+        display: inline-block;
         font-size: 14px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;

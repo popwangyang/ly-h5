@@ -1,15 +1,15 @@
 <template>
   <div ref="scroll" class="combo">
-    <PageList :getData="getData" ref="pageList" :params="params">
+    <div class="combo-top">
+      <span class="combo-top-title">套餐列表</span>
+      <div class="combo-top-op">
+        <button class="op-btn op-btn-man" @click="manaCombo">管理</button>
+        <button class="op-btn op-btn-new" @click="newCombo">创建</button>
+      </div>
+    </div>
+    <PageList noListText="暂无套餐" :getData="getData" ref="pageList" :params="params">
       <template>
         <div>
-          <div class="combo-top">
-            <span class="combo-top-title">套餐列表</span>
-            <div class="combo-top-op">
-              <button class="op-btn op-btn-man" @click="manaCombo">管理</button>
-              <button class="op-btn op-btn-new" @click="newCombo">创建</button>
-            </div>
-          </div>
           <div class="combo-ul">
             <li @click="detail(item)" v-for="(item, index) in results" :key="index">
               <img style="display:none;" width="40" height="40" class="leftimg" :src="listImg" alt />
@@ -27,7 +27,7 @@
             </li>
           </div>
         </div>
-        <p v-if="!total" class="noneInfo">暂无套餐</p>
+        <p v-if="!hasCombo" class="noneInfo">暂无套餐</p>
       </template>
     </PageList>
   </div>
@@ -54,6 +54,13 @@ export default {
   components: {
     PageList
   },
+  computed: {
+    //  是否有套餐
+    hasCombo() {
+      if (this.total) return true;
+      return false;
+    }
+  },
   mounted() {},
   methods: {
     // 详情
@@ -64,14 +71,17 @@ export default {
       });
     },
     // 获取套餐列表
-    getData() {
+    getData(params) {
       return new Promise((resolve, reject) => {
-        getPackageList(this.$store.state.user.ktv_id)
+        getPackageList(this.$store.state.user.ktv_id, params)
           .then(r => {
             if (r.data) {
               this.isCreate = true;
               this.total = r.data.results.length;
               this.results = r.data.results;
+              console.log(this.total);
+              console.log(this.results);
+
               if (this.results.length) {
                 this.showLoading = true;
                 resolve({
@@ -82,7 +92,10 @@ export default {
               }
               this.showLoading = false;
             }
-            resolve(r);
+            resolve({
+              total: 0,
+              data: []
+            });
           })
           .catch(err => {
             reject(err);
@@ -186,6 +199,9 @@ export default {
           position: relative;
           margin-bottom: 10px;
           .p1-name {
+            display: inline-block;
+            width: 80%;
+            line-height: 1.3;
             font-size: 16px;
             font-family: PingFangSC-Semibold, PingFang SC;
             font-weight: 600;
@@ -232,5 +248,20 @@ export default {
   text-align: center;
   color: #afacac;
   margin-top: 10%;
+}
+</style>
+<style>
+.combo .pageListBox {
+  display: flex;
+}
+.combo .van-pull-refresh {
+  width: 100% !important;
+  flex: 1;
+}
+.combo .van-pull-refresh__track {
+  height: 100%;
+}
+.combo .pageListBox .pageLoading {
+  width: 100%;
 }
 </style>

@@ -427,9 +427,12 @@ export default {
         flex-wrap: wrap;
         font-size: 12px;
         & > span {
+          display: inline-block;
           padding: 10px 20px;
           margin: 0 20px 20px 0;
-          min-width: 70px;
+          width: 85px;
+          height: 35px;
+          text-align: center;
           box-sizing: border-box;
           background: #f3f5f7;
           color: #444444;

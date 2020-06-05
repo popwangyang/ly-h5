@@ -4,11 +4,7 @@
       <div class="mid-wrapper">
         <p class="nameLabel">{{comname}}</p>
         <p class="areaLabel">{{address}}</p>
-        <van-button
-          v-if="showPersonalInfo===1"
-          class="buttonSquare btntop"
-          type="default"
-        >包厢数：{{roomnum}}</van-button>
+        <div v-if="showPersonalInfo===1" class="roomnumClass">包厢数：{{roomnum}}</div>
       </div>
     </div>
     <div v-if="showPersonalInfo===2" class="mana-wrapper">{{name}}</div>
@@ -387,6 +383,10 @@ export default {
       background-color: #fff;
       justify-content: center;
       .nameLabel {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 90%;
         font-size: 16px;
         font-family: PingFangSC-Semibold, PingFang SC;
         font-weight: 600;
@@ -394,12 +394,19 @@ export default {
         line-height: 22px;
       }
       .areaLabel {
+        width: 90%;
         font-size: 12px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: rgba(134, 146, 165, 1);
         line-height: 17px;
         margin-top: 7px;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
       }
       .btntop {
         margin-top: 2px !important;
@@ -491,5 +498,19 @@ export default {
 .personalCenter .workday {
   line-height: 20px !important;
   height: 36px !important;
+}
+.personalCenter .roomnumClass {
+  width: 120px;
+  height: 31px;
+  line-height: 31px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(
+    180deg,
+    rgba(54, 210, 254, 1) 0%,
+    rgba(50, 156, 238, 1) 100%
+  );
+  border-radius: 16px;
+  margin-top: 10px;
 }
 </style>

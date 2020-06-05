@@ -67,7 +67,7 @@
         <p v-if="this.down.length === 0" class="mtp5 noneInfo">暂无套餐</p>
       </div>
       <div class="common">
-        <p>已删除套餐</p>
+        <p>待删除套餐</p>
         <TranstionsList>
           <div class="item" v-for="(item, index) in this.clear" :key="item.id">
             <div class="wrapper">
@@ -111,6 +111,7 @@
 </template>
 
 <script>
+import { Dialog } from "vant";
 import { getPackageList, manaCombo } from "@/api/combo";
 // import { cacheMixins } from "@/libs/mixins";
 
@@ -160,15 +161,17 @@ export default {
     },
     // 删除套餐
     clearItem(w, item, index) {
-      if (w === "up") {
-        this.up.splice(index, 1);
-      } else {
-        this.down.splice(index, 1);
-      }
-      this.clear.push(item);
-      this.$toast({
-        message: "套餐已删除",
-        type: "success"
+      this.deltips(() => {
+        if (w === "up") {
+          this.up.splice(index, 1);
+        } else {
+          this.down.splice(index, 1);
+        }
+        this.clear.push(item);
+        this.$toast({
+          message: "套餐已删除",
+          type: "success"
+        });
       });
     },
     // 恢复套餐
@@ -252,6 +255,13 @@ export default {
       this.up.push(item);
       this.down.splice(index, 1);
     },
+    //删除提示
+    deltips(cal) {
+      Dialog.confirm({
+        title: "提示",
+        message: "是否删除该套餐"
+      }).then(cal);
+    },
     // 保存
     save() {
       this.overlay = true;
@@ -280,7 +290,8 @@ export default {
     }
   },
   components: {
-    TranstionsList
+    TranstionsList,
+    [Dialog.Component.name]: Dialog.Component
   }
 };
 </script>
@@ -360,6 +371,8 @@ export default {
               margin-left: 10px;
               flex: 1;
               .name {
+                width: 80%;
+                line-height: 1.3;
                 font-size: 16px;
                 font-family: PingFangSC-Semibold, PingFang SC;
                 font-weight: 600;
