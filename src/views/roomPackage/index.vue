@@ -142,7 +142,7 @@ export default {
   overflow-y: auto;
   .combo-top {
     width: 100%;
-    padding: 22px;
+    padding: 6px 15px;
     display: flex;
     background-color: #fff;
     justify-content: space-between;
