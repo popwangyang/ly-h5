@@ -52,7 +52,7 @@
 		data() {
 			return {
 				show: false,
-				value: "",
+				value: this.modelValue,
 				flag: false
 			};
 		},
