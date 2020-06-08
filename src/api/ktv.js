@@ -24,19 +24,24 @@ export const getKTVList = (params) => {
 
 // 获取ktv详情
 export const getKtvDetail = (id) => {
-	// return new Promise((resolve, reject) => {
-	// 	ktvDatail(id).then(ktvRes => {
-	// 		// agentName(ktvRes.data.agent_id).then(agentRes => {
-	// 		// 	ktvRes.data.agent_name = agentRes.data.name;
-	// 		// 	resolve(ktvRes);
-	// 		// })
-	// 		resolve(ktvRes);
-	// 	})
-	// })
-	return axios.request({
-	  url: `/ktv/place/ktv-upgrade/${id}`,
-	  method: 'get'
+	return new Promise((resolve, reject) => {
+		ktvDatail(id).then(ktvRes => {
+			let params = {
+				agency_area_code: ktvRes.data.nprovince,
+				enabled: true
+			}
+			agentName(params).then(agentRes => {
+				// console.log(agentRes)
+				ktvRes.data.agent_name = agentRes.data.results[0] ? agentRes.data.results[0].name:'';
+				resolve(ktvRes);
+			})
+			resolve(ktvRes);
+		})
 	})
+	// return axios.request({
+	//   url: `/ktv/place/ktv-upgrade/${id}`,
+	//   method: 'get'
+	// })
 }
 
 const ktvDatail = (id) => {
@@ -46,9 +51,10 @@ const ktvDatail = (id) => {
 	})
 }
 
-const agentName = (agent_id) => {
+const agentName = (params) => {
 	return axios.request({
-	  url: `/cperm/agentibus/${agent_id}`,
+	  url: `/cperm/agentibus`,
+	  params,
 	  method: 'get'
 	})
 }
