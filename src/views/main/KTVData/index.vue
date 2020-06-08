@@ -973,13 +973,9 @@ export default {
 }
 ::v-deep .van-tabs__line {
   width: 55px !important;
-  height: 6px;
+  height: 2px;
   bottom: 28px;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 184, 255, 0) 0%,
-    rgba(0, 130, 255, 1) 100%
-  );
+  background: #468cf4;
 }
 ::v-deep .dataPick {
   width: 200px;

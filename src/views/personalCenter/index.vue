@@ -383,6 +383,7 @@ export default {
       background-color: #fff;
       justify-content: center;
       .nameLabel {
+        text-align: center;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -394,6 +395,7 @@ export default {
         line-height: 22px;
       }
       .areaLabel {
+        text-align: center;
         width: 90%;
         font-size: 12px;
         font-family: PingFangSC-Regular, PingFang SC;
@@ -502,15 +504,18 @@ export default {
 .personalCenter .roomnumClass {
   width: 120px;
   height: 31px;
+  font-size: 16px;
   line-height: 31px;
   text-align: center;
-  color: #fff;
-  background: linear-gradient(
+  /* color: #fff; */
+  color: rgba(255, 91, 63, 1);
+  font-weight: bold;
+  /* background: linear-gradient(
     180deg,
     rgba(54, 210, 254, 1) 0%,
     rgba(50, 156, 238, 1) 100%
   );
-  border-radius: 16px;
+  border-radius: 16px; */
   margin-top: 10px;
 }
 </style>

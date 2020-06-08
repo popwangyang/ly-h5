@@ -31,7 +31,7 @@
             v-model="item.count"
             placeholder="请输入"
           />-->
-          <cell-inputNumber title="数量" v-model="item.count"></cell-inputNumber>
+          <cell-inputNumber title="数量" @blur="countSigCount($event, index)" v-model="item.count"></cell-inputNumber>
           <cell-inputNumber
             title="单价"
             @blur="countSigPrice($event, index)"
@@ -120,6 +120,7 @@
 <script>
 import { cacheMixins } from "@/libs/mixins";
 import ContentLoad from "@/components/contentLoad";
+import validatorIn from "@/libs/validatorIn";
 import cellInputNumber from "@/components/cellForm/cellInputNumber";
 import { createContract, getPackageDetail, modiInfoCombo } from "@/api/combo";
 export default {
@@ -127,7 +128,7 @@ export default {
   name: "newcombo",
   data() {
     return {
-      ads: 0,
+      isYes: false, // 是否填写正确
       old: "", // 旧数据
       new: "", // 新数据
       weekString: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"], // 周数据
@@ -222,7 +223,6 @@ export default {
       next(false);
       this.$dialog.confirm({
         title: "提示",
-        closeOnPopstate: true,
         message: "是否保存修改的信息",
         beforeClose
       });
@@ -239,7 +239,6 @@ export default {
         return;
       }
       this.$dialog.confirm({
-        // closeOnPopstate: true,
         title: "提示",
         message: "是否保存修改的信息",
         beforeClose
@@ -275,7 +274,9 @@ export default {
         const e = this.listArr[i];
         num += Number(e.count) * Number(e.original_price || 0);
       }
-      return num.toFixed(2);
+      let a = num.toFixed(2);
+      if (String(a) === "NaN") return 0;
+      return a;
     },
     // 是否新增
     isAdd() {
@@ -289,17 +290,38 @@ export default {
     }
   },
   methods: {
+    countSigCount(val, v1) {
+      if (val) this.listArr[v1].count = String(Number(val));
+    },
     countSigPrice(val, v1) {
       if (val) {
-        console.log(Number(val));
-        console.log(Number(val).toFixed(2));
-        this.listArr[v1].original_price = Number(val).toFixed(2);
+        this.listArr[v1].original_price = val;
+        this.listArr[v1].isYes =
+          val === "0"
+            ? false
+            : validatorIn.throwMessage(
+                "isFixed2",
+                val,
+                "请输入正确单价，保留两位小数"
+              );
         return;
       }
       this.listArr[v1].original_price = 0;
     },
     countSigactual_price(val) {
-      this.actual_price = Number(val).toFixed(2);
+      this.isYes =
+        val === "" || val === "0" || val === "0.00" || val === 0
+          ? false
+          : validatorIn.throwMessage(
+              "isFixed2",
+              val,
+              "请输入正确套餐优惠价，保留两位小数"
+            );
+      if (val) {
+        this.actual_price = val;
+        return;
+      }
+      this.actual_price = 0;
     },
     getTimeStr() {
       let a = [];
@@ -410,10 +432,13 @@ export default {
                 if (_data.goods.length === 0) {
                   this.setFood();
                 } else {
+                  _data.goods.forEach(item => {
+                    item.count = String(item.count);
+                    item.original_price = String(item.original_price);
+                  });
                   this.listArr = _data.goods;
                 }
                 this.new = this.totalData();
-                console.log(this.listArr);
                 resolve(r);
               }
             })
@@ -588,7 +613,7 @@ export default {
       return {
         name: "",
         count: "",
-        original_price: ""
+        original_price: "0"
       };
     },
     // 新增商品
@@ -607,12 +632,31 @@ export default {
       if (this.listArr.length > 1) {
         for (let i = 0; i < this.listArr.length; i++) {
           const el = this.listArr[i];
-          if (el.count === "0") {
+          if (el.name && el.count === "0") {
             this.toast("商品数量不能为0");
             return;
           }
-          if (!el.name || !Number(el.count)) {
-            this.toast("商品信息请输入完整");
+          if (el.name && !Number(el.count)) {
+            this.toast("请输入商品数量");
+            go = false;
+            break;
+          }
+          if (!el.name && Number(el.count)) {
+            this.toast("请输入商品名称");
+            go = false;
+            break;
+          }
+          if (
+            el.original_price === 0 || el.original_price === "0"
+              ? false
+              : el.isYes
+          ) {
+            this.toast("请输入正确单价，保留两位小数");
+            go = false;
+            break;
+          }
+          if (!el.count && !el.name) {
+            this.toast("请输入完整商品信息");
             go = false;
             break;
           }
@@ -626,15 +670,38 @@ export default {
           this.toast("商品数量不能为0");
           return;
         }
+        if (ell.name && !Number(ell.count)) {
+          this.toast("请输入商品数量");
+          return;
+        }
+        if (Number(ell.count) && !ell.name) {
+          this.toast("请输入商品名称");
+          return;
+        }
+        if (!ell.count && !ell.name && Number(ell.original_price)) {
+          this.toast("请输入完整商品信息");
+          return;
+        }
         if (
-          (ell.name && !Number(ell.count)) ||
-          (Number(ell.count) && !ell.name)
+          ell.original_price === 0 || ell.original_price === "0"
+            ? false
+            : ell.isYes
         ) {
-          this.toast("商品信息请输入完整");
+          this.toast("请输入正确单价，保留两位小数");
           return;
         }
       }
-
+      if (
+        this.actual_price === 0 ||
+        this.actual_price === "" ||
+        this.actual_price === "0" ||
+        this.actual_price === "0.00"
+          ? false
+          : this.isYes
+      ) {
+        this.toast("请输入正确套餐优惠价，保留两位小数");
+        return;
+      }
       if (this.actual_price === "") {
         this.toast("请输入套餐优惠价");
         return;
