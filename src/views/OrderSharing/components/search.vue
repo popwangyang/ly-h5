@@ -1,11 +1,12 @@
 <template>
   <div class="searchBox">
-    <van-search :placeholder="placeholder" v-model="value" shape="round" />
+    <cell-search :placeholder="placeholder" type="number" v-model="value" />
     <div @click="Btn" class="div"></div>
   </div>
 </template>
 
 <script>
+import cellSearch from "@/components/cellForm/cellSearch";
 export default {
   props: {
     placeholder: {
@@ -56,6 +57,9 @@ export default {
       }
       return infoType;
     }
+  },
+  components: {
+    cellSearch
   }
 };
 </script>
