@@ -21,7 +21,7 @@
 						{{detailData.vod_brand}}
 					</span>
 				</van-cell>
-				<van-cell>
+				<van-cell v-if="detailData.agent_name">
 					<span slot="title">所属代理商</span>
 					<span>
 						{{detailData.agent_name}}
