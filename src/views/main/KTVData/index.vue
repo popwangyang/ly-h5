@@ -52,7 +52,7 @@
     <!-- 订单金额 -->
     <div class="chart-wrapper">
       <div class="tab-wrapper">
-        <div class="tab">
+        <div class="tab indextab">
           <van-tabs v-model="active" @click="clickTab">
             <van-tab v-if="userType === 1" title="订单金额"></van-tab>
             <van-tab title="分成金额"></van-tab>
@@ -904,7 +904,7 @@ export default {
       position: relative;
       overflow: hidden;
       .tab {
-        width: 200px;
+        width: 160px;
       }
       .tabmore {
         float: right;
@@ -1008,5 +1008,18 @@ export default {
   line-height: 22px;
   margin-bottom: 10px;
   color: #888888;
+}
+.indextab .van-tabs--line {
+  padding-left: 6px;
+}
+.indextab .van-tab__text {
+  font-size: 12px;
+}
+.indextab .van-tab--active .van-tab__text {
+  font-size: 16px !important;
+}
+.indextab .van-tabs__line {
+  width: 65px !important;
+  bottom: 25px !important;
 }
 </style>
