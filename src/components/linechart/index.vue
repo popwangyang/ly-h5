@@ -52,17 +52,24 @@ export default {
         id,
         pixelRatio: window.devicePixelRatio
       });
+      console.log("xUnit", this.xUnit);
+
       this.chart.source(
         data,
         this.xUnit
           ? {
               date: {
-                range: [0, 1],
                 type: "timeCat",
-                tickCount: 4
+                range: [0, 1],
+                tickCount: 3
               }
             }
-          : {}
+          : {
+              date: {
+                range: [0, 1],
+                tickCount: 3
+              }
+            }
       );
       this.chart.tooltip({
         custom: true,
