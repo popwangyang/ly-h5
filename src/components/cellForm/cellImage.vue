@@ -33,7 +33,6 @@
 		data() {
 			return {
 				data: [],
-				instance: null
 			};
 		},
 		watch: {
@@ -58,11 +57,14 @@
 						}
 					});
 				} else {
-					this.instance = instance = ImagePreview({
+					ImagePreview({
 						images: [
 							url
 						],
-						asyncClose: true,
+						asyncClose: false,
+						closeable: true,
+						showIndex: false,
+						closeOnPopstate: true
 					});
 				}
 			},
@@ -85,14 +87,6 @@
 					}, []);
 				});
 			}
-		},
-		activated() {
-			if (this.instance == null) return;
-			this.instance.close();
-		},
-		destroyed() {
-			if (this.instance == null) return;
-			this.instance.close();
 		}
 	};
 </script>
