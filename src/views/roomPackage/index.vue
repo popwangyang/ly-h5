@@ -1,5 +1,5 @@
 <template>
-  <div ref="scroll" class="combo">
+  <div class="combo">
     <div class="combo-top">
       <span class="combo-top-title">套餐列表</span>
       <div class="combo-top-op">
@@ -7,35 +7,44 @@
         <button class="op-btn op-btn-new" @click="newCombo">创建</button>
       </div>
     </div>
-    <PageList
-      :disRefresh="true"
-      noListText="暂无套餐"
-      :getData="getData"
-      ref="pageList"
-      :params="params"
-    >
-      <template>
-        <div>
-          <div class="combo-ul">
-            <li @click="detail(item)" v-for="(item, index) in results" :key="index">
-              <img style="display:none;" width="40" height="40" class="leftimg" :src="listImg" alt />
-              <div class="combo-ul-content">
-                <div class="combo-ul-content-p1">
-                  <span class="p1-name">{{item.name}}</span>
-                  <!-- <img class="tip" width="31" height="16" :src="recommendImg" alt /> -->
-                  <div class="tip1">{{item.enabled?"已上架":"已下架"}}</div>
+    <div class="list" ref="scroll">
+      <PageList
+        noListText="暂无套餐"
+        :disRefresh="true"
+        :getData="getData"
+        ref="pageList"
+        :params="params"
+      >
+        <template v-slot:default="slotProps">
+          <div>
+            <div class="combo-ul">
+              <li @click="detail(item)" v-for="(item, index) in slotProps.dataList" :key="index">
+                <img
+                  style="display:none;"
+                  width="40"
+                  height="40"
+                  class="leftimg"
+                  :src="listImg"
+                  alt
+                />
+                <div class="combo-ul-content">
+                  <div class="combo-ul-content-p1">
+                    <span class="p1-name">{{item.name}}</span>
+                    <!-- <img class="tip" width="31" height="16" :src="recommendImg" alt /> -->
+                    <div class="tip1">{{item.enabled?"已上架":"已下架"}}</div>
+                  </div>
+                  <p class="combo-ul-content-p2">
+                    <span class="p2-1">￥{{item.actual_price|toFixed2}}</span>
+                    <b class="p2-2">￥{{item.original_price|toFixed2}}</b>
+                  </p>
                 </div>
-                <p class="combo-ul-content-p2">
-                  <span class="p2-1">￥{{item.actual_price|toFixed2}}</span>
-                  <b class="p2-2">￥{{item.original_price|toFixed2}}</b>
-                </p>
-              </div>
-            </li>
+              </li>
+            </div>
           </div>
-        </div>
-        <p v-if="!hasCombo" class="noneInfo">暂无套餐</p>
-      </template>
-    </PageList>
+          <p v-if="!hasCombo" class="noneInfo">暂无套餐</p>
+        </template>
+      </PageList>
+    </div>
   </div>
 </template>
 
@@ -49,7 +58,6 @@ export default {
   data() {
     return {
       params: { load: true },
-      showLoading: true,
       results: [], // 列表
       total: 0, // 套餐数量
       isCreate: false, // 是否可创建
@@ -80,29 +88,18 @@ export default {
     getData(params) {
       return new Promise((resolve, reject) => {
         getPackageList(this.$store.state.user.ktv_id, params)
-          .then(r => {
-            if (r.data) {
-              this.isCreate = true;
-              this.total = r.data.results.length;
-              this.results = r.data.results;
-              if (this.results.length) {
-                this.showLoading = true;
-                resolve({
-                  total: this.total,
-                  data: this.results
-                });
-                // resolve({
-                //   total: 0,
-                //   data: []
-                // });
-                return;
-              }
-              this.showLoading = false;
-            }
-            resolve({
-              total: 0,
-              data: []
-            });
+          .then(res => {
+            this.isCreate = true;
+            this.total = res.data.count;
+            let results = {
+              total: res.data.count,
+              data: res.data.results
+            };
+            resolve(results);
+            // resolve({
+            //   total: 0,
+            //   data: []
+            // });
           })
           .catch(err => {
             reject(err);
@@ -259,14 +256,18 @@ export default {
 }
 </style>
 <style>
-.combo .pageListBox {
-}
 .combo .van-pull-refresh {
-  width: 100% !important;
-  flex: 1;
+  /* width: 100% !important; */
+  overflow: inherit !important;
 }
-.combo .van-pull-refresh__track {
+/* .combo .van-pull-refresh__track {
   height: 100%;
+} */
+
+.combo .list {
+  flex: 1;
+  overflow: auto;
+  z-index: 11;
 }
 .combo .pageListBox .pageLoading {
   width: 100%;
