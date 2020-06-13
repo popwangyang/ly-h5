@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.a28a186d5e2e9128778dc9872c00a7dd.js"
+  "precache-manifest.f2a9ca48e08fd9b56c47f175121c1724.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "yl-h5"});
