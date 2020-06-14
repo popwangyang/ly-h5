@@ -16,8 +16,8 @@ if (url.indexOf('pro.bjywkd.com') > -1) {
   baseUrl = config.baseUrl.dev
   socketUrl = config.socketUrl.dev
 } else {
-  baseUrl = config.baseUrl.test
-  socketUrl = config.socketUrl.test
+  baseUrl = config.baseUrl.pro
+  socketUrl = config.socketUrl.pro
 }
 
 export const URL = baseUrl
