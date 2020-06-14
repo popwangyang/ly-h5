@@ -172,13 +172,15 @@ export default {
         .catch(e => {
           if (e.status === 400) {
             this.showLoading = false;
-            this.$router.push({
-              path: "/withdrawalResult",
-              query: {
-                f: false,
-                e: e.data.ping
-              }
-            });
+            setTimeout(() => {
+              this.$router.push({
+                path: "/withdrawalResult",
+                query: {
+                  f: false,
+                  e: e.data.ping
+                }
+              });
+            }, 100)
           }
         });
       // withdrawalRecord(this.id, "pending").then(res => {
