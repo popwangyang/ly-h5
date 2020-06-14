@@ -174,7 +174,7 @@ export default {
             this.showLoading = false;
             this.$router.push({
               path: "/withdrawalResult",
-              params: {
+              query: {
                 f: false,
                 e: e.data.ping
               }
