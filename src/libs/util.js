@@ -43,8 +43,8 @@ export const removeUser = () => {
 }
 
 
-/* 
-  权限控制 
+/*
+  权限控制
  */
 const contains = function(arr, obj) {
 	if(arr==''|| arr==null){ return false}
@@ -67,10 +67,10 @@ export const actionsAuthority =  function(code) {
 
 
 
-/* 
+/*
  * 设置token;
  * @params{String} token token值
- * 
+ *
  */
 export const setToken = (token) => {
 	let nowTime = new Date();
@@ -81,11 +81,11 @@ export const setToken = (token) => {
 	})
 }
 
-/* 
+/*
  * 获取token;
  * @params {Boolon | true} skipUpdateToken 是否跳过更新token有效时间
  * @return {String | false} 没有token时返回false。
- * 
+ *
  */
 export const getToken = (skipUpdateToken) => {
 	const token = Cookies.get(TOKEN_KEY);
@@ -94,7 +94,7 @@ export const getToken = (skipUpdateToken) => {
 			setToken(token);
 		}
 		return token
-	} 
+	}
 	else return false
 }
 
@@ -104,11 +104,11 @@ export const getToken = (skipUpdateToken) => {
 // 	setToken(token, nowTime);
 // }
 
-/* 
+/*
  * 请求token缓冲器;
  * @params{Number} time 设置需要缓冲的间隔时间
  * @return {Boolean} ture时为缓冲结算,false时为缓冲中。
- * 
+ *
  */
 var flage = true
 export const spring = (time) => {
@@ -124,11 +124,11 @@ export const spring = (time) => {
 }
 
 
-/* 
+/*
  * 抛出错误信息;
  * @params{Object} data 抛出的错误体
- * 
- * 
+ *
+ *
  */
 
 export const throwError = function (data) {
@@ -137,7 +137,8 @@ export const throwError = function (data) {
 			Toast(item.message);
 		})
 	} else {
-		Toast(data.error);
+	  let text = data.error || data.ping
+		Toast(text);
 	}
 }
 
@@ -152,11 +153,11 @@ export const NoTokenRefresh = (option) => {
 	}
 }
 
-/* 
+/*
  * 函数防抖;
  * @params{Function} fn 回调函数
  * @params{Number} wait 等待时间
- * 
+ *
  */
 var timeout = null;
 export const debounce = (fn, wait) => {
@@ -169,11 +170,11 @@ export const debounce = (fn, wait) => {
 	}
 }
 
-/* 
+/*
  * 节流;
  * @params{Function} func 回调函数
  * @params{Number} delay 延时时间
- * 
+ *
  */
 export const throttle = (func, delay) => {
 	var timer = null;
@@ -189,11 +190,11 @@ export const throttle = (func, delay) => {
 	}
 }
 
-/* 
+/*
  * 时间转换函数;
  * @params{Date} date 需要转换的时间对象
  * @return{String} 返回转换后的结果 eg:2019-01-01
- * 
+ *
  */
 export const getDay = (date) => {
 	var results = ''
@@ -222,11 +223,11 @@ export const getDayTime = (date, isTomorrow) => {
 	return results
 }
 
-/* 
+/*
  * 获取ktv营业的星期天;
  * @params{Array} days 数组对象
  * @return{String} 返回转换后的结果 eg:周一、周二
- * 
+ *
  */
 export const getWeeks = (days) => {
 	let result = '';
@@ -262,7 +263,7 @@ export const getWeeks = (days) => {
 	}
 }
 
-/* 
+/*
  
  */
 export const getTime = (time) => {
@@ -292,11 +293,11 @@ const setHours = (time) => {
 	return date.setHours(hours, minute);
 }
 
-/* 
+/*
  * ktv实施信息获取位置参数的类型;
  * @params{Object} position 位置坐标
  * @return{Number} 返回位置坐标类型
- * 
+ *
  */
 
 export const getPositionValue = (position, list) => {
@@ -311,12 +312,12 @@ export const getPositionValue = (position, list) => {
 }
 
 
-/* 
+/*
  * ktv实施信息设置位置参数方向;
  * @params{Number} x 位置的横坐标
  * @params{Number} width 屏幕的x的宽度
  * @return{String} 返回位置方向eg: 左
- * 
+ *
  */
 const setDirection = (x, width) => {
 	let result;
@@ -329,13 +330,13 @@ const setDirection = (x, width) => {
 	return result;
 }
 
-/* 
+/*
  * ktv实施信息设置提交参数
- * @params{Object} data 
+ * @params{Object} data
  * @params{Array} list 位置类型列表
  * @params{Number} width 屏幕的x的宽度
  * @return{Object} 构造的提交参数实例
- * 
+ *
  */
 export const setFormData = (data, list, width) => {
 	let result = {};
@@ -356,7 +357,7 @@ export const setFormData = (data, list, width) => {
 	return result;
 }
 
-/* 
+/*
  * 设置年份
  * */
 export const setYears = () => {
@@ -369,7 +370,7 @@ export const setYears = () => {
 	return result;
 }
 
-/* 
+/*
   获取url
 */
 export const getBaseUrl = () => {
@@ -381,7 +382,7 @@ export const getBaseUrl = () => {
 	return baseUrl;
 }
 
-/* 
+/*
  根据url验证是否是平台账号
 */
 export const validPlatform = (type, isValidCode = false) => {
@@ -412,7 +413,7 @@ export const validPlatform = (type, isValidCode = false) => {
 
 }
 
-/* 
+/*
  数据扁平化；
  */
 export const Delayering = (data) => {
@@ -464,7 +465,7 @@ export const getMapData = (params) => {
 		case 3:
 		  result = mapData.find(item => {
 		  	return item.value == params.province;
-		  }).children[0].children; 
+		  }).children[0].children;
 		  
 		 break;
 	}
