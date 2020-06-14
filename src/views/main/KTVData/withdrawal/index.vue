@@ -150,7 +150,7 @@ export default {
     // 确认
     confirm() {
       this.showLoading = true;
-      withdrawalApi(Math.ceil(Number(this.inputnum) * 100), this.user_id)
+      withdrawalApi(Number((this.inputnum * 100).toFixed(0)), this.user_id)
         .then(res => {
           this.id = res.data.id;
           this.showLoading = false;
