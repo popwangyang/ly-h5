@@ -88,7 +88,6 @@
     <van-button @click="submit" class="confirm entityBtnDefault">提交申请</van-button>
   </div>
 </template>
-// 5w 1 7
 
 <script>
 import { withdrawalApi, withdrawalRecord } from "@/api/withdrawal";
@@ -109,7 +108,7 @@ export default {
     // 手续费
     poundange() {
       let num = this.inputnum ? this.inputnum : 0;
-      return Number(num) <= 50000 ? 1 : 7;
+      return Number(num) <= 50000 ? 1 : 10;
     },
     // 用户Id
     user_id() {
@@ -180,7 +179,7 @@ export default {
                   e: e.data.ping
                 }
               });
-            }, 100)
+            }, 100);
           }
         });
       // withdrawalRecord(this.id, "pending").then(res => {
