@@ -60,7 +60,7 @@
 				  height: 100%;
 				  display: flex;
 				  flex-direction: column;
-				  padding: 0 20px;
+				  padding: 0 0 0 20px;
 				  .money{
 					  font-size:20px;
 					  color:rgba(0,0,0,1);

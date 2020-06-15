@@ -15,7 +15,7 @@ export default [
 		component: cardTicket
 	},
 	{
-		path: '/cardTicket/cardTicketRecord',
+		path: '/cardTicketRecord',
 		name: 'cardTicketRecord',
 		meta:{
 			title: '兑换记录'
@@ -23,7 +23,7 @@ export default [
 		component: cardTicketRecord
 	},
 	{
-		path: '/cardTicket/cardTicketRecord/search',
+		path: '/cardTicketRecordSearch',
 		name: 'cardTicketRecordSearch',
 		meta:{
 			title: '兑换记录'
