@@ -44,6 +44,7 @@ export const withdrawalApi = (amount, user_id) => {
       amount,
       user_id
     },
-    method: 'post'
+    method: 'post',
+    skipThrowError: true,
   })
 }
