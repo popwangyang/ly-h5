@@ -7,6 +7,7 @@ export const getPackageList = (ktv_id, params) => {
     params: {
       is_delete: false,
       ordering: '-weight',
+      p_size: 10000,
       ...params
     },
     method: 'get'
