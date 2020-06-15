@@ -5,21 +5,21 @@
 			<Content :rate="scanCodeBillRate">
 				<span>
 					<span>总收入</span>
-					<span class="money">¥{{formData.amount}}</span>
+					<span class="money">¥{{formData.amount  | toThousands}}</span>
 				</span>
 				<span>
 					<span>
 						<b class="b1"></b>
 						<span>综合服务费</span>
 					</span>
-					<span class="money">¥{{formData.music_amount_display}}</span>
+					<span class="money">¥{{formData.music_amount_display | toThousands}}</span>
 				</span>
 				<span>
 					<span>
 						<b class="b2"></b>
 						<span>商户开房套餐</span>
 					</span>
-					<span class="money">¥{{formData.package_amount_display}}</span>
+					<span class="money">¥{{formData.package_amount_display | toThousands}}</span>
 				</span>
 			</Content>
 		  </van-tab>
@@ -41,7 +41,7 @@
 						<b></b>
 						<span>退款金额</span>
 					</span>
-					<span class="money">¥{{formData.refund_amount_display}}</span>
+					<span class="money">¥{{formData.refund_amount_display  | toThousands}}</span>
 				</span> 
 			</Content>
 		  </van-tab>
@@ -88,7 +88,6 @@
 					};
 				}
 				orderDisplay(params).then(res => {
-					console.log(res);
 					this.formData = res.data;
 				})
 			}
