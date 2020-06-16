@@ -39,16 +39,16 @@ export default {
   watch: {
     $route(to, from) {
       document.title = to.meta.title;
-   //    const toDepth = to.path.split("/").length;
-   //    const fromDepth = from.path.split("/").length;
-			// console.log(to);
-   //    if (toDepth == fromDepth) {
-   //      this.transitionName = "slide-none";
-   //    } else if (toDepth < fromDepth) {
-   //      this.transitionName = "slide-right";
-   //    } else {
-   //      this.transitionName = "slide-left";
-   //    }
+      //    const toDepth = to.path.split("/").length;
+      //    const fromDepth = from.path.split("/").length;
+      // console.log(to);
+      //    if (toDepth == fromDepth) {
+      //      this.transitionName = "slide-none";
+      //    } else if (toDepth < fromDepth) {
+      //      this.transitionName = "slide-right";
+      //    } else {
+      //      this.transitionName = "slide-left";
+      //    }
     }
   },
   methods: {
@@ -76,7 +76,6 @@ export default {
             this.$store.commit("setUndelivered", res.data.count);
           });
         });
-        return;
       }
       this.getUnRead();
       content.addListeners(`msg:${userID}`, r => {
