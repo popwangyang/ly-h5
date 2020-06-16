@@ -295,12 +295,16 @@
 						font-size: 12px;
 
 						&>span {
-							padding: 10px 20px;
+							padding: 10px 0px;
 							margin: 0 20px 20px 0;
-							min-width: 70px;
+							width: 100px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
 							box-sizing: border-box;
 							background: #f3f5f7;
 							color: #444444;
+							border: 1px solid #f3f5f7;
 						}
 
 						&>span[class="isSelected"] {
