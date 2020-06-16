@@ -95,6 +95,10 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
+			align-items: center;
+			div{
+				text-align: center;
+			}
 			.subtite{
 				font-size: 8px;
 			}
