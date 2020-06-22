@@ -167,6 +167,7 @@
 
 					myChart.on('click', (param) => {
 						let data = param.data;
+						console.log(myChart.getOption().series[0].data);
 						if(this.plantform == 'PC'){
 							this.showProvince(param.name);
 						}else{
