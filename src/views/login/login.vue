@@ -40,9 +40,12 @@
           :loading="loading"
           :disabled="disabled"
           @click="signIn"
-        >登录</van-button>
+          >登录</van-button
+        >
       </span>
-      <span class="bodyFooter" style="color: #2266F6;" @click="forgetPassword">忘记密码</span>
+      <span class="bodyFooter" style="color: #2266F6;" @click="forgetPassword"
+        >忘记密码</span
+      >
     </span>
     <span class="loginFooter"></span>
   </div>
@@ -183,4 +186,3 @@ export default {
   }
 }
 </style>
-
