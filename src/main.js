@@ -19,7 +19,7 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios;
 
 let time = new Date(); // 防止浏览器缓存，每次请求都是最新的config文件；
-Vue.prototype.$axios.get(`config/globalVar.json?code=${time.getTime()}`).then((res) => {
+Vue.prototype.$axios.get(`config/config.json?code=${time.getTime()}`).then((res) => {
   window.$config = res.data; //设置成Vue的全局属性
   main();
 }).catch((error) => {

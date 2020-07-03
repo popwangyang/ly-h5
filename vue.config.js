@@ -1,5 +1,5 @@
 const GenerateAssetPlugin = require('generate-asset-webpack-plugin');
-const config = require('./src/config/globalVar.js');
+const config = require('./src/config/config.js');
 let createConfig = function (compilation) {
   return JSON.stringify(config);
 }
@@ -32,7 +32,7 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new GenerateAssetPlugin({
-        filename: 'config/globalVar.json',
+        filename: 'config/config.json',
         fn: (compilation, cb) => {
           cb(null, createConfig(compilation))
         }
