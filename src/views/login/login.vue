@@ -40,9 +40,12 @@
           :loading="loading"
           :disabled="disabled"
           @click="signIn"
-        >登录</van-button>
+          >登录</van-button
+        >
       </span>
-      <span class="bodyFooter" style="color: #2266F6;" @click="forgetPassword">忘记密码</span>
+      <span class="bodyFooter" style="color: #2266F6;" @click="forgetPassword"
+        >忘记密码</span
+      >
     </span>
     <span class="loginFooter"></span>
   </div>
@@ -159,6 +162,7 @@ export default {
     }
   },
   mounted() {
+    console.log(window.$config.baseUrl);
     var hrt = document.documentElement.clientHeight; //获取当前可视区域的高度存到hrt变量
     window.onload = function() {
       //在页面整体加载完毕时
@@ -183,4 +187,3 @@ export default {
   }
 }
 </style>
-
