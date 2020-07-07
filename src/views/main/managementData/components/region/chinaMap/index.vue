@@ -91,16 +91,33 @@
 					this.regionData = res;
 					myChart.hideLoading();
 					this.cityName = pName;
-					var tmpSeriesData = res.map(item => {
-						item.value = (item.ktv / item.all_sign_num_ktv)*100
-						item.itemStyle = {
-							normal: {
-								borderColor: item.value == 0 ? '#cecece':'#cecece',
-								color: '#FFF'
-							},
-						}
-						return item;
-					});
+          res.sort((a, b) => {
+            return b.ktv - a.ktv;
+          });
+          console.log(res);
+          let index = 1;
+          let pre = res[0].ktv;
+          for(let i = 0; i < res.length; i++){
+            let value = res[i].ktv;
+            if(value > 0){
+              if(pre == value){
+                res[i].value = index;
+              }else{
+                pre = value;
+                index++;
+                res[i].value = index;
+              }
+            }else{
+              res[i].value = 19;
+            }
+            res[i].itemStyle = {
+            	normal: {
+            		borderColor: res[i].value == 0 ? '#cecece':'#cecece',
+            		color: '#FFF'
+            	},
+            }
+          }
+					var tmpSeriesData = res;
 					var option = {
 						visualMap: {
 							type: 'piecewise',
@@ -112,10 +129,11 @@
 							pieces: visualMapPieces,
 							orient: 'horizontal',
 							inRange: {
-								color:  ['#fafcff', '#D2E9FF', '#90C8FF', '#4DA6FC', '#0082FF'],
+								color:  [ '#0082FF','#4DA6FC' ,'#90C8FF','#D2E9FF', '#fafcff',],
 								symbolSize: [0, 1000],
 								symbol: 'circle'
 							},
+              inverse: false,
 							show:true,//是否显示组件
 							textStyle: {
 								color: 'black',
@@ -167,7 +185,6 @@
 
 					myChart.on('click', (param) => {
 						let data = param.data;
-						console.log(myChart.getOption().series[0].data);
 						if(this.plantform == 'PC'){
 							this.showProvince(param.name);
 						}else{
@@ -219,10 +236,10 @@
 			flex: 1;
 		}
 	}
-	
+
 </style>
 <style>
-	
+
 	#china-map .tooltip {
 		background: #0f2542c7;
 		color: white;
@@ -230,7 +247,7 @@
 		min-width: 120px;
 		overflow: hidden;
 	}
-	
+
 	.tooltip>span {
 		display: flex;
 		height: 25px;
@@ -239,13 +256,13 @@
 		align-items: center;
 		font-size: 12px;
 	}
-	
+
 	.tooltipGo img{
 		width: 14px;
 		height: 14px;
 		vertical-align: middle;
 	}
-	
+
 	.tooltip>span:nth-child(1) {
 		background: #0f2542;
 		font-size: 14px;
