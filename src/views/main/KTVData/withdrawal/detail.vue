@@ -1,24 +1,36 @@
- <template>
+<template>
   <div class="widthdrawalDetail">
     <div class="search">
       <div class="time">
-        <date-pick class="dataPick" @returnBack="returnBack" v-model="dateValue"></date-pick>
+        <date-pick
+          class="dataPick"
+          @returnBack="returnBack"
+          v-model="dateValue"
+        ></date-pick>
       </div>
       <!-- <div class="icon" @click="showHelp">
         <i></i>
       </div>-->
     </div>
     <div class="list">
-      <PageList ref="pagelist" noListText="暂无提现信息" :params="params" :getData="getlist">
+      <PageList
+        ref="pagelist"
+        noListText="暂无提现信息"
+        :params="params"
+        :getData="getlist"
+      >
         <template v-slot:default="slotProps">
-          <withdrawalDetailItem class="withdrawalDetailItem" :dataList="slotProps.dataList" />
+          <withdrawalDetailItem
+            class="withdrawalDetailItem"
+            :dataList="slotProps.dataList"
+          />
         </template>
       </PageList>
     </div>
   </div>
 </template>
- 
- <script>
+
+<script>
 import { getDay, getDayTime } from "@/libs/util";
 import PageList from "@/components/pageList";
 import withdrawalDetailItem from "@/components/listItems/withdrawalDetailItem";
@@ -83,7 +95,7 @@ export default {
   }
 };
 </script>
- <style lang="scss" scoped>
+<style lang="less" scoped>
 .widthdrawalDetail {
   background-color: #f4f4f4;
   height: 100%;

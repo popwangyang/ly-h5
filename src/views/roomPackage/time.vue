@@ -4,24 +4,37 @@
     <van-checkbox-group class="week" v-model="result">
       <van-checkbox
         :name="item.id"
-        :class="['item', result.includes(item.id)?'itemActive':'',result.includes(item.id)?'colorfff':'color000']"
+        :class="[
+          'item',
+          result.includes(item.id) ? 'itemActive' : '',
+          result.includes(item.id) ? 'colorfff' : 'color000'
+        ]"
         v-for="(item, index) in week"
         :key="index"
         checked-color="#07c160"
-      >{{item.label}}</van-checkbox>
+        >{{ item.label }}</van-checkbox
+      >
     </van-checkbox-group>
     <div class="time">
       <div class="p p1">
         <p class="p11 selet">起始时间</p>
-        <p @click="showStartPop" class="p11 sele">{{currentTime|| '请选择'}}</p>
+        <p @click="showStartPop" class="p11 sele">
+          {{ currentTime || "请选择" }}
+        </p>
         <img class="right" width="6" height="10" :src="comboright" alt />
       </div>
       <div class="p p2">
         <p class="p11 selet">结束时间</p>
-        <p @click="showEndPop" class="p11 sele">{{currentEndTime|| '请选择'}}</p>
+        <p @click="showEndPop" class="p11 sele">
+          {{ currentEndTime || "请选择" }}
+        </p>
         <img class="right" width="6" height="10" :src="comboright" alt />
       </div>
-      <van-popup :close-on-click-overlay="false" v-model="show" position="bottom">
+      <van-popup
+        :close-on-click-overlay="false"
+        v-model="show"
+        position="bottom"
+      >
         <div class="timePicker">
           <van-datetime-picker
             :filter="filter"
@@ -32,7 +45,11 @@
           />
         </div>
       </van-popup>
-      <van-popup :close-on-click-overlay="false" v-model="showEnd" position="bottom">
+      <van-popup
+        :close-on-click-overlay="false"
+        v-model="showEnd"
+        position="bottom"
+      >
         <div class="timePicker">
           <van-datetime-picker
             :filter="filter"
@@ -307,7 +324,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .combo-time {
   position: absolute;
   left: 0;

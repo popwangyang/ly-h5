@@ -3,21 +3,28 @@
     <div v-if="combo">
       <div class="title-wrapper">
         <div class="left">
-          <span class="name">{{combo.name}}</span>
-          <span class="status">{{combo.enabled?"已上架":"已下架"}}</span>
+          <span class="name">{{ combo.name }}</span>
+          <span class="status">{{ combo.enabled ? "已上架" : "已下架" }}</span>
         </div>
       </div>
 
-      <div class="combo-detail-cont" v-if="combo.goods && Array.isArray(combo.goods)">
+      <div
+        class="combo-detail-cont"
+        v-if="combo.goods && Array.isArray(combo.goods)"
+      >
         <div class="title">
           <span>商品名称</span>
           <span>数量</span>
           <span>单价</span>
         </div>
-        <div class="detailcont" v-for="(item, index) in combo.goods" :key="index">
-          <span>{{item.name}}</span>
-          <span>{{item.count || 0}}</span>
-          <span>{{item.original_price |toFixed2}}元</span>
+        <div
+          class="detailcont"
+          v-for="(item, index) in combo.goods"
+          :key="index"
+        >
+          <span>{{ item.name }}</span>
+          <span>{{ item.count || 0 }}</span>
+          <span>{{ item.original_price | toFixed2 }}元</span>
         </div>
       </div>
 
@@ -28,8 +35,8 @@
 
       <div class="detail-bottom">
         <div class="leftpart">
-          <p class="yuan">原价：￥{{combo.original_price|toFixed2}}</p>
-          <p class="youhui">优惠价：￥{{combo.actual_price|toFixed2}}</p>
+          <p class="yuan">原价：￥{{ combo.original_price | toFixed2 }}</p>
+          <p class="youhui">优惠价：￥{{ combo.actual_price | toFixed2 }}</p>
         </div>
         <div class="rightpart">
           <span class="del bt" @click="delPop">删除</span>
@@ -176,7 +183,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .overlay {
   display: flex;
   align-items: center;

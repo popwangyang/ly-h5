@@ -4,18 +4,18 @@
     <div class="order-wrapper">
       <div class="left">
         <p class="left-title">订单总数</p>
-        <p class="left-num">{{resData.orderTotal}}</p>
+        <p class="left-num">{{ resData.orderTotal }}</p>
       </div>
       <div class="right">
         <p class="right-p">
           <span class="green circle"></span>
           <span class="right-title">已完成订单</span>
-          <span class="right-num">{{resData.finishOrder}}</span>
+          <span class="right-num">{{ resData.finishOrder }}</span>
         </p>
         <p class="right-p right-p1">
           <span class="grey circle"></span>
           <span class="right-title">退款订单</span>
-          <span class="right-num">{{resData.backOrder}}</span>
+          <span class="right-num">{{ resData.backOrder }}</span>
         </p>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <p class="left-title">交易金额</p>
         <p class="left-num">
           <span class="f12 fnormal">￥</span>
-          {{resData.dealNum|toFixed2}}
+          {{ resData.dealNum | toFixed2 }}
         </p>
       </div>
       <div class="right">
@@ -33,7 +33,7 @@
           <span class="right-title">到账金额</span>
           <span class="right-num">
             <span class="f8 fnormal">￥</span>
-            {{resData.inNum|toFixed2}}
+            {{ resData.inNum | toFixed2 }}
           </span>
         </p>
         <p class="right-p right-p1">
@@ -41,7 +41,7 @@
           <span class="right-title">退款金额</span>
           <span class="right-num">
             <span class="f8 fnormal">￥</span>
-            {{resData.backNum|toFixed2}}
+            {{ resData.backNum | toFixed2 }}
           </span>
         </p>
       </div>
@@ -104,8 +104,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../../../../static/style/base.scss";
+<style lang="less" scoped>
+@import "../../../../static/style/base.less";
 .dealCondition {
   padding: 16px 15px;
   background-color: #fff;

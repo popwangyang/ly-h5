@@ -7,19 +7,29 @@
           <div class="item" v-for="(item, index) in this.up" :key="item.id">
             <div class="wrapper">
               <div class="cont">
-                <div class="index">{{index + 1}}</div>
+                <div class="index">{{ index + 1 }}</div>
                 <div class="cont-cont">
-                  <p class="name">{{item.name}}</p>
+                  <p class="name">{{ item.name }}</p>
                   <p class="price">
-                    <span class="s1">￥{{item.actual_price}}</span>
-                    <span class="s2">￥{{item.original_price}}</span>
+                    <span class="s1">￥{{ item.actual_price }}</span>
+                    <span class="s2">￥{{ item.original_price }}</span>
                   </p>
                 </div>
               </div>
               <div class="op">
-                <span v-if="index!==0" class="op-s op1" @click="upway(item,index)">上移</span>
-                <span v-if="index!==0" class="op-s op2" @click="firstway(item,index)">置顶</span>
-                <span class="op-s op3" @click="downway(item,index)">下架</span>
+                <span
+                  v-if="index !== 0"
+                  class="op-s op1"
+                  @click="upway(item, index)"
+                  >上移</span
+                >
+                <span
+                  v-if="index !== 0"
+                  class="op-s op2"
+                  @click="firstway(item, index)"
+                  >置顶</span
+                >
+                <span class="op-s op3" @click="downway(item, index)">下架</span>
               </div>
             </div>
             <img
@@ -43,15 +53,15 @@
             <div class="wrapper">
               <div class="cont">
                 <div class="cont-cont">
-                  <p class="name">{{item.name}}</p>
+                  <p class="name">{{ item.name }}</p>
                   <p class="price">
-                    <span class="s1">￥{{item.actual_price}}</span>
-                    <span class="s2">￥{{item.original_price}}</span>
+                    <span class="s1">￥{{ item.actual_price }}</span>
+                    <span class="s2">￥{{ item.original_price }}</span>
                   </p>
                 </div>
               </div>
               <div class="op">
-                <span class="op-s op1" @click="inUp(item,index)">上架</span>
+                <span class="op-s op1" @click="inUp(item, index)">上架</span>
               </div>
             </div>
             <img
@@ -73,10 +83,10 @@
             <div class="wrapper">
               <div class="cont">
                 <div class="cont-cont">
-                  <p class="name">{{item.name}}</p>
+                  <p class="name">{{ item.name }}</p>
                   <p class="price">
-                    <span class="s1">￥{{item.actual_price}}</span>
-                    <span class="s2">￥{{item.original_price}}</span>
+                    <span class="s1">￥{{ item.actual_price }}</span>
+                    <span class="s2">￥{{ item.original_price }}</span>
                   </p>
                 </div>
               </div>
@@ -306,7 +316,7 @@ export default {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .overlay {
   display: flex;
   align-items: center;

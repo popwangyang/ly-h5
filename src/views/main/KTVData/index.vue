@@ -1,11 +1,13 @@
 <template>
   <div class="mainpage" ref="scroll">
     <!-- 账户余额 -->
-    <div :class="['moneyshow', 'changeBanner', userType === 2 ? 'mana' : 'nomana']">
+    <div
+      :class="['moneyshow', 'changeBanner', userType === 2 ? 'mana' : 'nomana']"
+    >
       <div class="balance">
-        <p
-          :class="['title', userType === 2 ? '' : 'manatitle']"
-        >{{ userType === 2 ? "账户余额" : "平台分成情况" }}</p>
+        <p :class="['title', userType === 2 ? '' : 'manatitle']">
+          {{ userType === 2 ? "账户余额" : "平台分成情况" }}
+        </p>
         <p v-if="userType === 2" class="num">￥{{ balance | toFixed2 }}</p>
       </div>
       <div v-if="userType === 2" class="help" @click="enterWithdrawalHelp">
@@ -41,14 +43,28 @@
             </p>
           </div>
           <div class="button">
-            <van-button class="hollowBtnDefault" @click="enterWithdrawalDetail" type="default">提现记录</van-button>
-            <van-button class="rightbtn entityBtnDefault" @click="enterWithdrawal" type="default">提现</van-button>
+            <van-button
+              class="hollowBtnDefault"
+              @click="enterWithdrawalDetail"
+              type="default"
+              >提现记录</van-button
+            >
+            <van-button
+              class="rightbtn entityBtnDefault"
+              @click="enterWithdrawal"
+              type="default"
+              >提现</van-button
+            >
           </div>
         </div>
       </div>
     </div>
     <!-- 平台交易情况 -->
-    <deal-condition :isUserShow="isUserShow" :resData="resData" v-if="userType === 1" />
+    <deal-condition
+      :isUserShow="isUserShow"
+      :resData="resData"
+      v-if="userType === 1"
+    />
     <!-- 订单金额 -->
     <div class="chart-wrapper">
       <div class="tab-wrapper">
@@ -65,7 +81,12 @@
         </div>
         <div class="time">
           <p class="time-title">每日{{ chartTitle }}</p>
-          <date-pick @isYear="isYear" @returnBack="returnBack" class="dataPick" v-model="dateValue"></date-pick>
+          <date-pick
+            @isYear="isYear"
+            @returnBack="returnBack"
+            class="dataPick"
+            v-model="dateValue"
+          ></date-pick>
         </div>
       </div>
       <div v-show="chartData" class="chartDiv">
@@ -91,10 +112,16 @@
     >
       <div class="dialogDiv">
         <div class="dialogDiv-p">
-          <p>即商户通过历史关联的订单获得的分润金额（已扣除支付通道费率产生的费用）。</p>
+          <p>
+            即商户通过历史关联的订单获得的分润金额（已扣除支付通道费率产生的费用）。
+          </p>
           <p>注:若订单发生了退款行为，则该笔订单产生的分成也将会被退回</p>
         </div>
-        <van-button @click="dialogShow = !dialogShow" class="dialogButton popupBoxConfirm">知道了</van-button>
+        <van-button
+          @click="dialogShow = !dialogShow"
+          class="dialogButton popupBoxConfirm"
+          >知道了</van-button
+        >
       </div>
     </van-dialog>
   </div>
@@ -765,9 +792,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../../../static/style/base.scss";
-@import "../../../static/style/mixin.scss";
+<style lang="less" scoped>
+@import "../../../static/style/base.less";
+@import "../../../static/style/mixin.less";
 .mainpage {
   height: 100%;
   overflow-y: auto;
@@ -785,7 +812,7 @@ export default {
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
         line-height: 22px;
-        @include colorsize(#fff, 16px);
+        .colorsize(#fff, 16px);
       }
       .manatitle {
         margin-bottom: 0px !important;
@@ -794,7 +821,7 @@ export default {
         font-family: DINAlternate-Bold, DINAlternate;
         font-weight: bold;
         line-height: 21px;
-        @include colorsize(#fff, 18px);
+        .colorsize(#fff, 18px);
       }
     }
     .help {
@@ -865,7 +892,7 @@ export default {
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             line-height: 17px;
-            @include colorsize(rgba(108, 114, 124, 1), 12px);
+            .colorsize(rgba(108, 114, 124, 1), 12px);
             margin-bottom: 6px;
           }
           .num {

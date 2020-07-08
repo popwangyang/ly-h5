@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vant from 'vant';
-import './static/style/index.scss';
+import './static/style/index.less';
 import 'vant/lib/index.css';
 import './config/rem.js'
 import * as filters from './libs/filters'

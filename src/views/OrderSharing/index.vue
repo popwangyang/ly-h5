@@ -1,21 +1,45 @@
 <template>
   <div class="orderSharing" ref="scroll">
-    <div :class="['search',isOrderNum?'':'isNoOrderNum']">
-      <Search v-if="isOrderNum" placeholder="请输入订单号" :hasPay="showOrder !== 3" style="flex: 1;"></Search>
+    <div :class="['search', isOrderNum ? '' : 'isNoOrderNum']">
+      <Search
+        v-if="isOrderNum"
+        placeholder="请输入订单号"
+        :hasPay="showOrder !== 3"
+        style="flex: 1;"
+      ></Search>
       <div class="img-wrapper">
-        <img :src="manaSearchImg" v-if="!screen" width="17" height="15" alt @click="show = !show" />
-        <img :src="searchDefaultImg" v-else width="17" height="15" alt @click="show = !show" />
+        <img
+          :src="manaSearchImg"
+          v-if="!screen"
+          width="17"
+          height="15"
+          alt
+          @click="show = !show"
+        />
+        <img
+          :src="searchDefaultImg"
+          v-else
+          width="17"
+          height="15"
+          alt
+          @click="show = !show"
+        />
       </div>
     </div>
     <div class="list" ref="scroll">
-      <PageList :params="params" ref="pageList" noListText="暂无订单信息" :getData="getOrderList">
+      <PageList
+        :params="params"
+        ref="pageList"
+        noListText="暂无订单信息"
+        :getData="getOrderList"
+      >
         <template v-slot:default="slotProps">
           <orderItem
             class="withdrawalDetailItem"
             v-for="(item, index) in slotProps.dataList"
             :key="index"
-            :isKtv="userType==='ktv'"
-            :isMana="userType==='employee'"
+            :isKtv="userType === 'ktv'"
+            :isMana="userType === 'employee'"
             :data="item"
             :hasPay="showOrder !== 3"
           />
@@ -35,7 +59,12 @@
         <div class="content">
           <div v-if="userType !== 'ktv'">
             <p class="title">门店名称</p>
-            <van-field class="order-input" clearable v-model="ktv_name" placeholder="请输入" />
+            <van-field
+              class="order-input"
+              clearable
+              v-model="ktv_name"
+              placeholder="请输入"
+            />
           </div>
           <div>
             <p class="title">时间</p>
@@ -56,7 +85,8 @@
                 v-for="(item1, index1) in item.list"
                 :key="index1"
                 @click="selectedBtn(item.key, item1.id)"
-              >{{ item1.text }}</span>
+                >{{ item1.text }}</span
+              >
             </span>
           </div>
         </div>
@@ -319,8 +349,8 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-@import "../../static/style/mixin.scss";
+<style lang="less" scoped>
+@import "../../static/style/mixin.less";
 .orderSharing {
   background-color: #f4f4f4;
   position: absolute;
@@ -364,7 +394,7 @@ export default {
   }
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .popupRightBox {
   width: 100%;
   height: 100%;

@@ -39,8 +39,18 @@
             </p>
           </div>
           <div class="button">
-            <van-button class="hollowBtnDefault" @click="enterWithdrawalDetail" type="default">提现记录</van-button>
-            <van-button class="rightbtn entityBtnDefault" @click="enterWithdrawal" type="default">提现</van-button>
+            <van-button
+              class="hollowBtnDefault"
+              @click="enterWithdrawalDetail"
+              type="default"
+              >提现记录</van-button
+            >
+            <van-button
+              class="rightbtn entityBtnDefault"
+              @click="enterWithdrawal"
+              type="default"
+              >提现</van-button
+            >
           </div>
         </div>
       </div>
@@ -54,10 +64,16 @@
     >
       <div class="dialogDiv">
         <div class="dialogDiv-p">
-          <p>即商户通过历史关联的订单获得的分润金额（已扣除支付通道费率产生的费用）。</p>
+          <p>
+            即商户通过历史关联的订单获得的分润金额（已扣除支付通道费率产生的费用）。
+          </p>
           <p>注:若订单发生了退款行为，则该笔订单产生的分成也将会被退回</p>
         </div>
-        <van-button @click="dialogShow = !dialogShow" class="dialogButton popupBoxConfirm">知道了</van-button>
+        <van-button
+          @click="dialogShow = !dialogShow"
+          class="dialogButton popupBoxConfirm"
+          >知道了</van-button
+        >
       </div>
     </van-dialog>
   </div>
@@ -253,11 +269,7 @@ export default {
     // 提现确认
     enterWithdrawal() {
       if (!this.financialState) {
-        this.$toast.fail({
-          duration: 1500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$dialog.alert({
           message:
             this.$store.state.user.usertype === "agentibus"
               ? "暂未绑定或正在变更银行账户信息，请尽快联系商务人员完成绑定或等待银行审核通过后方可提现"
@@ -266,11 +278,7 @@ export default {
         return;
       }
       if (!this.allow_withdraw) {
-        this.$toast.fail({
-          duration: 1500, // 持续展示 toast
-          forbidClick: true,
-          overlay: true,
-          className: "loadClass",
+        this.$dialog.alert({
           message: "您的账户已冻结，请尽快联系商务人员处理。"
         });
         return;
@@ -297,9 +305,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../../../../static/style/base.scss";
-@import "../../../../static/style/mixin.scss";
+<style lang="less" scoped>
+@import "../../../../static/style/base.less";
+@import "../../../../static/style/mixin.less";
 .withdrawalMain {
   height: 100%;
   overflow-y: auto;
@@ -317,7 +325,7 @@ export default {
         font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
         line-height: 22px;
-        @include colorsize(#fff, 16px);
+        .colorsize(#fff, 16px);
       }
       .manatitle {
         margin-bottom: 0px !important;
@@ -327,7 +335,7 @@ export default {
         font-weight: bold;
         line-height: 21px;
         font-size: 26px !important;
-        @include colorsize(#fff, 18px);
+        .colorsize(#fff, 18px);
       }
     }
     .help {
@@ -398,7 +406,7 @@ export default {
             font-family: PingFangSC-Regular, PingFang SC;
             font-weight: 400;
             line-height: 17px;
-            @include colorsize(rgba(108, 114, 124, 1), 12px);
+            .colorsize(rgba(108, 114, 124, 1), 12px);
             margin-bottom: 6px;
           }
           .num {

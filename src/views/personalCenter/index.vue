@@ -352,8 +352,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../../static/style/mixin.scss";
+<style lang="less" scoped>
+@import "../../static/style/mixin.less";
 
 .personalCenter {
   width: 100%;

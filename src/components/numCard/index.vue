@@ -1,7 +1,7 @@
 <template>
   <div class="num-card">
-    <p class="card-num">{{num}}</p>
-    <p class="card-title">{{label}}</p>
+    <p class="card-num">{{ num }}</p>
+    <p class="card-title">{{ label }}</p>
     <img class="card-icon" :src="icon" width="32" height="31" alt />
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .num-card {
   width: 48%;
   height: 76px;

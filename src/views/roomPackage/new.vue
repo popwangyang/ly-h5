@@ -13,8 +13,10 @@
       />
       <div v-for="(item, index) in listArr" :key="index" class="newCombo-item">
         <!-- <img class="del" width="20" height="20" :src="listImg" alt /> -->
-        <span v-if="listArr.length !== 1" @click="del(index)" class="del">删除</span>
-        <van-cell-group :title="`商品${index+1}`">
+        <span v-if="listArr.length !== 1" @click="del(index)" class="del"
+          >删除</span
+        >
+        <van-cell-group :title="`商品${index + 1}`">
           <van-field
             input-align="right"
             maxlength="20"
@@ -31,7 +33,11 @@
             v-model="item.count"
             placeholder="请输入"
           />-->
-          <cell-inputNumber title="数量" @blur="countSigCount($event, index)" v-model="item.count"></cell-inputNumber>
+          <cell-inputNumber
+            title="数量"
+            @blur="countSigCount($event, index)"
+            v-model="item.count"
+          ></cell-inputNumber>
           <cell-inputNumber
             title="单价"
             @blur="countSigPrice($event, index)"
@@ -50,7 +56,7 @@
           <van-field
             disabled
             class="field-center"
-            v-if="index === listArr.length-1"
+            v-if="index === listArr.length - 1"
             input-align="center"
           >
             <div slot="label" class="addMusic">
@@ -61,7 +67,12 @@
         </van-cell-group>
       </div>
       <van-cell-group>
-        <van-field disabled input-align="right" label="套餐原价(元)" :value="total" />
+        <van-field
+          disabled
+          input-align="right"
+          label="套餐原价(元)"
+          :value="total"
+        />
         <!-- <van-field
           required
           type="number"
@@ -87,7 +98,7 @@
         title="可用时段"
         :value="timeStr"
         is-link
-        :to="{path: 'comboTime', query: {c:this.$route.query.c},}"
+        :to="{ path: 'comboTime', query: { c: this.$route.query.c } }"
       />
       <van-cell required title="上架状态">
         <van-switch v-model="upChecked" size="24px" />
@@ -726,7 +737,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .overlay {
   display: flex;
   align-items: center;

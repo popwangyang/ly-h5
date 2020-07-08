@@ -18,7 +18,11 @@
         <template v-slot:default="slotProps">
           <div>
             <div class="combo-ul">
-              <li @click="detail(item)" v-for="(item, index) in slotProps.dataList" :key="index">
+              <li
+                @click="detail(item)"
+                v-for="(item, index) in slotProps.dataList"
+                :key="index"
+              >
                 <img
                   style="display:none;"
                   width="40"
@@ -29,13 +33,17 @@
                 />
                 <div class="combo-ul-content">
                   <div class="combo-ul-content-p1">
-                    <span class="p1-name">{{item.name}}</span>
+                    <span class="p1-name">{{ item.name }}</span>
                     <!-- <img class="tip" width="31" height="16" :src="recommendImg" alt /> -->
-                    <div class="tip1">{{item.enabled?"已上架":"已下架"}}</div>
+                    <div class="tip1">
+                      {{ item.enabled ? "已上架" : "已下架" }}
+                    </div>
                   </div>
                   <p class="combo-ul-content-p2">
-                    <span class="p2-1">￥{{item.actual_price|toFixed2}}</span>
-                    <b class="p2-2">￥{{item.original_price|toFixed2}}</b>
+                    <span class="p2-1"
+                      >￥{{ item.actual_price | toFixed2 }}</span
+                    >
+                    <b class="p2-2">￥{{ item.original_price | toFixed2 }}</b>
                   </p>
                 </div>
               </li>
@@ -126,7 +134,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .combo {
   padding: 10px 16px;
   width: 100%;

@@ -17,8 +17,10 @@
         <template slot="title">
           <div class="canWithdrawal">
             <span>可提现</span>
-            <span>￥{{withdrawalMoney|toFixed2}}，</span>
-            <span class="popupBoxConfirm" @click="withdrawal(num)">全部提现</span>
+            <span>￥{{ withdrawalMoney | toFixed2 }}，</span>
+            <span class="popupBoxConfirm" @click="withdrawal(num)"
+              >全部提现</span
+            >
           </div>
         </template>
       </van-cell>
@@ -41,7 +43,7 @@
             class="popcreatefield"
             input-align="right"
             label="提现金额"
-            :value="inputnum? Number(inputnum).toFixed(2) + '元': 0"
+            :value="inputnum ? Number(inputnum).toFixed(2) + '元' : 0"
             readonly
           />
           <van-field
@@ -55,7 +57,7 @@
             class="popcreatefield"
             input-align="right"
             label="实际到账金额"
-            :value="arrivemo? Number(arrivemo).toFixed(2) + '元': 0"
+            :value="arrivemo ? Number(arrivemo).toFixed(2) + '元' : 0"
             readonly
           />
         </van-cell-group>
@@ -66,26 +68,43 @@
         <template slot="title">
           <div class="bankinfo">
             <span class="title">到账银行卡</span>
-            <span
-              v-if="financialObj"
-              class="bankName"
-            >{{financialObj.bank}}({{String(financialObj.cardNumber).slice(-4)}})</span>
+            <span v-if="financialObj" class="bankName"
+              >{{ financialObj.bank }}({{
+                String(financialObj.cardNumber).slice(-4)
+              }})</span
+            >
             <span class="content">具体到账时间以银行为主</span>
           </div>
         </template>
         <template>
-          <span class="bankUserName">{{financialObj.name|desensitization}}</span>
+          <span class="bankUserName">{{
+            financialObj.name | desensitization
+          }}</span>
         </template>
       </van-cell>
     </div>
-    <van-cell class="item-common" title="提现手续费" :value="poundange|toFixed2|changeMoney" />
-    <van-cell class="item-common highLightFont" :value="arrivemo|changeMoney" size>
+    <van-cell
+      class="item-common"
+      title="提现手续费"
+      :value="poundange | toFixed2 | changeMoney"
+    />
+    <van-cell
+      class="item-common highLightFont"
+      :value="arrivemo | changeMoney"
+      size
+    >
       <template slot="title">
         <span class="inMoney">实际到账金额</span>
-        <van-icon @click="showHelp" class="actualAccountNum" name="question-o" />
+        <van-icon
+          @click="showHelp"
+          class="actualAccountNum"
+          name="question-o"
+        />
       </template>
     </van-cell>
-    <van-button @click="submit" class="confirm entityBtnDefault">提交申请</van-button>
+    <van-button @click="submit" class="confirm entityBtnDefault"
+      >提交申请</van-button
+    >
   </div>
 </template>
 
@@ -244,8 +263,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "../../../../static/style/base.scss";
+<style lang="less" scoped>
+@import "../../../../static/style/base.less";
 .withdrawalConfirm {
   min-height: 100%;
   background: rgba(246, 246, 246, 1);

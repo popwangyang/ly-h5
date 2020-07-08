@@ -1,12 +1,29 @@
 <template>
   <div class="personInfo" ref="scroll">
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh" v-show="pageStatues == 1">
-      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-        <div class="personInfo-wrapper" :key="'date'+indexs" v-for="(items, indexs) in list">
-          <span class="infodate">{{items.create_date_2str_date}}</span>
-          <div class="info-wrapper" :key="'info'+index" v-for="(item, index) in items.info">
-            <p class="item-date">{{item.create_date}}</p>
-            <p class="text">{{item.msg_info}}</p>
+    <van-pull-refresh
+      v-model="isLoading"
+      @refresh="onRefresh"
+      v-show="pageStatues == 1"
+    >
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div
+          class="personInfo-wrapper"
+          :key="'date' + indexs"
+          v-for="(items, indexs) in list"
+        >
+          <span class="infodate">{{ items.create_date_2str_date }}</span>
+          <div
+            class="info-wrapper"
+            :key="'info' + index"
+            v-for="(item, index) in items.info"
+          >
+            <p class="item-date">{{ item.create_date }}</p>
+            <p class="text">{{ item.msg_info }}</p>
           </div>
         </div>
       </van-list>
@@ -140,8 +157,7 @@ export default {
 };
 </script>
 
-
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .personInfo {
   width: 100%;
   height: 100%;

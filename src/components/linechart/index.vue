@@ -131,7 +131,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .chart {
   margin: 0 auto;
   width: 100% !important;

@@ -3,14 +3,23 @@
     <ContentLoad class="orderktv-wrapper" :getInfo="getData">
       <div class="orderDetailTop">
         <img :src="orderDetailTop" alt width="17" height="17" />
-        <span>{{res.status_display}}</span>
+        <span>{{ res.status_display }}</span>
       </div>
       <van-cell-group class="group1" key="group1">
         <span class="circle c1"></span>
         <span class="circle c2"></span>
-        <van-cell title="综合服务费" :value="`￥${toFixed2(res.music_amount_display)}`" />
-        <van-cell title="开房套餐费用" :value="`￥${toFixed2(res.package_amount_display)}`" />
-        <van-cell title="扫码订单金额" :value="`￥${toFixed2(res.amount_display)}`" />
+        <van-cell
+          title="综合服务费"
+          :value="`￥${toFixed2(res.music_amount_display)}`"
+        />
+        <van-cell
+          title="开房套餐费用"
+          :value="`￥${toFixed2(res.package_amount_display)}`"
+        />
+        <van-cell
+          title="扫码订单金额"
+          :value="`￥${toFixed2(res.amount_display)}`"
+        />
         <van-cell
           class="van-value-weight"
           title="实付金额"
@@ -22,16 +31,21 @@
             <template slot="right-icon">
               <div class="payiconstyle">
                 <!-- <img :src="showPng" width="16" height="16" /> -->
-                <span>{{res.platform_display}}</span>
+                <span>{{ res.platform_display }}</span>
               </div>
             </template>
           </van-cell>
         </div>
         <van-cell title="交易时间" :value="res.pay_time" />
       </van-cell-group>
-      <p class="active">费用分成（支付通道费率{{res.payment_channel_rate_display}}）</p>
+      <p class="active">
+        费用分成（支付通道费率{{ res.payment_channel_rate_display }}）
+      </p>
       <van-cell-group v-if="res.royalty_set" class="group2">
-        <van-cell title="场所分成" :value="`￥${toFixed2(res.royalty_set.place_base_royalty_amount)}`" />
+        <van-cell
+          title="场所分成"
+          :value="`￥${toFixed2(res.royalty_set.place_base_royalty_amount)}`"
+        />
         <van-cell
           title="开房套餐分成"
           :value="`￥${toFixed2(res.royalty_set.place_package_royalty_amount)}`"
@@ -46,7 +60,11 @@
       <p v-if="res.package" class="active">购买套餐</p>
       <van-cell-group class="group2">
         <div>
-          <van-cell v-if="res.package" title="套餐名称" :value="`${res.package.name}`">
+          <van-cell
+            v-if="res.package"
+            title="套餐名称"
+            :value="`${res.package.name}`"
+          >
             <template #right-icon>
               <van-icon
                 @click="showPackage = true"
@@ -59,33 +77,45 @@
       </van-cell-group>
 
       <div>
-        <p class="active">{{operation_name?'参与活动':'暂未参与活动'}}</p>
+        <p class="active">{{ operation_name ? "参与活动" : "暂未参与活动" }}</p>
         <van-cell-group v-if="operation_name">
-          <van-cell class="activeName" title="活动名称" :value="`#${operation_name}#`">
+          <van-cell
+            class="activeName"
+            title="活动名称"
+            :value="`#${operation_name}#`"
+          >
             <template slot="label">
               <ul
                 v-show="gift_cards.length"
-                v-for="(item, index) in  gift_cards"
+                v-for="(item, index) in gift_cards"
                 :key="`gift${index}`"
                 class="active-wrapper"
               >
                 <li>
-                  <span>{{item.card_name }}</span>
-                  <span v-if="item.status===1">{{'未核销'}}</span>
-                  <span v-if="item.status===2">{{'已核销'}}</span>
-                  <span v-if="item.status===3">{{'已作废'}}</span>
+                  <span>{{ item.card_name }}</span>
+                  <span v-if="item.status === 1">{{ "未核销" }}</span>
+                  <span v-if="item.status === 2">{{ "已核销" }}</span>
+                  <span v-if="item.status === 3">{{ "已作废" }}</span>
                 </li>
                 <li>
-                  <span>{{item.card_number?`${item.card_number}元`:'免费'}}</span>
-                  <span>{{item.code}}</span>
+                  <span>{{
+                    item.card_number ? `${item.card_number}元` : "免费"
+                  }}</span>
+                  <span>{{ item.code }}</span>
                 </li>
               </ul>
-              <p v-show="gift_cards.length===0 || !gift_cards.length">未领取优惠券</p>
+              <p v-show="gift_cards.length === 0 || !gift_cards.length">
+                未领取优惠券
+              </p>
             </template>
           </van-cell>
         </van-cell-group>
       </div>
-      <van-dialog v-if="res.package" v-model="showPackage" :title="res.package.name">
+      <van-dialog
+        v-if="res.package"
+        v-model="showPackage"
+        :title="res.package.name"
+      >
         <div class="package-wrapper">
           <p class="p-title">套餐内容</p>
           <div class="goods">
@@ -97,13 +127,14 @@
                 v-for="(item, index) in res.package.goods"
               >
                 <div>
-                  <span class="good-item-font">{{item.name}}</span>
-                  <span class="good-item-font" style="margin-left: 10px;">* {{item.count}}</span>
+                  <span class="good-item-font">{{ item.name }}</span>
+                  <span class="good-item-font" style="margin-left: 10px;"
+                    >* {{ item.count }}</span
+                  >
                 </div>
-                <span
-                  style="font-weight:bold;"
-                  class="good-item-font"
-                >{{`￥${toFixed2(item.original_price)}`}}</span>
+                <span style="font-weight:bold;" class="good-item-font">{{
+                  `￥${toFixed2(item.original_price)}`
+                }}</span>
               </li>
             </ul>
           </div>
@@ -203,7 +234,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .orderktvDetail {
   width: 345px;
   height: 100%;
