@@ -23,7 +23,8 @@ Vue.prototype.$axios.get(`config/config.json?code=${time.getTime()}`).then((res)
   window.$config = res.data; //设置成Vue的全局属性
   main();
 }).catch((error) => {
-  console.log(error)
+  console.log(error);
+  main();
 })
 
 const main = () => {

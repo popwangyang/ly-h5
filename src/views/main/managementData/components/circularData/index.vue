@@ -122,7 +122,7 @@
 			color:rgba(68,68,68,1);
 		}
 		.van-tabs__wrap{
-			padding: 0 20px;
+			padding: 0 10px;
 		}
 	}
 </style>

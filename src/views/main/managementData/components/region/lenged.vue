@@ -68,6 +68,7 @@
 		}
 		.name:nth-child(1){
 			display: flex;
+			width: 60px;
 			padding: 0 10px;
 			align-items: center;
 			justify-content: center;

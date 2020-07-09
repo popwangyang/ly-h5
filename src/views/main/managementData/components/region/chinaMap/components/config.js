@@ -16,31 +16,31 @@ export const visualMapPieces = [
   {
     gte: 1,
     lte: 3,
-    label: '1~3',
+    label: '1~3名',
   },
   {
     gte: 4,
     lte: 7,
-    label: '4~7',
+    label: '4~7名',
   },
   {
     gte: 8,
     lte: 10,
-    label: '8~10',
+    label: '8~10名',
   },
   {
     gte: 11,
     lte: 13,
-    label: '11~13',
+    label: '11~13名',
   },
   {
     gte: 14,
     lte: 18,
-    label: '14~18',
+    label: '14~18名',
   },
   {
     gte: 19,
-    label: '>18',
+    label: '18名之后',
   },
 ]
 

@@ -1,6 +1,10 @@
 <template>
 	<div class="regionDataBox">
-		<nav>区域分布情况</nav>
+		<van-cell is-link @click="goMark" v-if="hasTitle">
+			<span class="title">
+				区域分布情况
+			</span>
+		</van-cell>
 		<div class="mapBox">
 			<MapBox plantform="h5" :getData="getData" @itemClick="itemclick" :defaultArea="defaultArea">
 			     <template slot="title">
@@ -16,6 +20,12 @@
 	import { region } from '@/api/managementData.js'
 	import Lenged from './lenged.vue'
 	export default{
+		props: {
+			hasTitle:{
+				type: Boolean,
+				default: true
+			}
+		},
 		components:{
 			MapBox,
 			Lenged
@@ -29,12 +39,18 @@
 			}
 		},
 		methods:{
+			goMark(){
+				this.$router.push({
+					name: 'markData'
+				})
+			},
 			getData(params){
 				this.level = params.level;
 				return new Promise((resolve, reject) => {
 					region(params).then(res => {
 						this.regionData = res;
 						this.setLengedData();
+						this.$emit('getData', res);
 						resolve(res);
 					})
 				})
@@ -98,10 +114,8 @@
 		display: flex;
 		flex-direction: column;
 		background-color: white;
-		height: 430px;
-		padding: 10px 20px;
-		nav{
-			height:24px;
+		padding: 10px;
+		.title{
 			font-size:16px;
 			font-family:PingFangSC-Semibold,PingFang SC;
 			font-weight:bold;
@@ -109,9 +123,17 @@
 			line-height:22px;
 			border-bottom: 1px solid #F6F6F6;
 		}
-		
 	    .mapBox{
-			flex: 1;
+			height: 400px;
 		}
 	}
+</style>
+<style lang="less" scoped>
+.regionDataBox{
+  .van-cell{
+	  padding-left: 0px;
+	  padding-right: 0px;
+
+  }
+}
 </style>

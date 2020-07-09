@@ -2,6 +2,8 @@
 	<div class="chinaMapBox">
 		<slot name='title'></slot>
 		<div id="china-map"></div>
+		<span class="visualMap">场所签约排名</span>
+		<span class="tip">省份开通数：{{provinceNumber}}</span>
 	</div>
 </template>
 
@@ -49,6 +51,7 @@
 				myChart: null,
 				cityName: provincesText.find(item => this.defaultArea.indexOf(item) > -1 ),
 				regionData:[],
+				provinceNumber: 0
 			}
 		},
 		methods: {
@@ -88,57 +91,61 @@
 					}
 				}
 				this.getData(send_data).then(res => {
+					console.log(res);
 					this.regionData = res;
 					myChart.hideLoading();
 					this.cityName = pName;
-          res.sort((a, b) => {
-            return b.ktv - a.ktv;
-          });
-          console.log(res);
-          let index = 1;
-          let pre = res[0].ktv;
-          for(let i = 0; i < res.length; i++){
-            let value = res[i].ktv;
-            if(value > 0){
-              if(pre == value){
-                res[i].value = index;
-              }else{
-                pre = value;
-                index++;
-                res[i].value = index;
-              }
-            }else{
-              res[i].value = 19;
-            }
-            res[i].itemStyle = {
-            	normal: {
-            		borderColor: res[i].value == 0 ? '#cecece':'#cecece',
-            		color: '#FFF'
-            	},
-            }
-          }
+					res.sort((a, b) => {
+						return b.ktv - a.ktv;
+					});
+					let index = 1;
+					let pre = res[0].ktv;
+					for(let i = 0; i < res.length; i++){
+						let value = res[i].ktv;
+						if(value > 0){
+							this.provinceNumber++;
+							if(pre == value){
+								res[i].value = index;
+							}else{
+								pre = value;
+								index++;
+								res[i].value = index;
+							}
+						}else{
+						    res[i].value = 19;
+						}
+						res[i].itemStyle = {
+							normal: {
+								borderColor: res[i].value == 0 ? '#cecece':'#cecece',
+								color: '#FFF'
+							},
+						}
+					}
 					var tmpSeriesData = res;
 					var option = {
 						visualMap: {
 							type: 'piecewise',
-							bottom: 8,
+							bottom: 0,
 							splitNumber: 5,
-							itemWidth: 8,
-							itemHeight: 8,
+							itemWidth: 10,
+							itemHeight: 10,
 							textGap: 4,
+							align: 'left',
 							pieces: visualMapPieces,
 							orient: 'horizontal',
 							inRange: {
-								color:  [ '#0082FF','#4DA6FC' ,'#90C8FF','#D2E9FF', '#fafcff',],
+								color:  ['#0082FF','#4DA6FC' ,'#90C8FF','#D2E9FF', '#fafcff',],
 								symbolSize: [0, 1000],
 								symbol: 'circle'
 							},
-              inverse: false,
+                            inverse: false,
 							show:true,//是否显示组件
 							textStyle: {
-								color: 'black',
+								color: '#8C8C8C',
 								fontSize: 10,
-							}
+							},
+							padding: 0,
+							borderColor: 'black'
 						},
 						tooltip: this.plantform == 'PC' ? tooltip:{},
 						series: [{
@@ -147,6 +154,7 @@
 							mapType: pName == '全国' ? 'china':pName,
 							layoutCenter:['50%', "50%"],
 							layoutSize:260,
+							zoom: 1.3,
 							roam: false, //是否开启鼠标缩放和平移漫游
 							label: { // 图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等
 								normal: { //静态的时候展示样式
@@ -175,7 +183,7 @@
 								}
 							},
 							data: tmpSeriesData,
-							top: "6%" //组件距离容器的距离
+							top: "1%" //组件距离容器的距离
 						}]
 					};
 
@@ -232,8 +240,25 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		position: relative;
 		#china-map {
 			flex: 1;
+		}
+		.visualMap{
+			position: absolute;
+			left: 0px;
+			bottom: 30px;
+			font-size: 10px;
+			color: #444444;
+		}
+		.tip{
+			position: absolute;
+			font-size:12px;
+			font-family:PingFangSC-Regular,PingFang SC;
+			font-weight:400;
+			color:rgba(0,130,255,1);
+			left: 0;
+			top: 100px;
 		}
 	}
 
