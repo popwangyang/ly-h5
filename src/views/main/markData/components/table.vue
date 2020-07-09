@@ -7,8 +7,8 @@
             <span>包厢数</span>
         </span>
         <span class="item" v-for="item in data">
-            <span>{{item[key[0]]}}</span>
-            <span>{{item[key[1]]}}</span>
+            <span>{{item.name}}</span>
+            <span>{{item.ktv}}</span>
             <span>{{item[key[2]]}}</span>
             <span>{{item[key[3]]}}</span>
         </span>

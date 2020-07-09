@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     getData(data){
-      // this.loading = false;
+      this.loading = false;
       this.data = data;
       console.log(data, "ppppp");
     }
@@ -39,6 +39,7 @@ export default {
 
 <style scope lang='less'>
   .markDataBox{
+    height: 100%;
     display: flex;
     flex-direction: column;
     .tableBox{
