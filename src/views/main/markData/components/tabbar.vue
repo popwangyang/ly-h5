@@ -5,16 +5,16 @@
        </div>
         <van-tabs line-height="2" line-width="66" v-model="active" v-if="!loading">
             <van-tab title="场所签约">
-                <Table :data="data" :key="keysign"/>
+                <Table :data="data" :listKey="keysign"/>
             </van-tab>
             <van-tab title="场所接入">
-                <Table :data="data" :key="keyImplement"/>
+                <Table :data="data" :listKey="keyImplement"/>
             </van-tab>
             <van-tab title="扫码计费">
-                <Table :data="data" :key="keyScan"/>
+                <Table :data="data" :listKey="keyScan"/>
             </van-tab>
             <van-tab title="曲库管理开通">
-                <Table :data="data" :key="keyCDN"/>
+                <Table :data="data" :listKey="keyCDN"/>
             </van-tab>
         </van-tabs>
     </div>
@@ -91,7 +91,6 @@ export default {
 </style>
 <style lang="less">
 	.tabbarBox{
-		margin-bottom: 20px;
 		.van-tab{
 			flex: none;
 			font-size:12px;

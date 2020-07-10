@@ -43,6 +43,7 @@ export default {
     display: flex;
     flex-direction: column;
     .tableBox{
+      margin-top: 10px;
       flex: 1;
     }
   }

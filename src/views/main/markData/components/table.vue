@@ -7,10 +7,10 @@
             <span>包厢数</span>
         </span>
         <span class="item" v-for="item in data">
-            <span>{{item.name}}</span>
-            <span>{{item.ktv}}</span>
-            <span>{{item[key[2]]}}</span>
-            <span>{{item[key[3]]}}</span>
+            <span>{{item[listKey[0]]}}</span>
+            <span>{{item[listKey[1]]}}</span>
+            <span>{{item[listKey[2]]}}</span>
+            <span>{{item[listKey[3]]}}</span>
         </span>
     </div>
 </template>
@@ -24,7 +24,7 @@ export default {
               return [];
           }
       },
-      key: {
+      listKey: {
           type: Array,
           default: () => {
               return [];
@@ -35,7 +35,9 @@ export default {
     return {}
   },
   created() {},
-  mounted() {}
+  mounted() {
+      console.log(this.key);
+  }
 }
 
 </script>
